@@ -4243,6 +4243,16 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     if (strcmp(key, "current_expansion") == 0) {
         return snprintf(buf, buf_len, "%d", inst->current_expansion);
     }
+    if (strcmp(key, "current_expansion_name") == 0) {
+        /* Distinct from bank_name: a dedicated expansion-stepper readout showed the same text as
+         * the bank stepper right above it (both bound to bank_name) -- confusingly duplicated on
+         * the BANKS page since either control changes the current bank. This one only reflects
+         * what the EXPANSION stepper itself last selected. */
+        if (inst->current_expansion < 0) return snprintf(buf, buf_len, "Factory (Preset A)");
+        if (inst->current_expansion < inst->expansion_count)
+            return snprintf(buf, buf_len, "%s", inst->expansions[inst->current_expansion].name);
+        return snprintf(buf, buf_len, "-");
+    }
     if (strcmp(key, "expansion_bank_offset") == 0) {
         return snprintf(buf, buf_len, "%d", inst->expansion_bank_offset);
     }

@@ -260,7 +260,14 @@ for tab in tabs:
     if tab["name"] in BAR_TABS:
         add_param("bank_name", "Bank", "string")
         add_param("patch_name", "Patch Name", "string")
-        add_param("preset", "Patch", "int", min=0, max=127)
+        # max was 127 (an early guess) -- the real total is 4133 with all 19 expansions loaded on
+        # THIS device (192 internal + patches per card), and any patch index above the declared max
+        # gets CLAMPED there by the step_target mechanism below, which silently snapped an
+        # expansion-backed patch (index > 127) back down to 127 -- landing in "Preset B"'s own
+        # internal-bank range, so stepping patches looked like it was reverting to a fixed bank.
+        # 8191 is generous headroom, not exact -- like expansion_index below, this is a static bound
+        # on a device/ROM-set-dependent real count (get_param("total_patches") has the live number).
+        add_param("preset", "Patch", "int", min=0, max=8191)
         # No native "next preset"/"prev preset" DSP verb (only an absolute set_param("preset", N)) --
         # nudge "preset" itself by +-1 in the wrapper instead (gen_vst.py's step_of/step_delta).
         add_param("preset_prev", "Patch -", "step", of="preset", delta=-1)
@@ -295,12 +302,16 @@ add_param("prev_bank", "Bank -", "trigger")
 add_param("next_bank", "Bank +", "trigger")
 banks_ol.append('stepper cx=638 cy=200 w=900 h=70 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix')
 add_param("expansion_index", "Expansion", "int", min=0, max=0)
+add_param("current_expansion_name", "Expansion Name", "string")
 add_param("prev_expansion", "Expansion -", "trigger")
 add_param("next_expansion", "Expansion +", "trigger")
-banks_ol.append('stepper cx=638 cy=320 w=900 h=70 label="" key=expansion_index get=bank_name prev=prev_expansion next=next_expansion style=dotmatrix')
+# get=current_expansion_name, NOT bank_name: this stepper used to show the same text as the bank
+# stepper right above it (both bound to bank_name, since either control changes the current bank)
+# -- confusingly duplicated. This dedicated key only reflects the EXPANSION stepper's own selection.
+banks_ol.append('stepper cx=638 cy=320 w=900 h=70 label="" key=expansion_index get=current_expansion_name prev=prev_expansion next=next_expansion style=dotmatrix')
 banks_keyed += [("Bank / Expansion", "bank_index"), ("Bank / Expansion", "expansion_index")]
 banks_ol.append('frame x=36 y=400 w=1208 h=280 title="Patch"')
-add_param("preset", "Patch", "int", min=0, max=127)
+add_param("preset", "Patch", "int", min=0, max=8191)
 add_param("patch_name", "Patch Name", "string")
 add_param("preset_prev", "Patch -", "step", of="preset", delta=-1)
 add_param("preset_next", "Patch +", "step", of="preset", delta=1)

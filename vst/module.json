@@ -188,7 +188,7 @@
         "name": "Patch",
         "type": "int",
         "min": 0,
-        "max": 127,
+        "max": 8191,
         "default": 0,
         "display": "int"
       },
@@ -2035,6 +2035,15 @@
         "max": 0,
         "default": 0,
         "display": "int"
+      },
+      {
+        "key": "current_expansion_name",
+        "name": "Expansion Name",
+        "type": "int",
+        "min": 0,
+        "max": 0,
+        "default": 0,
+        "display": "string"
       },
       {
         "key": "prev_expansion",
