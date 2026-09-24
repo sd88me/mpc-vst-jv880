@@ -120,9 +120,14 @@ def add_param(key, name, kind, **kw):
         # instead of reformatting via atof() (which mangled it down to "0" -- see docs/NOTES.md).
         p["type"], p["min"], p["max"], p["default"], p["display"] = "int", 0, 0, 0, "string"
     else:
+        # Every plain numeric jv880 param is a genuine whole number (MIDI-scale ranges: 0-127,
+        # -63..63, -4..4 octave, etc.) -- never fractional -- so force integer display always.
+        # Without this a narrow range (e.g. octave, width 8) shows a spurious "0.0" instead of "0"
+        # (the wrapper's default heuristic assumes narrow range = fine continuous value).
         p["type"] = "int"
         p["min"], p["max"] = kw.get("min", 0), kw.get("max", 127)
         p["default"] = kw.get("default", kw.get("min", 0))
+        p["display"] = "int"
     params[key] = p
 
 
@@ -277,12 +282,25 @@ def make_banks(keyed):
         banks.append((cur_title, cur_keys))
     return banks
 
+# Bank NAMES also become MPC's bottom function-key tab-strip caption for that sub-page (confirmed
+# on a real device: a long "+"-joined frame-title name truncates into an unreadable run-on strip
+# across all 6 tabs -- that's the whole strip's width, not one tab's). Stock skins keep these to a
+# single short word/number; short, curated names per tab instead of the frame-title concatenation.
+SHORT_BANK_NAMES = {"PLAY": ["Play", "Sends"], "PATCH": ["Patch", "FX"]}
+
 final = []
 for ol, keyed in out_tabs:
     name = ol[0][5:-1]
     banks = make_banks(keyed) if keyed else [(name, [])]
-    for title, keys in banks:
-        ol = ol + ['qlinks "%s" = %s' % (title[:28], ",".join(keys))]
+    if name in SHORT_BANK_NAMES:
+        short_titles = SHORT_BANK_NAMES[name]
+    elif name.startswith("TONE"):
+        n = name.split()[1]
+        short_titles = ["Tone %s" % n, "Env %s" % n, "LFO %s" % n]
+    else:
+        short_titles = [name] * len(banks)
+    for (_, keys), short in zip(banks, short_titles):
+        ol = ol + ['qlinks "%s" = %s' % (short, ",".join(keys))]
     final.append(ol)
 
 header = """# mpc-jv880 skin layout: converted from force-jv880's addon/shadow_page.conf
