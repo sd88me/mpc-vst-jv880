@@ -180,11 +180,11 @@ for tab in tabs:
                 i += 1; continue
             add_param(w["key"], cap(w["label"]), "toggle")
             ol.append('toggle cx=%s cy=%d label="%s" key=%s' % (w["cx"], sy(w["cy"]), cap(w["label"]), w["key"]))
-            keyed.append((cur_frame_title, w["key"]))
+            keyed.append((cur_frame_title, w["key"], 2))
         elif kind == "button":
             add_param(w["key"], cap(w["label"]), "int", min=0, max=1)
             ol.append('button cx=%s cy=%d label="%s" key=%s' % (w["cx"], sy(w["cy"]), cap(w["label"]), w["key"]))
-            keyed.append((cur_frame_title, w["key"]))
+            keyed.append((cur_frame_title, w["key"], 2))
         elif kind in ("enum_h", "enum_v"):
             if w["key"] in DROP_KEYS:
                 i += 1; continue
@@ -201,7 +201,7 @@ for tab in tabs:
                 extra += " rows=%s" % rows
             ol.append('%s cx=%s cy=%d label="%s" key=%s options="%s"%s' %
                        (kind, w["cx"], sy(w["cy"]), cap(w.get("label", "")), w["key"], ",".join(opts_disp), extra))
-            keyed.append((cur_frame_title, w["key"]))
+            keyed.append((cur_frame_title, w["key"], 1))
         elif kind == "knob":
             if w["key"] in DROP_KEYS or w.get("hidden") == "1":
                 # hidden=1: shadow's own dummy companion knob for an `env` block above,
@@ -210,7 +210,7 @@ for tab in tabs:
             add_param(w["key"], cap(w.get("label", w["key"])), "int", min=int(w.get("min", 0)), max=int(w.get("max", 127)))
             ol.append('knob cx=%s cy=%d r=%d label="%s" key=%s' %
                        (w["cx"], sy(w["cy"]), sr(w["r"]), cap(w.get("label", "")), w["key"]))
-            keyed.append((cur_frame_title, w["key"]))
+            keyed.append((cur_frame_title, w["key"], 0))
         elif kind == "env":
             # Bar-graph envelope DISPLAY: one slider_v per level stage (height = level,
             # live from the real param) plus a small time knob under each bar. No line/
@@ -241,7 +241,7 @@ for tab in tabs:
                 add_param(lk, "L%d" % s, "int", min=lmin, max=lmax)
                 ol.append('slider_v cx=%d cy=%d w=%d h=%d label="L%d" key=%s' %
                            (bx, bars_cy, bar_w, bar_h, s, lk))
-                keyed.append((cur_frame_title, lk))
+                keyed.append((cur_frame_title, lk, 0))
             knob_r, knob_gap = 18, 16
             knob_ch = (2 * knob_r + 10) // 2 + knob_r + 56   # matches shadow_skin.py's own knob def height
             tk_cy = min(bars_cy + bar_h // 2 + knob_gap + knob_ch // 2, content_bottom - knob_ch // 2)
@@ -251,7 +251,7 @@ for tab in tabs:
                 add_param(tk, "T%d" % s, "int", min=0, max=127)
                 ol.append('knob cx=%d cy=%d r=%d label="T%d" key=%s' %
                           (tx0 + (s - 1) * 56 + 28, tk_cy, knob_r, s, tk))
-                keyed.append((cur_frame_title, tk))
+                keyed.append((cur_frame_title, tk, 1))
         elif kind == "list":
             pass   # dropped tab (BANKS) only; no other tab uses `list`
         i += 1
@@ -304,14 +304,14 @@ add_param("bank_name", "Bank", "string")
 add_param("prev_bank", "Bank -", "trigger")
 add_param("next_bank", "Bank +", "trigger")
 banks_ol.append('stepper cx=638 cy=230 w=900 h=90 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix')
-banks_keyed.append(("Bank", "bank_index"))
+banks_keyed.append(("Bank", "bank_index", 0))
 banks_ol.append('frame x=36 y=400 w=1208 h=280 title="Patch"')
 add_param("preset", "Patch", "int", min=0, max=8191)
 add_param("patch_name", "Patch Name", "string")
 add_param("preset_prev", "Patch -", "step", of="preset", delta=-1)
 add_param("preset_next", "Patch +", "step", of="preset", delta=1)
 banks_ol.append('stepper cx=638 cy=500 w=900 h=70 label="" key=preset get=patch_name style=dotmatrix')
-banks_keyed.append(("Patch", "preset"))
+banks_keyed.append(("Patch", "preset", 0))
 out_tabs.append((banks_ol, banks_keyed))
 
 # qlinks: nested Q-Link banks (mpc-vst's `qlinks "<name>" = ...` lines are exactly this --
@@ -319,52 +319,24 @@ out_tabs.append((banks_ol, banks_keyed))
 # by FRAME so a bank doesn't split a section awkwardly: accumulate whole frame-groups until the
 # next one would exceed 16 keys, then start a new bank; a single frame with >16 keys on its own
 # splits at 16 (only TONE tabs' LFO 1 + LFO 2 pair is anywhere close, and that's exactly 15).
-def make_banks(keyed):
-    # Frames are ATOMIC: never split one frame's keys across two banks. shadow_skin.py's
-    # split-screen pages (one screen per bank, not the whole tab with just the Q-Link map
-    # changing -- see docs/NOTES.md) include a WHOLE frame if any of its keys are in that bank, so
-    # a split frame here would show up complete on BOTH banks (found via an offline preview: the
-    # Play bank showed Effect Sends' chorus/tone knobs too, because reverb -- one of Effect Sends'
-    # own keys -- had been grouped into Play by the old key-count-only accumulation).
-    groups = []   # ordered (frame_title, [keys]), one whole frame's keys each
-    for frame_title, key in keyed:
-        if groups and groups[-1][0] == frame_title:
-            groups[-1][1].append(key)
-        else:
-            groups.append((frame_title, [key]))
-    banks = []   # (title, [keys])
-    cur_titles, cur_keys = [], []
-    for frame_title, keys in groups:
-        if len(keys) > 16:
-            raise SystemExit("layout: frame %r has %d keys alone (max 16 per Q-Link bank)" % (frame_title, len(keys)))
-        if cur_keys and len(cur_keys) + len(keys) > 16:
-            banks.append((" + ".join(cur_titles), cur_keys))
-            cur_titles, cur_keys = [], []
-        cur_titles.append(frame_title)
-        cur_keys += keys
-    if cur_keys:
-        banks.append((" + ".join(cur_titles), cur_keys))
-    return banks
-
-# Bank NAMES also become MPC's bottom function-key tab-strip caption for that sub-page (confirmed
-# on a real device: a long "+"-joined frame-title name truncates into an unreadable run-on strip
-# across all 6 tabs -- that's the whole strip's width, not one tab's). Stock skins keep these to a
-# single short word/number; short, curated names per tab instead of the frame-title concatenation.
-SHORT_BANK_NAMES = {"PLAY": ["Play", "Sends"], "PATCH": ["Patch", "FX"]}
+def pick_qlink_keys(keyed, limit=16):
+    # ONE Q-Link bank per tab, always -- no sub-page swiping anywhere, even for a busy tab
+    # (Tone: 44 controls). A tab under the limit keeps everything; a tab over it keeps the
+    # highest-priority `limit` keys and drops the rest to touch-only (still visible, still
+    # controllable on screen, just no dedicated physical knob). `keyed` entries are
+    # (frame_title, key, priority): 0 = the control most worth a knob (a main knob, an envelope
+    # bar's LEVEL), 1 = secondary (an envelope stage's TIME, an enum selector), 2 = coarse
+    # (a toggle, a trigger button) -- confirmed with the user directly rather than guessed, after
+    # an earlier attempt at "separate screen per Q-Link bank" was tried and reverted (docs/NOTES.md).
+    by_priority = sorted(range(len(keyed)), key=lambda idx: keyed[idx][2])
+    kept = sorted(by_priority[:limit])   # restore original layout order for the ones kept
+    return [keyed[idx][1] for idx in kept]
 
 final = []
 for ol, keyed in out_tabs:
     name = ol[0][5:-1]
-    banks = make_banks(keyed) if keyed else [(name, [])]
-    if name in SHORT_BANK_NAMES:
-        short_titles = SHORT_BANK_NAMES[name]
-    elif name.startswith("TONE"):
-        n = name.split()[1]
-        short_titles = ["Tone %s" % n, "Env %s" % n, "LFO %s" % n]
-    else:
-        short_titles = [name] * len(banks)
-    for (_, keys), short in zip(banks, short_titles):
-        ol = ol + ['qlinks "%s" = %s' % (short, ",".join(keys))]
+    keys = pick_qlink_keys(keyed) if keyed else []
+    ol = ol + ['qlinks "%s" = %s' % (name.title(), ",".join(keys))]
     final.append(ol)
 
 header = """# mpc-jv880 skin layout: converted from force-jv880's addon/shadow_page.conf
@@ -375,11 +347,14 @@ header = """# mpc-jv880 skin layout: converted from force-jv880's addon/shadow_p
 #     strip reclaimed by compressing body content 10%% (BODY_SCALE) -- MPC
 #     skins have no outer chrome band like Force Shadow's own topbar sits in,
 #     and there's no spare margin at the top (content already starts at y=88)
-#   - BANKS tab dropped for v1: browse by the PATCH stepper only (as DX7 does)
+#   - BANKS tab: a Bank + Patch stepper pair, no scrollable list (no such widget exists on MPC)
 #   - env widgets (draggable curves) -> bar-graph envelope displays: one
 #     slider_v per level stage (live), knob per time stage, no drag/line
-#   - qlinks are a first pass (first 16 controls per tab); needs a manual
-#     curation pass, most tabs have 20-30 controls
+#   - ONE Q-Link bank per tab always (see pick_qlink_keys() below), even for a busy tab (Tone:
+#     44 controls) -- a real per-bank split-screen was tried and reverted (docs/NOTES.md): sub-
+#     page navigation for a tab that's really one screen read as needlessly fragmented. A tab
+#     over the 16-key Q-Link limit keeps its highest-priority controls on a knob and drops the
+#     rest to touch-only (still visible/usable, just no dedicated physical knob).
 theme_bg=232527
 theme_panel=2a2d2f
 theme_line=42484a
@@ -405,8 +380,6 @@ json.dump(module, open(OUT_MODULE, "w"), indent=2)
 print("params:", len(params))
 print("tabs:", [ol[0][5:-1] for ol, keyed in out_tabs])
 for ol, keyed in out_tabs:
-    banks = make_banks(keyed) if keyed else []
-    total = sum(len(k) for _, k in banks)
-    print("  %-10s controls=%-3d banks=%d sizes=%s" % (ol[0][5:-1], len(keyed), len(banks), [len(k) for _, k in banks]))
-    if total != len(keyed):
-        print("    !! bank key count %d != control count %d" % (total, len(keyed)))
+    keys = pick_qlink_keys(keyed) if keyed else []
+    dropped = len(keyed) - len(keys)
+    print("  %-10s controls=%-3d qlink=%d touch-only=%d" % (ol[0][5:-1], len(keyed), len(keys), dropped))
