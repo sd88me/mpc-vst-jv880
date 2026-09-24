@@ -2599,6 +2599,29 @@ static void v2_jump_to_bank(jv880_instance_t *inst, int direction) {
     fprintf(stderr, "JV880 v2: Jumped to bank %d: %s\n", new_bank, inst->bank_names[new_bank]);
 }
 
+/* Single bounded step to the next/prev expansion (wraps through -1 = factory), mirroring
+ * v2_jump_to_bank's one-transition-per-call shape. Added for a real "next/prev expansion" verb --
+ * the existing "jump_to_expansion" takes an absolute index and does its ROM swap (an 8MB memcpy,
+ * plus a first-access disk read+unscramble) SYNCHRONOUSLY and UNDEBOUNCED, unlike "preset" (which
+ * defers/debounces a cross-expansion swap ~9ms specifically to survive being set rapidly -- see
+ * that handler's own comment). Binding jump_to_expansion directly to a continuously-nudgeable
+ * knob let a single touch/turn gesture fire several of these synchronous reloads back to back,
+ * which is almost certainly the MPC "hanging on Loading..." symptom -- a stepper (one arrow tap =
+ * one call) can't flood it the same way. */
+static void v2_jump_to_expansion_step(jv880_instance_t *inst, int direction) {
+    int next = inst->current_expansion + direction;
+    if (next < -1) next = inst->expansion_count - 1;
+    if (next >= inst->expansion_count) next = -1;
+    if (next == -1) {
+        v2_select_patch(inst, 0);
+        inst->current_expansion = -1;   /* v2_select_patch doesn't touch this for a factory patch */
+    } else {
+        int first_patch = inst->expansions[next].first_global_index;
+        if (first_patch >= 0 && first_patch < inst->total_patches) v2_select_patch(inst, first_patch);
+    }
+    fprintf(stderr, "JV880 v2: Stepped to expansion %d\n", next);
+}
+
 /* v2: Switch between patch and performance mode */
 static void v2_set_mode(jv880_instance_t *inst, int performance_mode) {
     if (!inst || !inst->mcu) {
@@ -3080,6 +3103,10 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         v2_jump_to_bank(inst, 1);
     } else if (strcmp(key, "prev_bank") == 0) {
         v2_jump_to_bank(inst, -1);
+    } else if (strcmp(key, "next_expansion") == 0) {
+        v2_jump_to_expansion_step(inst, 1);
+    } else if (strcmp(key, "prev_expansion") == 0) {
+        v2_jump_to_expansion_step(inst, -1);
     } else if (strcmp(key, "mode") == 0) {
         /* Switch between patch (0) and performance (1) mode
          * Accept both string names and numeric indices for enum compatibility */

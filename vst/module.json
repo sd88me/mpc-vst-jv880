@@ -2028,13 +2028,31 @@
         "display": "int"
       },
       {
-        "key": "jump_to_expansion",
-        "name": "Jump To Expansion",
+        "key": "expansion_index",
+        "name": "Expansion",
         "type": "int",
-        "min": -1,
-        "max": 18,
-        "default": -1,
+        "min": 0,
+        "max": 0,
+        "default": 0,
         "display": "int"
+      },
+      {
+        "key": "prev_expansion",
+        "name": "Expansion -",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0,
+        "access": "write"
+      },
+      {
+        "key": "next_expansion",
+        "name": "Expansion +",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0,
+        "access": "write"
       }
     ]
   }

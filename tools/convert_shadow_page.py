@@ -278,12 +278,14 @@ for tab in tabs:
 
 # BANKS tab: a real bank/expansion/patch browser, dedicated screen -- v1 dropped this entirely
 # (dynamic 128-entry list widgets don't fit mpc-vst's `list`, which binds each tile to its OWN
-# fixed VST param), but the DSP turns out to have real jump_to_expansion/current_expansion verbs
-# (see docs/DESIGN-NOTES.md), so browsing by number is workable even without a scrollable list.
-# jump_to_expansion's range depends on how many SR-JV80 expansions are actually loaded on THIS
-# device (19, confirmed at conversion time) -- out-of-range values are simply ignored by the DSP
-# (bounds-checked there), so a stale max after changing the ROM set fails safe, just silently caps
-# browsing short of newly-added expansions until this is regenerated.
+# fixed VST param), but the DSP turns out to have real bank/expansion stepping verbs (see
+# docs/DESIGN-NOTES.md), so browsing by number is workable even without a scrollable list.
+# Expansion browsing uses next_expansion/prev_expansion (a real DSP verb, added alongside this --
+# one bounded transition per call), NOT the absolute jump_to_expansion bound to a knob: jumping
+# does a synchronous 8MB memcpy (+ a first-access disk read/unscramble), undebounced, and a
+# continuously-nudgeable knob can fire several of those from one touch/turn gesture -- this is
+# almost certainly what "banks/patches hanging, says loading emulator" was (found after the fact,
+# from that exact symptom). A stepper's arrow tap can only ever fire ONE call.
 banks_keyed = []
 banks_ol = ["[tab BANKS]"]
 banks_ol.append('frame x=36 y=88 w=1208 h=280 title="Bank / Expansion"')
@@ -292,9 +294,11 @@ add_param("bank_name", "Bank", "string")
 add_param("prev_bank", "Bank -", "trigger")
 add_param("next_bank", "Bank +", "trigger")
 banks_ol.append('stepper cx=638 cy=200 w=900 h=70 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix')
-add_param("jump_to_expansion", "Jump To Expansion", "int", min=-1, max=18)
-banks_ol.append('knob cx=638 cy=320 r=44 label="Jump To Expansion" key=jump_to_expansion')
-banks_keyed += [("Bank / Expansion", "bank_index"), ("Bank / Expansion", "jump_to_expansion")]
+add_param("expansion_index", "Expansion", "int", min=0, max=0)
+add_param("prev_expansion", "Expansion -", "trigger")
+add_param("next_expansion", "Expansion +", "trigger")
+banks_ol.append('stepper cx=638 cy=320 w=900 h=70 label="" key=expansion_index get=bank_name prev=prev_expansion next=next_expansion style=dotmatrix')
+banks_keyed += [("Bank / Expansion", "bank_index"), ("Bank / Expansion", "expansion_index")]
 banks_ol.append('frame x=36 y=400 w=1208 h=280 title="Patch"')
 add_param("preset", "Patch", "int", min=0, max=127)
 add_param("patch_name", "Patch Name", "string")
