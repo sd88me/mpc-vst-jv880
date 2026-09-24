@@ -272,9 +272,37 @@ for tab in tabs:
         add_param("next_bank", "Bank +", "trigger")
         # get=bank_name/patch_name: show the real NAME text, not the raw index/dummy each steps
         # (separate parameters -- see shadow_skin.py's stepper "Text" handle).
-        ol.append('stepper cx=350 cy=%d w=300 h=44 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix' % BAR_CY)
-        ol.append('stepper cx=775 cy=%d w=490 h=44 label="" key=preset get=patch_name style=dotmatrix' % BAR_CY)
+        ol.append('stepper cx=350 cy=%d w=300 h=44 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix persistent=1' % BAR_CY)
+        ol.append('stepper cx=775 cy=%d w=490 h=44 label="" key=preset get=patch_name style=dotmatrix persistent=1' % BAR_CY)
     out_tabs.append((ol, keyed))
+
+# BANKS tab: a real bank/expansion/patch browser, dedicated screen -- v1 dropped this entirely
+# (dynamic 128-entry list widgets don't fit mpc-vst's `list`, which binds each tile to its OWN
+# fixed VST param), but the DSP turns out to have real jump_to_expansion/current_expansion verbs
+# (see docs/DESIGN-NOTES.md), so browsing by number is workable even without a scrollable list.
+# jump_to_expansion's range depends on how many SR-JV80 expansions are actually loaded on THIS
+# device (19, confirmed at conversion time) -- out-of-range values are simply ignored by the DSP
+# (bounds-checked there), so a stale max after changing the ROM set fails safe, just silently caps
+# browsing short of newly-added expansions until this is regenerated.
+banks_keyed = []
+banks_ol = ["[tab BANKS]"]
+banks_ol.append('frame x=36 y=88 w=1208 h=280 title="Bank / Expansion"')
+add_param("bank_index", "Bank", "int", min=0, max=0)
+add_param("bank_name", "Bank", "string")
+add_param("prev_bank", "Bank -", "trigger")
+add_param("next_bank", "Bank +", "trigger")
+banks_ol.append('stepper cx=638 cy=200 w=900 h=70 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix')
+add_param("jump_to_expansion", "Jump To Expansion", "int", min=-1, max=18)
+banks_ol.append('knob cx=638 cy=320 r=44 label="Jump To Expansion" key=jump_to_expansion')
+banks_keyed += [("Bank / Expansion", "bank_index"), ("Bank / Expansion", "jump_to_expansion")]
+banks_ol.append('frame x=36 y=400 w=1208 h=280 title="Patch"')
+add_param("preset", "Patch", "int", min=0, max=127)
+add_param("patch_name", "Patch Name", "string")
+add_param("preset_prev", "Patch -", "step", of="preset", delta=-1)
+add_param("preset_next", "Patch +", "step", of="preset", delta=1)
+banks_ol.append('stepper cx=638 cy=500 w=900 h=70 label="" key=preset get=patch_name style=dotmatrix')
+banks_keyed.append(("Patch", "preset"))
+out_tabs.append((banks_ol, banks_keyed))
 
 # qlinks: nested Q-Link banks (mpc-vst's `qlinks "<name>" = ...` lines are exactly this --
 # several banks sharing one tab's design, each its own Q-Link set, per docs/PORTING.md). Grouped
@@ -282,22 +310,30 @@ for tab in tabs:
 # next one would exceed 16 keys, then start a new bank; a single frame with >16 keys on its own
 # splits at 16 (only TONE tabs' LFO 1 + LFO 2 pair is anywhere close, and that's exactly 15).
 def make_banks(keyed):
-    banks = []   # (title, [keys])
-    cur_title, cur_keys, seen_titles = None, [], []
+    # Frames are ATOMIC: never split one frame's keys across two banks. shadow_skin.py's
+    # split-screen pages (one screen per bank, not the whole tab with just the Q-Link map
+    # changing -- see docs/NOTES.md) include a WHOLE frame if any of its keys are in that bank, so
+    # a split frame here would show up complete on BOTH banks (found via an offline preview: the
+    # Play bank showed Effect Sends' chorus/tone knobs too, because reverb -- one of Effect Sends'
+    # own keys -- had been grouped into Play by the old key-count-only accumulation).
+    groups = []   # ordered (frame_title, [keys]), one whole frame's keys each
     for frame_title, key in keyed:
-        if frame_title not in seen_titles:
-            seen_titles.append(frame_title)
-        if len(cur_keys) + 1 > 16 or (cur_keys and frame_title not in cur_title.split(" + ") and
-                                       len(cur_keys) >= 12):
-            banks.append((" + ".join(cur_title.split(" + ")), cur_keys))
-            cur_title, cur_keys = frame_title, []
-        if cur_title is None:
-            cur_title = frame_title
-        elif frame_title not in cur_title.split(" + "):
-            cur_title = cur_title + " + " + frame_title if len(cur_title) < 24 else cur_title
-        cur_keys.append(key)
+        if groups and groups[-1][0] == frame_title:
+            groups[-1][1].append(key)
+        else:
+            groups.append((frame_title, [key]))
+    banks = []   # (title, [keys])
+    cur_titles, cur_keys = [], []
+    for frame_title, keys in groups:
+        if len(keys) > 16:
+            raise SystemExit("layout: frame %r has %d keys alone (max 16 per Q-Link bank)" % (frame_title, len(keys)))
+        if cur_keys and len(cur_keys) + len(keys) > 16:
+            banks.append((" + ".join(cur_titles), cur_keys))
+            cur_titles, cur_keys = [], []
+        cur_titles.append(frame_title)
+        cur_keys += keys
     if cur_keys:
-        banks.append((cur_title, cur_keys))
+        banks.append((" + ".join(cur_titles), cur_keys))
     return banks
 
 # Bank NAMES also become MPC's bottom function-key tab-strip caption for that sub-page (confirmed

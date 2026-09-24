@@ -6,6 +6,7 @@
   "so": "jv880.so",
   "module": "module.json",
   "layout": "layout.conf",
+  "title_font": "Audiowide-Regular.ttf",
   "defines": {"MODULE_DIR": "\"/sdcard/vst/jv880-roms\""},
   "build": {
     "root": "..",

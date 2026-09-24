@@ -2026,6 +2026,15 @@
         "max": 63,
         "default": -63,
         "display": "int"
+      },
+      {
+        "key": "jump_to_expansion",
+        "name": "Jump To Expansion",
+        "type": "int",
+        "min": -1,
+        "max": 18,
+        "default": -1,
+        "display": "int"
       }
     ]
   }

@@ -1,5 +1,26 @@
 # Design notes: JV-880 as an MPC OS VST2 plugin
 
+## Revisions after real-device feedback (2026-09-24)
+
+- **Stepper cycling was broken** (`preset_prev`/`preset_next` referenced a "_prev"/"_next" DSP
+  convention that doesn't exist) and **bank cycling was missing entirely** -- both fixed using
+  mpc-vst-plugins' new `step_of`/`step_delta` and `prev=`/`next=` stepper mechanisms. Verified
+  against real ROMs before redeploying.
+- **Every tab's Q-Link banks used to show the identical screen.** mpc-vst-plugins' `shadow_skin.py`
+  now gives each bank its own screen (frame-based segments); this port's tabs were restructured to
+  keep frames atomic per bank (Play/Sends, Patch/FX, Tone/Env/LFO per tone).
+  a real BANKS tab (bank/expansion/patch browsing, using the DSP's real `next_bank`/`prev_bank`/
+  `jump_to_expansion` verbs) replaced the v1 "dropped entirely" decision -- still not the original
+  scrollable list design (no such widget exists on MPC), but no longer nothing.
+- **Frame titles now use a real font** (Audiowide, SIL Open Font License, fetched from
+  `google/fonts`' GitHub repo -- see `vst/Audiowide-Regular.ttf`) instead of the baked bitmap font,
+  via mpc-vst-plugins' new `title_font` mechanism. This is a stand-in for Roland's own proprietary
+  panel font (the one with the custom-altered 'A'/'G'), not a recreation of it -- that font wasn't
+  something available to source or safely reproduce.
+- **Knobs got a dotted arc** instead of a solid ring, closer to the original shadow mockups.
+
+See mpc-vst-plugins' own `docs/NOTES.md` for the full technical detail behind each of these.
+
 ## Source and architecture
 
 Ported from [`schwung-jv880`](https://github.com/charlesvestal/schwung-jv880) (charlesvestal's
