@@ -199,7 +199,9 @@
         "min": 0,
         "max": 1,
         "default": 0,
-        "display": "int"
+        "access": "write",
+        "step_of": "preset",
+        "step_delta": -1
       },
       {
         "key": "preset_next",
@@ -208,7 +210,36 @@
         "min": 0,
         "max": 1,
         "default": 0,
+        "access": "write",
+        "step_of": "preset",
+        "step_delta": 1
+      },
+      {
+        "key": "bank_index",
+        "name": "Bank",
+        "type": "int",
+        "min": 0,
+        "max": 0,
+        "default": 0,
         "display": "int"
+      },
+      {
+        "key": "prev_bank",
+        "name": "Bank -",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0,
+        "access": "write"
+      },
+      {
+        "key": "next_bank",
+        "name": "Bank +",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0,
+        "access": "write"
       },
       {
         "key": "nvram_patchCommon_analogfeel",

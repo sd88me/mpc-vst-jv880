@@ -119,6 +119,17 @@ def add_param(key, name, kind, **kw):
         # number -- "display":"string" tells gen_vst.py/vst2_wrap.c to pass it through verbatim
         # instead of reformatting via atof() (which mangled it down to "0" -- see docs/NOTES.md).
         p["type"], p["min"], p["max"], p["default"], p["display"] = "int", 0, 0, 0, "string"
+    elif kind == "trigger":
+        # A momentary DSP verb with no meaningful "value" of its own (e.g. jv880's real
+        # next_bank/prev_bank) -- access:"write" makes the wrapper spring it back after firing
+        # (docs/PORTING.md) instead of staying visually "pressed".
+        p["type"], p["min"], p["max"], p["default"], p["access"] = "int", 0, 1, 0, "write"
+    elif kind == "step":
+        # A momentary nudge of ANOTHER param by kw["delta"], for a DSP with no native next/prev
+        # verb of its own (e.g. jv880's preset has no "next preset", only an absolute set_param) --
+        # see gen_vst.py's step_of/step_delta and docs/NOTES.md.
+        p["type"], p["min"], p["max"], p["default"], p["access"] = "int", 0, 1, 0, "write"
+        p["step_of"], p["step_delta"] = kw["of"], kw["delta"]
     else:
         # Every plain numeric jv880 param is a genuine whole number (MIDI-scale ranges: 0-127,
         # -63..63, -4..4 octave, etc.) -- never fractional -- so force integer display always.
@@ -250,11 +261,18 @@ for tab in tabs:
         add_param("bank_name", "Bank", "string")
         add_param("patch_name", "Patch Name", "string")
         add_param("preset", "Patch", "int", min=0, max=127)
-        add_param("preset_prev", "Patch -", "int", min=0, max=1)
-        add_param("preset_next", "Patch +", "int", min=0, max=1)
-        ol.append('readout cx=350 cy=%d w=300 h=44 label="" key=bank_name style=dotmatrix' % BAR_CY)
-        # get=patch_name: show the patch's real NAME text, not the raw "preset" index it steps
-        # (that's a separate parameter -- see shadow_skin.py's stepper "Text" handle).
+        # No native "next preset"/"prev preset" DSP verb (only an absolute set_param("preset", N)) --
+        # nudge "preset" itself by +-1 in the wrapper instead (gen_vst.py's step_of/step_delta).
+        add_param("preset_prev", "Patch -", "step", of="preset", delta=-1)
+        add_param("preset_next", "Patch +", "step", of="preset", delta=1)
+        # bank_index is a dummy (Q-Link nudge on it is a no-op) -- next_bank/prev_bank ARE real DSP
+        # verbs, so the arrows call them directly rather than going through the step mechanism.
+        add_param("bank_index", "Bank", "int", min=0, max=0)
+        add_param("prev_bank", "Bank -", "trigger")
+        add_param("next_bank", "Bank +", "trigger")
+        # get=bank_name/patch_name: show the real NAME text, not the raw index/dummy each steps
+        # (separate parameters -- see shadow_skin.py's stepper "Text" handle).
+        ol.append('stepper cx=350 cy=%d w=300 h=44 label="" key=bank_index get=bank_name prev=prev_bank next=next_bank style=dotmatrix' % BAR_CY)
         ol.append('stepper cx=775 cy=%d w=490 h=44 label="" key=preset get=patch_name style=dotmatrix' % BAR_CY)
     out_tabs.append((ol, keyed))
 
