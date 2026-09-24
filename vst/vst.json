@@ -1,0 +1,19 @@
+{
+  "name": "JV-880",
+  "vendor": "sd88me",
+  "uid": "JV88",
+  "version": 1000,
+  "so": "jv880.so",
+  "module": "module.json",
+  "layout": "layout.conf",
+  "defines": {"MODULE_DIR": "\"/sdcard/vst/jv880-roms\""},
+  "build": {
+    "root": "..",
+    "sources": [
+      "src/jv880_plugin.cpp", "src/mcu.cpp", "src/mcu_opcodes.cpp", "src/pcm.cpp",
+      "src/resample/resample.c", "src/resample/resamplesubs.c", "src/resample/filterkit.c"
+    ],
+    "cflags": ["-Isrc", "-Isrc/resample", "-fno-exceptions", "-fno-rtti"],
+    "libs": ["-lm", "-lpthread"]
+  }
+}

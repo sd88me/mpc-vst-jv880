@@ -1,0 +1,1824 @@
+{
+  "id": "jv880mpc",
+  "name": "JV-880",
+  "abbrev": "JV",
+  "version": "0.1.0",
+  "description": "ROM-based PCM rompler emulator (MPC OS VST2 port)",
+  "author": "nukeykt/giulioz (Move port: charlesvestal; MPC port: sd88me)",
+  "license": "Non-commercial",
+  "capabilities": {
+    "chain_params": [
+      {
+        "key": "octave_transpose",
+        "name": "Octave",
+        "type": "int",
+        "min": -4,
+        "max": 4,
+        "default": -4
+      },
+      {
+        "key": "nvram_patchCommon_patchlevel",
+        "name": "Patch Lvl",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_patchpan",
+        "name": "Patch Pan",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "macro_cutoff",
+        "name": "Cutoff",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "macro_resonance",
+        "name": "Reso",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "macro_tvf_env_depth",
+        "name": "TVF Depth",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "macro_lfo_depth",
+        "name": "LFO Depth",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "macro_attack",
+        "name": "Attack",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "macro_decay",
+        "name": "Decay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "macro_sustain",
+        "name": "Sustain",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "macro_release",
+        "name": "Release",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_reverblevel",
+        "name": "Reverb",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_choruslevel",
+        "name": "Chorus",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_toneswitch",
+        "name": "Tone 1",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_toneswitch",
+        "name": "Tone 2",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_toneswitch",
+        "name": "Tone 3",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_toneswitch",
+        "name": "Tone 4",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "bank_name",
+        "name": "Bank",
+        "type": "int",
+        "min": 0,
+        "max": 0,
+        "default": 0,
+        "display": "string"
+      },
+      {
+        "key": "patch_name",
+        "name": "Patch Name",
+        "type": "int",
+        "min": 0,
+        "max": 0,
+        "default": 0,
+        "display": "string"
+      },
+      {
+        "key": "preset",
+        "name": "Patch",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "preset_prev",
+        "name": "Patch -",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0
+      },
+      {
+        "key": "preset_next",
+        "name": "Patch +",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_analogfeel",
+        "name": "Analog Feel",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_velocityswitch",
+        "name": "Vel Switch",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_sololegato",
+        "name": "Solo Legato",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_keyassign",
+        "name": "Key Assign",
+        "type": "enum",
+        "options": [
+          "Poly",
+          "Solo"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_bendrangeup",
+        "name": "Bend Up",
+        "type": "int",
+        "min": 0,
+        "max": 12,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_bendrangedown",
+        "name": "Bend Down",
+        "type": "int",
+        "min": 0,
+        "max": 48,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_portamentotime",
+        "name": "Porta Time",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_portamentoswitch",
+        "name": "Porta",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_portamentomode",
+        "name": "Mode",
+        "type": "enum",
+        "options": [
+          "Norm",
+          "Legato"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_portamentotype",
+        "name": "Type",
+        "type": "enum",
+        "options": [
+          "Time",
+          "Rate"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_reverbtype",
+        "name": "Type",
+        "type": "enum",
+        "options": [
+          "Room1",
+          "Room2",
+          "Stage1",
+          "Stage2",
+          "Hall1",
+          "Hall2",
+          "Delay",
+          "Pan-dly"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_reverbtime",
+        "name": "Time",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_reverbfeedback",
+        "name": "Feedback",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_chorustype",
+        "name": "Type",
+        "type": "enum",
+        "options": [
+          "Chorus1",
+          "Chorus2",
+          "Flanger"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_chorusdepth",
+        "name": "Depth",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_chorusrate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_chorusfeedback",
+        "name": "Feedback",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_patchCommon_chorusoutput",
+        "name": "Out",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_wavegroup",
+        "name": "Nvram_tone_0_wavegroup",
+        "type": "enum",
+        "options": [
+          "Int-a",
+          "Int-b",
+          "Exp-a",
+          "Exp-b"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_wavenumber",
+        "name": "Wave #",
+        "type": "int",
+        "min": 0,
+        "max": 255,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_fxmswitch",
+        "name": "FXM",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_fxmdepth",
+        "name": "FXM Depth",
+        "type": "int",
+        "min": 1,
+        "max": 16,
+        "default": 1
+      },
+      {
+        "key": "nvram_tone_0_pitchcoarse",
+        "name": "Coarse",
+        "type": "int",
+        "min": -48,
+        "max": 48,
+        "default": -48
+      },
+      {
+        "key": "nvram_tone_0_pitchfine",
+        "name": "Fine",
+        "type": "int",
+        "min": -50,
+        "max": 50,
+        "default": -50
+      },
+      {
+        "key": "nvram_tone_0_penvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_penvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_penvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_penvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_penvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_penvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_penvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_penvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvfenvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvaenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvaenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvaenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvaenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvaenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_tvaenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo1form",
+        "name": "Nvram_tone_0_lfo1form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo1synchro",
+        "name": "Sync",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo1rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo1delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo1fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo1pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_lfo1tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_lfo1tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_lfo2form",
+        "name": "Nvram_tone_0_lfo2form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo2rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo2delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo2fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_0_lfo2pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_lfo2tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_0_lfo2tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_wavegroup",
+        "name": "Nvram_tone_1_wavegroup",
+        "type": "enum",
+        "options": [
+          "Int-a",
+          "Int-b",
+          "Exp-a",
+          "Exp-b"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_wavenumber",
+        "name": "Wave #",
+        "type": "int",
+        "min": 0,
+        "max": 255,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_fxmswitch",
+        "name": "FXM",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_fxmdepth",
+        "name": "FXM Depth",
+        "type": "int",
+        "min": 1,
+        "max": 16,
+        "default": 1
+      },
+      {
+        "key": "nvram_tone_1_pitchcoarse",
+        "name": "Coarse",
+        "type": "int",
+        "min": -48,
+        "max": 48,
+        "default": -48
+      },
+      {
+        "key": "nvram_tone_1_pitchfine",
+        "name": "Fine",
+        "type": "int",
+        "min": -50,
+        "max": 50,
+        "default": -50
+      },
+      {
+        "key": "nvram_tone_1_penvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_penvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_penvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_penvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_penvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_penvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_penvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_penvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvfenvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvaenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvaenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvaenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvaenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvaenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_tvaenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo1form",
+        "name": "Nvram_tone_1_lfo1form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo1synchro",
+        "name": "Sync",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo1rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo1delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo1fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo1pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_lfo1tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_lfo1tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_lfo2form",
+        "name": "Nvram_tone_1_lfo2form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo2rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo2delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo2fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_1_lfo2pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_lfo2tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_1_lfo2tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_wavegroup",
+        "name": "Nvram_tone_2_wavegroup",
+        "type": "enum",
+        "options": [
+          "Int-a",
+          "Int-b",
+          "Exp-a",
+          "Exp-b"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_wavenumber",
+        "name": "Wave #",
+        "type": "int",
+        "min": 0,
+        "max": 255,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_fxmswitch",
+        "name": "FXM",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_fxmdepth",
+        "name": "FXM Depth",
+        "type": "int",
+        "min": 1,
+        "max": 16,
+        "default": 1
+      },
+      {
+        "key": "nvram_tone_2_pitchcoarse",
+        "name": "Coarse",
+        "type": "int",
+        "min": -48,
+        "max": 48,
+        "default": -48
+      },
+      {
+        "key": "nvram_tone_2_pitchfine",
+        "name": "Fine",
+        "type": "int",
+        "min": -50,
+        "max": 50,
+        "default": -50
+      },
+      {
+        "key": "nvram_tone_2_penvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_penvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_penvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_penvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_penvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_penvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_penvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_penvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvfenvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvaenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvaenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvaenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvaenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvaenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_tvaenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo1form",
+        "name": "Nvram_tone_2_lfo1form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo1synchro",
+        "name": "Sync",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo1rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo1delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo1fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo1pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_lfo1tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_lfo1tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_lfo2form",
+        "name": "Nvram_tone_2_lfo2form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo2rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo2delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo2fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_2_lfo2pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_lfo2tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_2_lfo2tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_wavegroup",
+        "name": "Nvram_tone_3_wavegroup",
+        "type": "enum",
+        "options": [
+          "Int-a",
+          "Int-b",
+          "Exp-a",
+          "Exp-b"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_wavenumber",
+        "name": "Wave #",
+        "type": "int",
+        "min": 0,
+        "max": 255,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_fxmswitch",
+        "name": "FXM",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_fxmdepth",
+        "name": "FXM Depth",
+        "type": "int",
+        "min": 1,
+        "max": 16,
+        "default": 1
+      },
+      {
+        "key": "nvram_tone_3_pitchcoarse",
+        "name": "Coarse",
+        "type": "int",
+        "min": -48,
+        "max": 48,
+        "default": -48
+      },
+      {
+        "key": "nvram_tone_3_pitchfine",
+        "name": "Fine",
+        "type": "int",
+        "min": -50,
+        "max": 50,
+        "default": -50
+      },
+      {
+        "key": "nvram_tone_3_penvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_penvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_penvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_penvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_penvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_penvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_penvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_penvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvlevel4",
+        "name": "L4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvfenvtime4",
+        "name": "T4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvaenvlevel1",
+        "name": "L1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvaenvlevel2",
+        "name": "L2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvaenvlevel3",
+        "name": "L3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvaenvtime1",
+        "name": "T1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvaenvtime2",
+        "name": "T2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_tvaenvtime3",
+        "name": "T3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo1form",
+        "name": "Nvram_tone_3_lfo1form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo1synchro",
+        "name": "Sync",
+        "type": "enum",
+        "options": [
+          "OFF",
+          "ON"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo1rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo1delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo1fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo1pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_lfo1tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_lfo1tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_lfo2form",
+        "name": "Nvram_tone_3_lfo2form",
+        "type": "enum",
+        "options": [
+          "Tri",
+          "Sin",
+          "Saw",
+          "Squ",
+          "Rnd1",
+          "Rnd2"
+        ],
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo2rate",
+        "name": "Rate",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo2delay",
+        "name": "Delay",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo2fadetime",
+        "name": "Fade",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0
+      },
+      {
+        "key": "nvram_tone_3_lfo2pitchdepth",
+        "name": "Pitch",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_lfo2tvfdepth",
+        "name": "Filter",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      },
+      {
+        "key": "nvram_tone_3_lfo2tvadepth",
+        "name": "Amp",
+        "type": "int",
+        "min": -63,
+        "max": 63,
+        "default": -63
+      }
+    ]
+  }
+}
