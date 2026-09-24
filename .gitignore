@@ -1,3 +1,4 @@
-vst/build/
+build/
 *.o
 roms/
+dist/

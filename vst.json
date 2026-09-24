@@ -9,12 +9,12 @@
   "title_font": "Audiowide-Regular.ttf",
   "defines": {"MODULE_DIR": "\"/sdcard/vst/jv880-roms\""},
   "build": {
-    "root": "..",
+    "root": ".",
     "sources": [
-      "src/jv880_plugin.cpp", "src/mcu.cpp", "src/mcu_opcodes.cpp", "src/pcm.cpp",
-      "src/resample/resample.c", "src/resample/resamplesubs.c", "src/resample/filterkit.c"
+      "src/dsp/jv880_plugin.cpp", "src/dsp/mcu.cpp", "src/dsp/mcu_opcodes.cpp", "src/dsp/pcm.cpp",
+      "src/dsp/resample/resample.c", "src/dsp/resample/resamplesubs.c", "src/dsp/resample/filterkit.c"
     ],
-    "cflags": ["-Isrc", "-Isrc/resample", "-fno-exceptions", "-fno-rtti"],
+    "cflags": ["-Isrc/dsp", "-Isrc/dsp/resample", "-fno-exceptions", "-fno-rtti"],
     "libs": ["-lm", "-lpthread"]
   }
 }

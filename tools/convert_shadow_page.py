@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """One-off converter: force-jv880's addon/shadow_page.conf (Force Shadow widget
-syntax, proven on real hardware) -> mpc-jv880/vst/{module.json,layout.conf}
+syntax, proven on real hardware) -> mpc-jv880/{module.json,layout.conf}
 (mpc-vst-plugins' shadow_page.conf-derived layout.conf + a matching module.json
 chain_params table, since gen_vst.py builds the VST param table from
 module.json's chain_params generically -- no size limit, so a full param set
@@ -39,8 +39,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Default: a force-jv880 checkout next to this repo (../../force-jv880), overridable by argv[1]
 # for re-running this against a revised shadow_page.conf later.
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "..", "force-jv880", "addon", "shadow_page.conf")
-OUT_LAYOUT = os.path.join(HERE, "..", "vst", "layout.conf")
-OUT_MODULE = os.path.join(HERE, "..", "vst", "module.json")
+OUT_LAYOUT = os.path.join(HERE, "..", "layout.conf")
+OUT_MODULE = os.path.join(HERE, "..", "module.json")
 
 DROP_KEYS = {"mix.dest_idx", "mix.gain"}
 

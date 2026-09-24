@@ -13,7 +13,7 @@
   `jump_to_expansion` verbs) replaced the v1 "dropped entirely" decision -- still not the original
   scrollable list design (no such widget exists on MPC), but no longer nothing.
 - **Frame titles now use a real font** (Audiowide, SIL Open Font License, fetched from
-  `google/fonts`' GitHub repo -- see `vst/Audiowide-Regular.ttf`) instead of the baked bitmap font,
+  `google/fonts`' GitHub repo -- see `Audiowide-Regular.ttf`) instead of the baked bitmap font,
   via mpc-vst-plugins' new `title_font` mechanism. This is a stand-in for Roland's own proprietary
   panel font (the one with the custom-altered 'A'/'G'), not a recreation of it -- that font wasn't
   something available to source or safely reproduce.
@@ -29,10 +29,11 @@ ABI) or `sd88me/force-jv880` (a MockbaMod Force addon: separate host process + a
 architecturally a poor fit for an in-process VST2 `.so`). schwung-jv880 already implements Schwung's
 `plugin_api_v2` (`create_instance`/`on_midi`/`set_param`/`get_param`/`render_block`, all string-keyed)
 -- the exact ABI `mpc-vst-plugins/wrapper/vst2_wrap.c` already wraps for Maze Voice, and the same DSP
-force-jv880 itself links in verbatim. `src/` here is `schwung-jv880/src/dsp/*` copied as-is (H8/300
-MCU emulator + PCM wavetable synth + libresample), compiled as C++ (`-std=gnu++11`) via
+force-jv880 itself links in verbatim. `src/dsp/` here is `schwung-jv880/src/dsp/*` vendored verbatim
+(H8/300 MCU emulator + PCM wavetable synth + libresample), compiled as C++ (`-std=gnu++11`) via
 `mpc-vst-plugins/tools/build_port.sh`'s C++ support (added for this port -- see that repo's
-docs/NOTES.md).
+docs/NOTES.md). See `src/VENDORED.md` for the exact upstream commit and the one local change made
+to it.
 
 `module.json` here is NOT schwung-jv880's own (that one's `chain_params` is a curated 14-key macro
 set for Move's Signal Chain slots). This port's `module.json` has a superset -- 211 keys -- covering

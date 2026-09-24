@@ -53,5 +53,5 @@ Filenames must contain `SR-JV80` (case-insensitive), e.g. `SR-JV80-01_Pop.bin`,
 ## Changing `MODULE_DIR`
 
 If `/sdcard/vst/jv880-roms` doesn't suit your device's storage layout, edit `defines.MODULE_DIR` in
-`vst/vst.json` (a plain C string literal, e.g. `"\"/media/somewhere/jv880-roms\""`) and rebuild --
+`vst.json` (a plain C string literal, e.g. `"\"/media/somewhere/jv880-roms\""`) and rebuild --
 it's compiled in, not read from a config file at runtime.
