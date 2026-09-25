@@ -1,0 +1,13 @@
+/* skin studio: look */
+:root {
+  --title-size: 15px;
+  --sheen: 0.15;
+  --radius: 11px;
+  --button-size: 21px;
+  --seg-size: 17px;
+  --label-size: 15px;
+}
+/* end skin studio */
+/* Skin stylesheet (the layout's art_css=), loaded after tools/html_art/default.css. Override its variables or
+ * classes: .knob-face, .knob-arc, .frame-border, .frame-title, .seg-bg, .button-bg, .box, .slider-thumb, ...
+ * Colours come from the layout's theme_* lines as var(--accent), var(--ink), ... */
