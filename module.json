@@ -10,7 +10,7 @@
     "chain_params": [
       {
         "key": "octave_transpose",
-        "name": "Octave",
+        "name": "OCTAVE",
         "type": "int",
         "min": -4,
         "max": 4,
@@ -19,7 +19,7 @@
       },
       {
         "key": "nvram_patchCommon_patchlevel",
-        "name": "Patch Lvl",
+        "name": "PATCH LVL",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -28,7 +28,7 @@
       },
       {
         "key": "nvram_patchCommon_patchpan",
-        "name": "Patch Pan",
+        "name": "PATCH PAN",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -37,7 +37,7 @@
       },
       {
         "key": "macro_cutoff",
-        "name": "Cutoff",
+        "name": "CUTOFF",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -46,7 +46,7 @@
       },
       {
         "key": "macro_resonance",
-        "name": "Reso",
+        "name": "RESO",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -55,7 +55,7 @@
       },
       {
         "key": "macro_tvf_env_depth",
-        "name": "TVF Depth",
+        "name": "TVF DEPTH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -64,7 +64,7 @@
       },
       {
         "key": "macro_lfo_depth",
-        "name": "LFO Depth",
+        "name": "LFO DEPTH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -73,7 +73,7 @@
       },
       {
         "key": "macro_attack",
-        "name": "Attack",
+        "name": "ATTACK",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -82,7 +82,7 @@
       },
       {
         "key": "macro_decay",
-        "name": "Decay",
+        "name": "DECAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -91,7 +91,7 @@
       },
       {
         "key": "macro_sustain",
-        "name": "Sustain",
+        "name": "SUSTAIN",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -100,7 +100,7 @@
       },
       {
         "key": "macro_release",
-        "name": "Release",
+        "name": "RELEASE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -109,7 +109,7 @@
       },
       {
         "key": "nvram_patchCommon_reverblevel",
-        "name": "Reverb",
+        "name": "REVERB",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -118,7 +118,7 @@
       },
       {
         "key": "nvram_patchCommon_choruslevel",
-        "name": "Chorus",
+        "name": "CHORUS",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -127,7 +127,7 @@
       },
       {
         "key": "nvram_tone_0_toneswitch",
-        "name": "Tone 1",
+        "name": "TONE 1",
         "type": "enum",
         "options": [
           "OFF",
@@ -137,7 +137,7 @@
       },
       {
         "key": "nvram_tone_1_toneswitch",
-        "name": "Tone 2",
+        "name": "TONE 2",
         "type": "enum",
         "options": [
           "OFF",
@@ -147,7 +147,7 @@
       },
       {
         "key": "nvram_tone_2_toneswitch",
-        "name": "Tone 3",
+        "name": "TONE 3",
         "type": "enum",
         "options": [
           "OFF",
@@ -157,7 +157,7 @@
       },
       {
         "key": "nvram_tone_3_toneswitch",
-        "name": "Tone 4",
+        "name": "TONE 4",
         "type": "enum",
         "options": [
           "OFF",
@@ -167,7 +167,7 @@
       },
       {
         "key": "bank_name",
-        "name": "Bank",
+        "name": "BANK",
         "type": "int",
         "min": 0,
         "max": 0,
@@ -176,7 +176,7 @@
       },
       {
         "key": "patch_name",
-        "name": "Patch Name",
+        "name": "PATCH NAME",
         "type": "int",
         "min": 0,
         "max": 0,
@@ -185,7 +185,7 @@
       },
       {
         "key": "preset",
-        "name": "Patch",
+        "name": "PATCH",
         "type": "int",
         "min": 0,
         "max": 8191,
@@ -194,7 +194,7 @@
       },
       {
         "key": "preset_prev",
-        "name": "Patch -",
+        "name": "PATCH -",
         "type": "int",
         "min": 0,
         "max": 1,
@@ -205,7 +205,7 @@
       },
       {
         "key": "preset_next",
-        "name": "Patch +",
+        "name": "PATCH +",
         "type": "int",
         "min": 0,
         "max": 1,
@@ -216,7 +216,7 @@
       },
       {
         "key": "bank_index",
-        "name": "Bank",
+        "name": "BANK",
         "type": "int",
         "min": 0,
         "max": 0,
@@ -225,7 +225,7 @@
       },
       {
         "key": "prev_bank",
-        "name": "Bank -",
+        "name": "BANK -",
         "type": "int",
         "min": 0,
         "max": 1,
@@ -234,7 +234,7 @@
       },
       {
         "key": "next_bank",
-        "name": "Bank +",
+        "name": "BANK +",
         "type": "int",
         "min": 0,
         "max": 1,
@@ -243,7 +243,7 @@
       },
       {
         "key": "nvram_patchCommon_analogfeel",
-        "name": "Analog Feel",
+        "name": "ANALOG FEEL",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -252,7 +252,7 @@
       },
       {
         "key": "nvram_patchCommon_velocityswitch",
-        "name": "Vel Switch",
+        "name": "VEL SWITCH",
         "type": "enum",
         "options": [
           "OFF",
@@ -262,7 +262,7 @@
       },
       {
         "key": "nvram_patchCommon_sololegato",
-        "name": "Solo Legato",
+        "name": "SOLO LEGATO",
         "type": "enum",
         "options": [
           "OFF",
@@ -272,17 +272,17 @@
       },
       {
         "key": "nvram_patchCommon_keyassign",
-        "name": "Key Assign",
+        "name": "KEY ASSIGN",
         "type": "enum",
         "options": [
-          "Poly",
-          "Solo"
+          "POLY",
+          "SOLO"
         ],
         "default": 0
       },
       {
         "key": "nvram_patchCommon_bendrangeup",
-        "name": "Bend Up",
+        "name": "BEND UP",
         "type": "int",
         "min": 0,
         "max": 12,
@@ -291,7 +291,7 @@
       },
       {
         "key": "nvram_patchCommon_bendrangedown",
-        "name": "Bend Down",
+        "name": "BEND DOWN",
         "type": "int",
         "min": 0,
         "max": 48,
@@ -300,7 +300,7 @@
       },
       {
         "key": "nvram_patchCommon_portamentotime",
-        "name": "Porta Time",
+        "name": "PORTA TIME",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -309,7 +309,7 @@
       },
       {
         "key": "nvram_patchCommon_portamentoswitch",
-        "name": "Porta",
+        "name": "PORTA",
         "type": "enum",
         "options": [
           "OFF",
@@ -319,43 +319,43 @@
       },
       {
         "key": "nvram_patchCommon_portamentomode",
-        "name": "Mode",
+        "name": "MODE",
         "type": "enum",
         "options": [
-          "Norm",
-          "Legato"
+          "NORM",
+          "LEGATO"
         ],
         "default": 0
       },
       {
         "key": "nvram_patchCommon_portamentotype",
-        "name": "Type",
+        "name": "TYPE",
         "type": "enum",
         "options": [
-          "Time",
-          "Rate"
+          "TIME",
+          "RATE"
         ],
         "default": 0
       },
       {
         "key": "nvram_patchCommon_reverbtype",
-        "name": "Type",
+        "name": "TYPE",
         "type": "enum",
         "options": [
-          "Room1",
-          "Room2",
-          "Stage1",
-          "Stage2",
-          "Hall1",
-          "Hall2",
-          "Delay",
-          "Pan-dly"
+          "ROOM1",
+          "ROOM2",
+          "STAGE1",
+          "STAGE2",
+          "HALL1",
+          "HALL2",
+          "DELAY",
+          "PAN-DLY"
         ],
         "default": 0
       },
       {
         "key": "nvram_patchCommon_reverbtime",
-        "name": "Time",
+        "name": "TIME",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -364,7 +364,7 @@
       },
       {
         "key": "nvram_patchCommon_reverbfeedback",
-        "name": "Feedback",
+        "name": "FEEDBACK",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -373,18 +373,18 @@
       },
       {
         "key": "nvram_patchCommon_chorustype",
-        "name": "Type",
+        "name": "TYPE",
         "type": "enum",
         "options": [
-          "Chorus1",
-          "Chorus2",
-          "Flanger"
+          "CHORUS1",
+          "CHORUS2",
+          "FLANGER"
         ],
         "default": 0
       },
       {
         "key": "nvram_patchCommon_chorusdepth",
-        "name": "Depth",
+        "name": "DEPTH",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -393,7 +393,7 @@
       },
       {
         "key": "nvram_patchCommon_chorusrate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -402,7 +402,7 @@
       },
       {
         "key": "nvram_patchCommon_chorusfeedback",
-        "name": "Feedback",
+        "name": "FEEDBACK",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -411,7 +411,7 @@
       },
       {
         "key": "nvram_patchCommon_chorusoutput",
-        "name": "Out",
+        "name": "OUT",
         "type": "enum",
         "options": [
           "OFF",
@@ -421,19 +421,19 @@
       },
       {
         "key": "nvram_tone_0_wavegroup",
-        "name": "Nvram_tone_0_wavegroup",
+        "name": "NVRAM_TONE_0_WAVEGROUP",
         "type": "enum",
         "options": [
-          "Int-a",
-          "Int-b",
-          "Exp-a",
-          "Exp-b"
+          "INT-A",
+          "INT-B",
+          "EXP-A",
+          "EXP-B"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_0_wavenumber",
-        "name": "Wave #",
+        "name": "WAVE #",
         "type": "int",
         "min": 0,
         "max": 255,
@@ -452,7 +452,7 @@
       },
       {
         "key": "nvram_tone_0_fxmdepth",
-        "name": "FXM Depth",
+        "name": "FXM DEPTH",
         "type": "int",
         "min": 1,
         "max": 16,
@@ -461,7 +461,7 @@
       },
       {
         "key": "nvram_tone_0_pitchcoarse",
-        "name": "Coarse",
+        "name": "COARSE",
         "type": "int",
         "min": -48,
         "max": 48,
@@ -470,7 +470,7 @@
       },
       {
         "key": "nvram_tone_0_pitchfine",
-        "name": "Fine",
+        "name": "FINE",
         "type": "int",
         "min": -50,
         "max": 50,
@@ -677,21 +677,21 @@
       },
       {
         "key": "nvram_tone_0_lfo1form",
-        "name": "Nvram_tone_0_lfo1form",
+        "name": "NVRAM_TONE_0_LFO1FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_0_lfo1synchro",
-        "name": "Sync",
+        "name": "SYNC",
         "type": "enum",
         "options": [
           "OFF",
@@ -701,7 +701,7 @@
       },
       {
         "key": "nvram_tone_0_lfo1rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -710,7 +710,7 @@
       },
       {
         "key": "nvram_tone_0_lfo1delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -719,7 +719,7 @@
       },
       {
         "key": "nvram_tone_0_lfo1fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -728,7 +728,7 @@
       },
       {
         "key": "nvram_tone_0_lfo1pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -737,7 +737,7 @@
       },
       {
         "key": "nvram_tone_0_lfo1tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -746,7 +746,7 @@
       },
       {
         "key": "nvram_tone_0_lfo1tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -755,21 +755,21 @@
       },
       {
         "key": "nvram_tone_0_lfo2form",
-        "name": "Nvram_tone_0_lfo2form",
+        "name": "NVRAM_TONE_0_LFO2FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_0_lfo2rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -778,7 +778,7 @@
       },
       {
         "key": "nvram_tone_0_lfo2delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -787,7 +787,7 @@
       },
       {
         "key": "nvram_tone_0_lfo2fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -796,7 +796,7 @@
       },
       {
         "key": "nvram_tone_0_lfo2pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -805,7 +805,7 @@
       },
       {
         "key": "nvram_tone_0_lfo2tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -814,7 +814,7 @@
       },
       {
         "key": "nvram_tone_0_lfo2tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -823,19 +823,19 @@
       },
       {
         "key": "nvram_tone_1_wavegroup",
-        "name": "Nvram_tone_1_wavegroup",
+        "name": "NVRAM_TONE_1_WAVEGROUP",
         "type": "enum",
         "options": [
-          "Int-a",
-          "Int-b",
-          "Exp-a",
-          "Exp-b"
+          "INT-A",
+          "INT-B",
+          "EXP-A",
+          "EXP-B"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_1_wavenumber",
-        "name": "Wave #",
+        "name": "WAVE #",
         "type": "int",
         "min": 0,
         "max": 255,
@@ -854,7 +854,7 @@
       },
       {
         "key": "nvram_tone_1_fxmdepth",
-        "name": "FXM Depth",
+        "name": "FXM DEPTH",
         "type": "int",
         "min": 1,
         "max": 16,
@@ -863,7 +863,7 @@
       },
       {
         "key": "nvram_tone_1_pitchcoarse",
-        "name": "Coarse",
+        "name": "COARSE",
         "type": "int",
         "min": -48,
         "max": 48,
@@ -872,7 +872,7 @@
       },
       {
         "key": "nvram_tone_1_pitchfine",
-        "name": "Fine",
+        "name": "FINE",
         "type": "int",
         "min": -50,
         "max": 50,
@@ -1079,21 +1079,21 @@
       },
       {
         "key": "nvram_tone_1_lfo1form",
-        "name": "Nvram_tone_1_lfo1form",
+        "name": "NVRAM_TONE_1_LFO1FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_1_lfo1synchro",
-        "name": "Sync",
+        "name": "SYNC",
         "type": "enum",
         "options": [
           "OFF",
@@ -1103,7 +1103,7 @@
       },
       {
         "key": "nvram_tone_1_lfo1rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1112,7 +1112,7 @@
       },
       {
         "key": "nvram_tone_1_lfo1delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1121,7 +1121,7 @@
       },
       {
         "key": "nvram_tone_1_lfo1fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1130,7 +1130,7 @@
       },
       {
         "key": "nvram_tone_1_lfo1pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1139,7 +1139,7 @@
       },
       {
         "key": "nvram_tone_1_lfo1tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1148,7 +1148,7 @@
       },
       {
         "key": "nvram_tone_1_lfo1tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1157,21 +1157,21 @@
       },
       {
         "key": "nvram_tone_1_lfo2form",
-        "name": "Nvram_tone_1_lfo2form",
+        "name": "NVRAM_TONE_1_LFO2FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_1_lfo2rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1180,7 +1180,7 @@
       },
       {
         "key": "nvram_tone_1_lfo2delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1189,7 +1189,7 @@
       },
       {
         "key": "nvram_tone_1_lfo2fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1198,7 +1198,7 @@
       },
       {
         "key": "nvram_tone_1_lfo2pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1207,7 +1207,7 @@
       },
       {
         "key": "nvram_tone_1_lfo2tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1216,7 +1216,7 @@
       },
       {
         "key": "nvram_tone_1_lfo2tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1225,19 +1225,19 @@
       },
       {
         "key": "nvram_tone_2_wavegroup",
-        "name": "Nvram_tone_2_wavegroup",
+        "name": "NVRAM_TONE_2_WAVEGROUP",
         "type": "enum",
         "options": [
-          "Int-a",
-          "Int-b",
-          "Exp-a",
-          "Exp-b"
+          "INT-A",
+          "INT-B",
+          "EXP-A",
+          "EXP-B"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_2_wavenumber",
-        "name": "Wave #",
+        "name": "WAVE #",
         "type": "int",
         "min": 0,
         "max": 255,
@@ -1256,7 +1256,7 @@
       },
       {
         "key": "nvram_tone_2_fxmdepth",
-        "name": "FXM Depth",
+        "name": "FXM DEPTH",
         "type": "int",
         "min": 1,
         "max": 16,
@@ -1265,7 +1265,7 @@
       },
       {
         "key": "nvram_tone_2_pitchcoarse",
-        "name": "Coarse",
+        "name": "COARSE",
         "type": "int",
         "min": -48,
         "max": 48,
@@ -1274,7 +1274,7 @@
       },
       {
         "key": "nvram_tone_2_pitchfine",
-        "name": "Fine",
+        "name": "FINE",
         "type": "int",
         "min": -50,
         "max": 50,
@@ -1481,21 +1481,21 @@
       },
       {
         "key": "nvram_tone_2_lfo1form",
-        "name": "Nvram_tone_2_lfo1form",
+        "name": "NVRAM_TONE_2_LFO1FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_2_lfo1synchro",
-        "name": "Sync",
+        "name": "SYNC",
         "type": "enum",
         "options": [
           "OFF",
@@ -1505,7 +1505,7 @@
       },
       {
         "key": "nvram_tone_2_lfo1rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1514,7 +1514,7 @@
       },
       {
         "key": "nvram_tone_2_lfo1delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1523,7 +1523,7 @@
       },
       {
         "key": "nvram_tone_2_lfo1fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1532,7 +1532,7 @@
       },
       {
         "key": "nvram_tone_2_lfo1pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1541,7 +1541,7 @@
       },
       {
         "key": "nvram_tone_2_lfo1tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1550,7 +1550,7 @@
       },
       {
         "key": "nvram_tone_2_lfo1tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1559,21 +1559,21 @@
       },
       {
         "key": "nvram_tone_2_lfo2form",
-        "name": "Nvram_tone_2_lfo2form",
+        "name": "NVRAM_TONE_2_LFO2FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_2_lfo2rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1582,7 +1582,7 @@
       },
       {
         "key": "nvram_tone_2_lfo2delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1591,7 +1591,7 @@
       },
       {
         "key": "nvram_tone_2_lfo2fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1600,7 +1600,7 @@
       },
       {
         "key": "nvram_tone_2_lfo2pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1609,7 +1609,7 @@
       },
       {
         "key": "nvram_tone_2_lfo2tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1618,7 +1618,7 @@
       },
       {
         "key": "nvram_tone_2_lfo2tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1627,19 +1627,19 @@
       },
       {
         "key": "nvram_tone_3_wavegroup",
-        "name": "Nvram_tone_3_wavegroup",
+        "name": "NVRAM_TONE_3_WAVEGROUP",
         "type": "enum",
         "options": [
-          "Int-a",
-          "Int-b",
-          "Exp-a",
-          "Exp-b"
+          "INT-A",
+          "INT-B",
+          "EXP-A",
+          "EXP-B"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_3_wavenumber",
-        "name": "Wave #",
+        "name": "WAVE #",
         "type": "int",
         "min": 0,
         "max": 255,
@@ -1658,7 +1658,7 @@
       },
       {
         "key": "nvram_tone_3_fxmdepth",
-        "name": "FXM Depth",
+        "name": "FXM DEPTH",
         "type": "int",
         "min": 1,
         "max": 16,
@@ -1667,7 +1667,7 @@
       },
       {
         "key": "nvram_tone_3_pitchcoarse",
-        "name": "Coarse",
+        "name": "COARSE",
         "type": "int",
         "min": -48,
         "max": 48,
@@ -1676,7 +1676,7 @@
       },
       {
         "key": "nvram_tone_3_pitchfine",
-        "name": "Fine",
+        "name": "FINE",
         "type": "int",
         "min": -50,
         "max": 50,
@@ -1883,21 +1883,21 @@
       },
       {
         "key": "nvram_tone_3_lfo1form",
-        "name": "Nvram_tone_3_lfo1form",
+        "name": "NVRAM_TONE_3_LFO1FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_3_lfo1synchro",
-        "name": "Sync",
+        "name": "SYNC",
         "type": "enum",
         "options": [
           "OFF",
@@ -1907,7 +1907,7 @@
       },
       {
         "key": "nvram_tone_3_lfo1rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1916,7 +1916,7 @@
       },
       {
         "key": "nvram_tone_3_lfo1delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1925,7 +1925,7 @@
       },
       {
         "key": "nvram_tone_3_lfo1fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1934,7 +1934,7 @@
       },
       {
         "key": "nvram_tone_3_lfo1pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1943,7 +1943,7 @@
       },
       {
         "key": "nvram_tone_3_lfo1tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1952,7 +1952,7 @@
       },
       {
         "key": "nvram_tone_3_lfo1tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -1961,21 +1961,21 @@
       },
       {
         "key": "nvram_tone_3_lfo2form",
-        "name": "Nvram_tone_3_lfo2form",
+        "name": "NVRAM_TONE_3_LFO2FORM",
         "type": "enum",
         "options": [
-          "Tri",
-          "Sin",
-          "Saw",
-          "Squ",
-          "Rnd1",
-          "Rnd2"
+          "TRI",
+          "SIN",
+          "SAW",
+          "SQU",
+          "RND1",
+          "RND2"
         ],
         "default": 0
       },
       {
         "key": "nvram_tone_3_lfo2rate",
-        "name": "Rate",
+        "name": "RATE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1984,7 +1984,7 @@
       },
       {
         "key": "nvram_tone_3_lfo2delay",
-        "name": "Delay",
+        "name": "DELAY",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -1993,7 +1993,7 @@
       },
       {
         "key": "nvram_tone_3_lfo2fadetime",
-        "name": "Fade",
+        "name": "FADE",
         "type": "int",
         "min": 0,
         "max": 127,
@@ -2002,7 +2002,7 @@
       },
       {
         "key": "nvram_tone_3_lfo2pitchdepth",
-        "name": "Pitch",
+        "name": "PITCH",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -2011,7 +2011,7 @@
       },
       {
         "key": "nvram_tone_3_lfo2tvfdepth",
-        "name": "Filter",
+        "name": "FILTER",
         "type": "int",
         "min": -63,
         "max": 63,
@@ -2020,7 +2020,7 @@
       },
       {
         "key": "nvram_tone_3_lfo2tvadepth",
-        "name": "Amp",
+        "name": "AMP",
         "type": "int",
         "min": -63,
         "max": 63,
