@@ -63,6 +63,20 @@ physical knob nudge lands on-screen without any sub-page swiping — busy Tone t
 to some deeper envelope/LFO parameters as a result (still visible and touchable, just not
 Q-Link-bound); see docs/DESIGN-NOTES.md for the full rationale.
 
+## Credits
+
+- **Roland** — the original JV-880 hardware and its ROMs (not included; see docs/ROMS.md).
+- **[nukeykt](https://github.com/nukeykt)** — the H8/300 MCU + PCM emulation core this traces back
+  to (originally written for [Nuked-SC55](https://github.com/nukeykt/Nuked-SC55)).
+- **[giulioz](https://github.com/giulioz)** — [mini-jv880](https://github.com/giulioz/mini-jv880) /
+  juce-jv880, adapting that core specifically into a standalone JV-880 emulator.
+- **[charlesvestal](https://github.com/charlesvestal)** —
+  [schwung-jv880](https://github.com/charlesvestal/schwung-jv880), the `plugin_api_v2` build for
+  Ableton Move this port vendors directly (see `src/VENDORED.md`).
+- **[sd88me](https://github.com/sd88me)** — this MPC OS VST2 port, and
+  [force-jv880](https://github.com/sd88me/force-jv880) (the separate Force Shadow addon this skin's
+  layout and palette are converted from).
+
 ## Status
 
 Builds clean for armhf, confirmed running live on a real Force with all ROMs + 19 SR-JV80 expansions
