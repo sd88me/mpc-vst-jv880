@@ -1537,8 +1537,8 @@ static void* v2_load_thread_func(void *arg) {
     if (!rom1 || !rom2 || !waverom1 || !waverom2 || !nvram) {
         fprintf(stderr, "JV880 v2: Memory allocation failed\n");
         free(rom1); free(rom2); free(waverom1); free(waverom2); free(nvram);
-        delete inst->mcu;
-        inst->mcu = nullptr;
+        /* mpc-vst: keep inst->mcu (destroy_instance frees it). Deleting it here raced set_param
+         * on the host thread, which checks `inst->mcu` and then writes its nvram: use-after-free. */
         /*
          * The instance cannot be freed from here -- the host owns it and will
          * call destroy_instance -- so report it the same way a missing ROM is
@@ -1579,8 +1579,8 @@ static void* v2_load_thread_func(void *arg) {
                  "Mini-JV: ROM files not found. Place ROM files in roms/ folder.");
         snprintf(inst->loading_status, sizeof(inst->loading_status), "ROMs not found");
         free(rom1); free(rom2); free(waverom1); free(waverom2); free(nvram);
-        delete inst->mcu;
-        inst->mcu = nullptr;
+        /* mpc-vst: keep inst->mcu (destroy_instance frees it). Deleting it here raced set_param
+         * on the host thread, which checks `inst->mcu` and then writes its nvram: use-after-free. */
         inst->rom_loaded = 0;
         inst->initialized = 1;  /* Mark as initialized so get_error works */
         /* NOT loading_complete: there is nothing more coming. is_loading reads

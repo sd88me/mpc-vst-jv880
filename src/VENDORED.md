@@ -18,7 +18,13 @@ applied here to schwung-jv880.
   directly to a continuously-nudgeable Q-Link knob, and a single touch/turn gesture could fire
   several of those synchronous reloads back to back -- the "hangs on Loading..." bug documented in
   mpc-vst-plugins' `docs/NOTES.md`. The new verbs give the skin a discrete stepper (one arrow tap =
-  one call) instead. Everything else in `dsp/` is byte-for-byte upstream.
+  one call) instead.
+- **Second local change**: `v2_load_thread_func`'s two failure paths (ROMs missing, out of memory) no longer
+  `delete inst->mcu`. The load thread freed it while `set_param` on the host thread could be between its
+  `inst->mcu` check and an `nvram` write (a use-after-free the offline ASan host test hits when no ROMs are
+  present, e.g. turning a knob on a unit without the ROMs installed). `destroy_instance` frees it instead.
+
+Everything else in `dsp/` is byte-for-byte upstream.
 
 ## Updating from upstream
 
