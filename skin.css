@@ -11,3 +11,14 @@
 /* Skin stylesheet (the layout's art_css=), loaded after tools/html_art/default.css. Override its variables or
  * classes: .knob-face, .knob-arc, .frame-border, .frame-title, .seg-bg, .button-bg, .box, .slider-thumb, ...
  * Colours come from the layout's theme_* lines as var(--accent), var(--ink), ... */
+
+/* Roland JV-880 rack-panel typography: "Univers 53 Extended" for the panel's own general
+ * silkscreen text (labels/values), "Earth Normal" for the bold "JV-880" logotype look, reused
+ * here for frame titles so section headers read with that same distinct wordmark weight. */
+@font-face { font-family: "Univers 53 Extended"; src: url("Univers 53 Extended Regular.otf"); }
+@font-face { font-family: "Earth Normal"; src: url("Earth Normal.ttf"); }
+
+:root {
+  --font: "Univers 53 Extended", "Titillium Web", "DejaVu Sans", sans-serif;
+  --title-font: "Earth Normal", "Univers 53 Extended", sans-serif;
+}
