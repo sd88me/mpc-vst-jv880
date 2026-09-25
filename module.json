@@ -2026,6 +2026,488 @@
         "max": 63,
         "default": -63,
         "display": "int"
+      },
+      {
+        "key": "bank_slot_1",
+        "name": "BANK 1",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_2",
+        "name": "BANK 2",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_3",
+        "name": "BANK 3",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_4",
+        "name": "BANK 4",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_5",
+        "name": "BANK 5",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_6",
+        "name": "BANK 6",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_7",
+        "name": "BANK 7",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_8",
+        "name": "BANK 8",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_9",
+        "name": "BANK 9",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_10",
+        "name": "BANK 10",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_11",
+        "name": "BANK 11",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_12",
+        "name": "BANK 12",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_13",
+        "name": "BANK 13",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_14",
+        "name": "BANK 14",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_15",
+        "name": "BANK 15",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_16",
+        "name": "BANK 16",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_17",
+        "name": "BANK 17",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_18",
+        "name": "BANK 18",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_19",
+        "name": "BANK 19",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_20",
+        "name": "BANK 20",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_21",
+        "name": "BANK 21",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "bank_slot_22",
+        "name": "BANK 22",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_1",
+        "name": "PATCH 1",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_2",
+        "name": "PATCH 2",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_3",
+        "name": "PATCH 3",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_4",
+        "name": "PATCH 4",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_5",
+        "name": "PATCH 5",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_6",
+        "name": "PATCH 6",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_7",
+        "name": "PATCH 7",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_8",
+        "name": "PATCH 8",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_9",
+        "name": "PATCH 9",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_10",
+        "name": "PATCH 10",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_11",
+        "name": "PATCH 11",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_12",
+        "name": "PATCH 12",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_13",
+        "name": "PATCH 13",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_14",
+        "name": "PATCH 14",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_15",
+        "name": "PATCH 15",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_16",
+        "name": "PATCH 16",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_17",
+        "name": "PATCH 17",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_18",
+        "name": "PATCH 18",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_19",
+        "name": "PATCH 19",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_20",
+        "name": "PATCH 20",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_21",
+        "name": "PATCH 21",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_22",
+        "name": "PATCH 22",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_23",
+        "name": "PATCH 23",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_24",
+        "name": "PATCH 24",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_25",
+        "name": "PATCH 25",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_26",
+        "name": "PATCH 26",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_27",
+        "name": "PATCH 27",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_slot_28",
+        "name": "PATCH 28",
+        "default": 0,
+        "access": "write",
+        "display": "string",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_page",
+        "name": "Patch Page",
+        "min": 0,
+        "max": 0,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "patch_page_text",
+        "name": "Patch Page Text",
+        "min": 0,
+        "max": 0,
+        "default": 0,
+        "display": "string"
+      },
+      {
+        "key": "patch_page_next",
+        "name": "Next Page",
+        "default": 0,
+        "access": "write",
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "patch_page_prev",
+        "name": "Prev Page",
+        "default": 0,
+        "access": "write",
+        "min": 0,
+        "max": 1
       }
     ]
   }

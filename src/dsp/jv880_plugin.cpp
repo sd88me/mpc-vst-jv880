@@ -667,6 +667,13 @@ typedef struct {
     char bank_names[MAX_BANKS][64];
     int bank_count;
 
+    /* BANKS-page browse cursor (list-widget grid: mpc-vst-plugins tools/shadow_skin.py's "list"
+     * kind). Decoupled from current_patch/current_bank -- picking a bank in the left list only
+     * moves this cursor (so you can look through a bank's patches without loading one); tapping
+     * a patch in the right list is what actually calls v2_select_patch. */
+    int browse_bank;
+    int browse_page;
+
     /* Performance mode */
     int performance_mode;
     int current_performance;
@@ -2586,6 +2593,28 @@ static int v2_get_bank_for_patch(jv880_instance_t *inst, int patch_index) {
     return 0;
 }
 
+/* v2: Patch count of one bank (bank_starts[i+1] - bank_starts[i], or up to total_patches for the
+ * last bank). Used by the BANKS-page patch list's pagination. */
+static int v2_bank_patch_count(jv880_instance_t *inst, int bank) {
+    if (bank < 0 || bank >= inst->bank_count) return 0;
+    int next_start = (bank + 1 < inst->bank_count) ? inst->bank_starts[bank + 1] : inst->total_patches;
+    return next_start - inst->bank_starts[bank];
+}
+
+/* v2: Page count for the BANKS-page patch list's current browse_bank (PATCH_LIST_COLS *
+ * PATCH_LIST_ROWS patches per page, at least 1 page even for an empty/loading bank). */
+#define PATCH_LIST_COLS 2
+#define PATCH_LIST_ROWS 14
+#define PATCH_LIST_SLOTS (PATCH_LIST_COLS * PATCH_LIST_ROWS)
+#define BANK_LIST_COLS 2
+#define BANK_LIST_ROWS 11
+#define BANK_LIST_SLOTS (BANK_LIST_COLS * BANK_LIST_ROWS)
+static int v2_browse_page_count(jv880_instance_t *inst) {
+    int n = v2_bank_patch_count(inst, inst->browse_bank);
+    int pages = (n + PATCH_LIST_SLOTS - 1) / PATCH_LIST_SLOTS;
+    return pages > 0 ? pages : 1;
+}
+
 /* v2: Jump to next/previous bank */
 static void v2_jump_to_bank(jv880_instance_t *inst, int direction) {
     int current_bank = v2_get_bank_for_patch(inst, inst->current_patch);
@@ -3107,6 +3136,31 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         v2_jump_to_expansion_step(inst, 1);
     } else if (strcmp(key, "prev_expansion") == 0) {
         v2_jump_to_expansion_step(inst, -1);
+    } else if (strncmp(key, "bank_slot_", 10) == 0) {
+        /* BANKS page left list: pick which bank the right list (patch_slot_*) browses. Does NOT
+         * load a patch by itself -- see browse_bank's own struct comment. */
+        int slot = atoi(key + 10) - 1;
+        if (slot >= 0 && slot < BANK_LIST_SLOTS && slot < inst->bank_count) {
+            inst->browse_bank = slot;
+            inst->browse_page = 0;
+        }
+    } else if (strncmp(key, "patch_slot_", 11) == 0) {
+        /* BANKS page right list: tapping a tile commits that patch (unlike bank_slot_*, this
+         * really does load it) and follows it with the cursor, same as the Bank/Patch steppers. */
+        int slot = atoi(key + 11) - 1;
+        if (slot >= 0 && slot < PATCH_LIST_SLOTS) {
+            int bank_start = inst->bank_starts[inst->browse_bank];
+            int bank_end = bank_start + v2_bank_patch_count(inst, inst->browse_bank);
+            int idx = bank_start + inst->browse_page * PATCH_LIST_SLOTS + slot;
+            if (idx >= bank_start && idx < bank_end && idx < inst->total_patches)
+                v2_select_patch(inst, idx);
+        }
+    } else if (strcmp(key, "patch_page_next") == 0) {
+        int pages = v2_browse_page_count(inst);
+        inst->browse_page = (inst->browse_page + 1) % pages;
+    } else if (strcmp(key, "patch_page_prev") == 0) {
+        int pages = v2_browse_page_count(inst);
+        inst->browse_page = (inst->browse_page - 1 + pages) % pages;
     } else if (strcmp(key, "mode") == 0) {
         /* Switch between patch (0) and performance (1) mode
          * Accept both string names and numeric indices for enum compatibility */
@@ -4216,6 +4270,28 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
             int pos = inst->current_patch - inst->bank_starts[bank] + 1;
             return snprintf(buf, buf_len, "%d", pos);
         }
+    }
+    /* BANKS page: a list of every bank (left) and a paginated list of the browsed bank's
+     * patches (right) -- mpc-vst-plugins tools/shadow_skin.py's "list" widget kind, one VST
+     * param per tile (get_param = tile text, set_param = the tap action). See browse_bank/
+     * browse_page's own comment for why this is decoupled from current_patch/current_bank. */
+    if (strncmp(key, "bank_slot_", 10) == 0) {
+        int slot = atoi(key + 10) - 1;
+        if (slot < 0 || slot >= BANK_LIST_SLOTS || slot >= inst->bank_count) return snprintf(buf, buf_len, "");
+        return snprintf(buf, buf_len, "%s", inst->bank_names[slot]);
+    }
+    if (strncmp(key, "patch_slot_", 11) == 0) {
+        int slot = atoi(key + 11) - 1;
+        if (slot < 0 || slot >= PATCH_LIST_SLOTS) return snprintf(buf, buf_len, "");
+        int bank_start = inst->bank_starts[inst->browse_bank];
+        int bank_end = bank_start + v2_bank_patch_count(inst, inst->browse_bank);
+        int idx = bank_start + inst->browse_page * PATCH_LIST_SLOTS + slot;
+        if (idx < bank_start || idx >= bank_end || idx >= inst->total_patches)
+            return snprintf(buf, buf_len, "");
+        return snprintf(buf, buf_len, "%s", inst->patches[idx].name);
+    }
+    if (strcmp(key, "patch_page_text") == 0) {
+        return snprintf(buf, buf_len, "PAGE %d/%d", inst->browse_page + 1, v2_browse_page_count(inst));
     }
     /* Mode information - return string for enum compatibility */
     if (strcmp(key, "mode") == 0) {

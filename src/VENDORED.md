@@ -23,17 +23,26 @@ applied here to schwung-jv880.
   `delete inst->mcu`. The load thread freed it while `set_param` on the host thread could be between its
   `inst->mcu` check and an `nvram` write (a use-after-free the offline ASan host test hits when no ROMs are
   present, e.g. turning a knob on a unit without the ROMs installed). `destroy_instance` frees it instead.
+- **Third local change**: a paginated BANKS-page browser (`browse_bank`/`browse_page` fields on
+  `jv880_instance_t`, `v2_bank_patch_count()`/`v2_browse_page_count()` helpers, and `bank_slot_N`/
+  `patch_slot_N`/`patch_page_next`/`patch_page_prev`/`patch_page_text` `get_param`/`set_param`
+  handlers) for mpc-vst-plugins' `list` skin widget -- a fixed grid of touch tiles, each bound to
+  its own VST param (get_param = the tile's live text, set_param = its tap action). `bank_slot_N`
+  (22 slots, one per bank) only moves the browse cursor; `patch_slot_N` (28 slots, one page of the
+  browsed bank) actually commits via the existing `v2_select_patch`, same as the Bank/Patch
+  steppers. Decoupled from `current_patch`/`current_bank` on purpose: picking a bank just changes
+  what the patch list shows, it doesn't load anything until a patch tile is tapped.
 
 Everything else in `dsp/` is byte-for-byte upstream.
 
 ## Updating from upstream
 
-1. Diff `dsp/jv880_plugin.cpp` against a fresh clone of schwung-jv880 to isolate our local change
-   (or just recreate it -- the whole diff is two new functions, both self-contained: search upstream
-   for `v2_jump_to_bank` and add `v2_jump_to_expansion_step` right after it in the same style, then
-   wire `next_expansion`/`prev_expansion` into the `set_param` dispatch and `current_expansion_name`
-   into `get_param`, alongside the existing `current_expansion` entries).
-2. Copy the new upstream `dsp/` over this one, reapply that one change.
+1. Diff `dsp/jv880_plugin.cpp` against a fresh clone of schwung-jv880 to isolate our local changes
+   (or just recreate them -- see each one's description above; the BANKS-page browser is the
+   biggest, but still self-contained: two struct fields, two helper functions next to
+   `v2_get_bank_for_patch`, and a handful of `get_param`/`set_param` dispatch entries next to the
+   existing bank/patch ones).
+2. Copy the new upstream `dsp/` over this one, reapply those changes.
 3. Update the commit hash above.
 4. Rebuild (`./build.sh`), rerun the offline host test (`tools/test_port.sh vst.json` in a sibling
    mpc-vst-plugins checkout), redo a device smoke test with real ROMs before releasing.

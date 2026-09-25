@@ -21,6 +21,25 @@
 
 See mpc-vst-plugins' own `docs/NOTES.md` for the full technical detail behind each of these.
 
+## Revisions after a JV-880 hardware reference photo + mpc-vst-plugins' new tooling (2026-09-26)
+
+- **Skin re-themed to match the real unit**: mpc-vst-plugins' new `html_art` renderer (`"art": "html"`
+  in vst.json, real CSS/fonts via headless Chromium instead of shadow_art's baked bitmap font)
+  replaced the earlier lime-green touchscreen-app palette with the JV-880's actual dark-rack/amber
+  look -- amber value arcs/active-states, white Univers frame titles and knob pointers (not amber --
+  the real unit's silkscreen and pointer lines are plain white), a genuine green LCD with black text
+  for the dot-matrix readouts, uppercase panel labels throughout, and a blue "JV-880" badge (Earth
+  Normal font -- a deliberate stylization, not a hardware match: the real logotype is white like
+  everything else). See `skin.css`.
+- **BANKS tab got the scrollable-list design back.** The "no such widget exists on MPC" limitation
+  above is now out of date: mpc-vst-plugins gained a `list` skin widget (a fixed grid, one VST param
+  per tile) since that note was written. The BANKS tab is now a 2x11 bank list (left) and a
+  paginated 2x14 patch list (right, `patch_page_next`/`patch_page_prev` steps through the browsed
+  bank's patches 28 at a time) -- picking a bank only moves the list's browse cursor, tapping a
+  patch tile is what actually loads it. New DSP verbs for this in `src/dsp/jv880_plugin.cpp` --
+  see `src/VENDORED.md`'s "Third local change". The Bank/Patch steppers from the v1 BANKS design
+  were removed from this tab (redundant with the list) but stay on the PLAY tab's top bar.
+
 ## Source and architecture
 
 Ported from [`schwung-jv880`](https://github.com/charlesvestal/schwung-jv880) (charlesvestal's
