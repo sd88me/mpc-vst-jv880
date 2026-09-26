@@ -1,5 +1,39 @@
 # Design notes: JV-880 as an MPC OS VST2 plugin
 
+## HANDOFF (2026-09-26): skin-redesign-lime branch, real-device feedback pending
+
+Deployed to the device and working end-to-end (BANKS list browses/pages/commits correctly,
+uppercase labels, amber/dark-rack palette, blue badge, white titles/pointers -- see the commits
+below). Three things flagged live on the device, **not yet fixed, need a screenshot to diagnose
+correctly rather than guess** (guessing at visual issues without seeing them has caused rework
+before on this port -- see the split-screen saga earlier in this file):
+
+1. **BANKS list tile highlights are inconsistent** -- "some aren't highlighted while some are",
+   hard to tell what's selected on the PATCHES side, and "sometimes see a flash of the orange
+   highlights". Likely cause (unconfirmed): `list` tiles are pure momentary triggers (`Toggle
+   Switch`, springs back next `processReplacing` -- same as every other trigger in this repo), so
+   there's no PERSISTENT "this is the current bank/patch" indicator at all, only a brief flash on
+   tap. That flash is probably what's being seen as "inconsistent" -- but confirm on a real
+   screenshot before changing anything, since the actual bug might be something else (e.g. a
+   stale `on` state left set from a `Q-Link` binding, or JUCE's default `Button` focus-ring
+   getting confused with the fill colour).
+2. **Envelope Q-Link highlights on the TONE pages are too big and overlap other controls.** Not
+   yet located precisely -- need a screenshot of a TONE page to see which control (the level
+   sliders, the time knobs, or something in `.knob-arc`/`.slider-fill` sizing) is actually
+   oversized, and whether it's an `html_art` CSS geometry bug (a `.knob-arc` radius or a
+   `.slider-fill` rect computed too large) or a Q-Link *bounds* box drawn oversized (the qlink
+   selection outline, not the control's own highlight).
+3. Bank-table sizing was CONFIRMED fine as-is (fixed 22-slot grid, matches the real device's max
+   of 3 internal + 19 possible SR-JV80 expansions; empty tail slots if fewer are loaded). No
+   action needed unless the user wants the cap raised past 19 expansions.
+
+**Next session**: ask for the two screenshots (BANKS tab mid-tap/just-after-tap; a TONE page
+showing the envelope overlap) before touching `skin.css` or `layout.conf` again for these three
+items. Everything else in this session's work is done and deployed -- see the commit log on
+`skin-redesign-lime` (`git log --oneline` in this repo) for the full trail: html_art renderer
+pivot, amber/dark-rack palette match to a real JV-880 photo, uppercase labels, and the BANKS
+list/pagination feature (see `src/VENDORED.md`'s "Third local change" for the DSP side).
+
 ## Revisions after real-device feedback (2026-09-24)
 
 - **Stepper cycling was broken** (`preset_prev`/`preset_next` referenced a "_prev"/"_next" DSP
