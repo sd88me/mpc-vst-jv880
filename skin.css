@@ -1,0 +1,35 @@
+/* skin studio: look */
+:root {
+  --title-size: 12px;
+  --sheen: 0.15;
+  --radius: 11px;
+  --button-size: 14px;
+  --seg-size: 13px;
+  --label-size: 11px;
+}
+/* end skin studio */
+/* Skin stylesheet (the layout's art_css=), loaded after tools/html_art/default.css. Override its variables or
+ * classes: .knob-face, .knob-arc, .frame-border, .frame-title, .seg-bg, .button-bg, .box, .slider-thumb, ...
+ * Colours come from the layout's theme_* lines as var(--accent), var(--ink), ... */
+
+/* Roland JV-880 rack-panel typography: "Univers 53 Extended" for all baked panel text, including
+ * frame titles -- matching the real unit's plain white silkscreen labels. "Earth Normal" is kept
+ * only for the "JV-880" logotype badge itself (images/jv880_badge.png), not general text -- the
+ * real panel only uses that distinct wordmark weight for its own model-name branding. */
+@font-face { font-family: "Univers 53 Extended"; src: url("Univers 53 Extended Regular.otf"); }
+@font-face { font-family: "Earth Normal"; src: url("Earth Normal.ttf"); }
+
+:root {
+  --font: "Univers 53 Extended", "Titillium Web", "DejaVu Sans", sans-serif;
+  --title-font: var(--font);
+}
+
+/* White frame titles + knob pointers, like the real panel's silkscreen/indicator lines -- amber
+ * and blue are reserved as highlight colours for specific sections (the JV-880 badge, active
+ * state) rather than used as the general UI ink. */
+.frame-title, .td3 .frame-title { fill: var(--ink); }
+.knob-pointer { stroke: var(--ink); }
+
+/* JV-880 panel buttons: glossy black keycap with white text */
+.button-bg { stroke: #6a6862; stroke-width: 1.5; rx: 0; }
+.button-sheen { stroke: rgba(255, 255, 255, 0.18); stroke-width: 1; rx: 0; }

@@ -1,5 +1,39 @@
 # Design notes: JV-880 as an MPC OS VST2 plugin
 
+## HANDOFF (2026-09-26): skin-redesign-lime branch, real-device feedback pending
+
+Deployed to the device and working end-to-end (BANKS list browses/pages/commits correctly,
+uppercase labels, amber/dark-rack palette, blue badge, white titles/pointers -- see the commits
+below). Three things flagged live on the device, **not yet fixed, need a screenshot to diagnose
+correctly rather than guess** (guessing at visual issues without seeing them has caused rework
+before on this port -- see the split-screen saga earlier in this file):
+
+1. **BANKS list tile highlights are inconsistent** -- "some aren't highlighted while some are",
+   hard to tell what's selected on the PATCHES side, and "sometimes see a flash of the orange
+   highlights". Likely cause (unconfirmed): `list` tiles are pure momentary triggers (`Toggle
+   Switch`, springs back next `processReplacing` -- same as every other trigger in this repo), so
+   there's no PERSISTENT "this is the current bank/patch" indicator at all, only a brief flash on
+   tap. That flash is probably what's being seen as "inconsistent" -- but confirm on a real
+   screenshot before changing anything, since the actual bug might be something else (e.g. a
+   stale `on` state left set from a `Q-Link` binding, or JUCE's default `Button` focus-ring
+   getting confused with the fill colour).
+2. **Envelope Q-Link highlights on the TONE pages are too big and overlap other controls.** Not
+   yet located precisely -- need a screenshot of a TONE page to see which control (the level
+   sliders, the time knobs, or something in `.knob-arc`/`.slider-fill` sizing) is actually
+   oversized, and whether it's an `html_art` CSS geometry bug (a `.knob-arc` radius or a
+   `.slider-fill` rect computed too large) or a Q-Link *bounds* box drawn oversized (the qlink
+   selection outline, not the control's own highlight).
+3. Bank-table sizing was CONFIRMED fine as-is (fixed 22-slot grid, matches the real device's max
+   of 3 internal + 19 possible SR-JV80 expansions; empty tail slots if fewer are loaded). No
+   action needed unless the user wants the cap raised past 19 expansions.
+
+**Next session**: ask for the two screenshots (BANKS tab mid-tap/just-after-tap; a TONE page
+showing the envelope overlap) before touching `skin.css` or `layout.conf` again for these three
+items. Everything else in this session's work is done and deployed -- see the commit log on
+`skin-redesign-lime` (`git log --oneline` in this repo) for the full trail: html_art renderer
+pivot, amber/dark-rack palette match to a real JV-880 photo, uppercase labels, and the BANKS
+list/pagination feature (see `src/VENDORED.md`'s "Third local change" for the DSP side).
+
 ## Revisions after real-device feedback (2026-09-24)
 
 - **Stepper cycling was broken** (`preset_prev`/`preset_next` referenced a "_prev"/"_next" DSP
@@ -20,6 +54,25 @@
 - **Knobs got a dotted arc** instead of a solid ring, closer to the original shadow mockups.
 
 See mpc-vst-plugins' own `docs/NOTES.md` for the full technical detail behind each of these.
+
+## Revisions after a JV-880 hardware reference photo + mpc-vst-plugins' new tooling (2026-09-26)
+
+- **Skin re-themed to match the real unit**: mpc-vst-plugins' new `html_art` renderer (`"art": "html"`
+  in vst.json, real CSS/fonts via headless Chromium instead of shadow_art's baked bitmap font)
+  replaced the earlier lime-green touchscreen-app palette with the JV-880's actual dark-rack/amber
+  look -- amber value arcs/active-states, white Univers frame titles and knob pointers (not amber --
+  the real unit's silkscreen and pointer lines are plain white), a genuine green LCD with black text
+  for the dot-matrix readouts, uppercase panel labels throughout, and a blue "JV-880" badge (Earth
+  Normal font -- a deliberate stylization, not a hardware match: the real logotype is white like
+  everything else). See `skin.css`.
+- **BANKS tab got the scrollable-list design back.** The "no such widget exists on MPC" limitation
+  above is now out of date: mpc-vst-plugins gained a `list` skin widget (a fixed grid, one VST param
+  per tile) since that note was written. The BANKS tab is now a 2x11 bank list (left) and a
+  paginated 2x14 patch list (right, `patch_page_next`/`patch_page_prev` steps through the browsed
+  bank's patches 28 at a time) -- picking a bank only moves the list's browse cursor, tapping a
+  patch tile is what actually loads it. New DSP verbs for this in `src/dsp/jv880_plugin.cpp` --
+  see `src/VENDORED.md`'s "Third local change". The Bank/Patch steppers from the v1 BANKS design
+  were removed from this tab (redundant with the list) but stay on the PLAY tab's top bar.
 
 ## Source and architecture
 
