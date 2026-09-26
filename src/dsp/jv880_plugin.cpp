@@ -4275,6 +4275,22 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
      * patches (right) -- mpc-vst-plugins tools/shadow_skin.py's "list" widget kind, one VST
      * param per tile (get_param = tile text, set_param = the tap action). See browse_bank/
      * browse_page's own comment for why this is decoupled from current_patch/current_bank. */
+    /* "<tile>_on": the tile's persistent selected state (wrapper reads it instead of atof()-ing
+     * the tile's name text, which made any name starting with a digit look "on"). */
+    {
+        size_t kl = strlen(key);
+        if (kl > 3 && strcmp(key + kl - 3, "_on") == 0) {
+            if (strncmp(key, "bank_slot_", 10) == 0) {
+                int slot = atoi(key + 10) - 1;
+                return snprintf(buf, buf_len, "%d", slot == inst->browse_bank ? 1 : 0);
+            }
+            if (strncmp(key, "patch_slot_", 11) == 0) {
+                int slot = atoi(key + 11) - 1;
+                int idx = inst->bank_starts[inst->browse_bank] + inst->browse_page * PATCH_LIST_SLOTS + slot;
+                return snprintf(buf, buf_len, "%d", idx == inst->current_patch ? 1 : 0);
+            }
+        }
+    }
     if (strncmp(key, "bank_slot_", 10) == 0) {
         int slot = atoi(key + 10) - 1;
         if (slot < 0 || slot >= BANK_LIST_SLOTS || slot >= inst->bank_count) return snprintf(buf, buf_len, "");
