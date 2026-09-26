@@ -1,6 +1,6 @@
-# mpc-vst-jv880
+# JV880 Emulator VST Plugin for MPC OS
 
-**Roland JV-880** — a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
+**JV-880** — a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force), loaded by MPC's built-in JUCE plugin host with a native touchscreen skin (Q-Links included).
 
 ROM-based PCM rompler emulation via a vendored copy of
