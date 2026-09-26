@@ -3,9 +3,9 @@
   --title-size: 12px;
   --sheen: 0.15;
   --radius: 11px;
-  --button-size: 21px;
-  --seg-size: 17px;
-  --label-size: 15px;
+  --button-size: 14px;
+  --seg-size: 13px;
+  --label-size: 11px;
 }
 /* end skin studio */
 /* Skin stylesheet (the layout's art_css=), loaded after tools/html_art/default.css. Override its variables or
@@ -29,3 +29,7 @@
  * state) rather than used as the general UI ink. */
 .frame-title, .td3 .frame-title { fill: var(--ink); }
 .knob-pointer { stroke: var(--ink); }
+
+/* JV-880 panel buttons: glossy black keycap with white text */
+.button-bg { stroke: #6a6862; stroke-width: 1.5; rx: 0; }
+.button-sheen { stroke: rgba(255, 255, 255, 0.18); stroke-width: 1; rx: 0; }

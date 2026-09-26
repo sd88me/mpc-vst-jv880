@@ -2508,6 +2508,14 @@
         "access": "write",
         "min": 0,
         "max": 1
+      },
+      {
+        "key": "browse_bank_name",
+        "name": "Browsed Bank",
+        "min": 0,
+        "max": 0,
+        "default": 0,
+        "display": "string"
       }
     ]
   }

@@ -4306,6 +4306,9 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
             return snprintf(buf, buf_len, "");
         return snprintf(buf, buf_len, "%s", inst->patches[idx].name);
     }
+    if (strcmp(key, "browse_bank_name") == 0) {
+        return snprintf(buf, buf_len, "%s", inst->bank_names[inst->browse_bank]);
+    }
     if (strcmp(key, "patch_page_text") == 0) {
         return snprintf(buf, buf_len, "PAGE %d/%d", inst->browse_page + 1, v2_browse_page_count(inst));
     }
