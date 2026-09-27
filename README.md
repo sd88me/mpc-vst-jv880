@@ -2,8 +2,6 @@
 
 **Roland JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
-**JV-880** — a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
-Force), loaded by MPC's built-in JUCE plugin host with a native touchscreen skin (Q-Links included).
 
 Current release: **v1.0.0** — see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
 
