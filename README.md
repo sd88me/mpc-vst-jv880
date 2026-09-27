@@ -1,15 +1,14 @@
-# JV880 Emulator VST Plugin for MPC OS
+# JV-880 Emulator VST Plugin for MPC OS
 
-**Roland JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
+**JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
-**JV-880** — a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
-Force), loaded by MPC's built-in JUCE plugin host with a native touchscreen skin (Q-Links included).
+
 
 Current release: **v1.0.0** — see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
 
 ## Features
 
-- JV-880 sample-based (ROM PCM) sound engine, with the JV-880's own reverb and chorus.
+- Roland JV-880 sample-based (ROM PCM) sound engine, with the JV-880's own reverb and chorus.
 - **Play page**: eight macros (cutoff, resonance, filter envelope depth, LFO depth, attack, decay,
   sustain, release), output (octave, patch pan, patch level, tone 1-4 on/off), patch settings (analog
   feel, bend range, portamento, key assign, velocity switch, solo legato) and reverb and chorus,
