@@ -3,7 +3,6 @@
 **JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
 
-
 Current release: **v1.0.0** — see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
 
 ## Features
@@ -81,10 +80,20 @@ plugin in `MPC.settings` and the rest of the device workflow are in `mpc-vst-plu
 ## Status
 
 v1.0.0. Builds clean for armhf and runs on a real Force with all ROMs and 19 SR-JV80 expansions loaded;
-audio, bank/patch browsing and Q-Link control are checked on that hardware. CPU is not release-benched
-(`tools/bench.sh` understates this port, since its real work runs on an independently-paced background
-thread; see `mpc-vst-plugins`' docs/NOTES.md). The release zip was not run through its own installer
-on a device before publishing; the plugin and skin it contains are the ones tested.
+audio, bank/patch browsing and Q-Link control are checked on that hardware. The release zip was not run
+through its own installer on a device before publishing; the plugin and skin it contains are the ones tested.
+
+**CPU (Force, RK3288 at 1.8 GHz, one instance, 2026-09-27).** The synthesis runs on the plugin's own
+`jv880-emu` thread, so it is measured from that thread's CPU ticks while the plugin is loaded on a track:
+
+| State | `jv880-emu` thread |
+|---|---|
+| Idle, no notes | about 20% of one core |
+| Playing chords and held notes (30 s) | about 47% of one core |
+
+The audio-path bench (`tools/bench.sh`) passes with a p99 of 3.3% of a block, but it does not measure that
+thread and understates this port (see `mpc-vst-plugins`' docs/NOTES.md). Plan for a few instances at most, not
+a full set of tracks. The playing figure is one measurement with an unrecorded patch and note count.
 
 ## Background
 
