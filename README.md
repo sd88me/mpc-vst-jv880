@@ -28,7 +28,7 @@ The plugin makes no sound without your own JV-880 ROM dump, which must be **v1.0
 CPU traps in the emulated H8/300 core). The ROMs and any SR-JV80 expansion cards are copyrighted Roland
 firmware, so they are not included, bundled or committed anywhere in this repo or its release zip. Stage
 them on the device yourself: see [docs/ROMS.md](docs/ROMS.md) for exact filenames, sizes and locations
-(`/sdcard/vst/jv880-roms/roms/`, expansions under `roms/expansions/`).
+(`jv880-roms/roms/` inside the plugin folder, e.g. `/sdcard/Synths/sd88me - VST - JV-880/jv880-roms/roms/`, expansions under `roms/expansions/`).
 
 ## Requirements
 

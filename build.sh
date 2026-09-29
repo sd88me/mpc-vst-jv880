@@ -8,7 +8,7 @@
 #   build/pluginlist-entry.xml            the <PLUGIN> line for MPC.settings' pluginList-arm
 # Needs a sibling checkout of https://github.com/sd88me/mpc-vst-plugins -- set MPC_VST if it's
 # not at ../mpc-vst-plugins.
-# ROMs are NOT part of the build: copy your own to /sdcard/vst/jv880-roms/roms/ on the device
+# ROMs are NOT part of the build: copy your own to jv880-roms/roms/ inside the plugin folder on the device
 # (see docs/ROMS.md). Not included -- copyrighted Roland firmware.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
