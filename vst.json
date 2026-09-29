@@ -7,7 +7,7 @@
   "module": "module.json",
   "layout": "layout.conf",
   "art": "html",
-  "defines": {"MODULE_DIR": "\"/sdcard/vst/jv880-roms\""},
+  "defines": {"MODULE_SUBDIR": "\"jv880-roms\"", "MODULE_DIR": "\"/sdcard/vst/jv880-roms\""},
   "build": {
     "root": ".",
     "sources": [
