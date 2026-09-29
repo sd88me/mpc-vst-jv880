@@ -20,6 +20,7 @@ Current release: **v1.0.0** — see [Releases](https://github.com/sd88me/mpc-vst
   3 built-in banks; verified with 4133 patches across 22 banks).
 - 16 Q-Links per page, following the page you are on.
 - Hardware-style panel: dark rack, amber highlights, green dot-matrix LCD, black keycap buttons.
+<img width="1280" height="800" alt="2026-09-26T235059722Z" src="https://github.com/user-attachments/assets/81a7a40a-b6d1-4ac9-bbd1-85288823ecee" />
 
 ## ROMs (required, not included)
 
