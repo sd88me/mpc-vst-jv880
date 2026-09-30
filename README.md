@@ -66,12 +66,11 @@ Docker (with QEMU for arm32v7) is needed by its build pipeline.
 ```
 
 Output in `build/`: `jv880.so`, the skin folder, and `pluginlist-entry.xml`. No third-party source is
-fetched at build time. To deploy by hand:
+fetched at build time. To put a build on a device, package it and use the installer (the plugin is one folder in
+`/sdcard/Synths`, ROMs in its `jv880-roms/roms/`):
 
 ```
-scp build/jv880.so root@<device-ip>:/sdcard/vst/jv880.so.new
-ssh root@<device-ip> 'mv /sdcard/vst/jv880.so.new /sdcard/vst/jv880.so'
-tar -C build/skin -cf - "sd88me - VST - JV-880" | ssh root@<device-ip> 'tar -C /sdcard/Synths -xf -'
+./release.sh <version>      # dist/JV-880-<version>-mpc-armv7.zip; unzip, copy to the device, run install.sh
 ```
 
 A skin-only change needs no MPC restart: re-insert the plugin or reload the project. Registering the
