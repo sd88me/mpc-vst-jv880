@@ -28,7 +28,7 @@ runtime). With the portable install, where `<Synths>` is `/sdcard/Synths` (or an
 <Synths>/sd88me - VST - JV-880/jv880-roms/roms/jv880_rom2.bin
 <Synths>/sd88me - VST - JV-880/jv880-roms/roms/jv880_waverom1.bin
 <Synths>/sd88me - VST - JV-880/jv880-roms/roms/jv880_waverom2.bin
-<Synths>/sd88me - VST - JV-880/jv880-roms/roms/jv880_nvram.bin        (optional)
+<Synths>/sd88me - VST - JV-880/jv880-roms/roms/jv880_nvram.bin
 ```
 
 Stage these yourself (scp/USB/MPC's own file browser) before first loading the plugin. Nothing in
