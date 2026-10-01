@@ -1,0 +1,35 @@
+# Build JV-880 into a DRAFT release (v<version>) with mpc-vst-plugins' shared workflow:
+# Actions -> "VST release (draft)" -> Run workflow. Then install that draft's zip on a device,
+# smoke-test it, and publish the draft (see mpc-vst-plugins docs/RELEASING.md).
+# dry_run builds the zip and skin previews as run artifacts only.
+# tools_ref is pinned to a commit on mpc-vst-plugins main (the portable layout, installer -n and MODES, user_data input).
+name: VST release (draft)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version, e.g. 1.0.0
+        required: true
+      dry_run:
+        description: Build only (zip + skin previews as run artifacts), no draft release
+        type: boolean
+        default: false
+
+jobs:
+  release:
+    uses: sd88me/mpc-vst-plugins/.github/workflows/vst-release.yml@d55a4316ac57b08b5eec31a417559c1a5c3d11b9
+    permissions:
+      contents: write
+    with:
+      tag: v${{ inputs.version }}
+      version: ${{ inputs.version }}
+      tools_ref: d55a4316ac57b08b5eec31a417559c1a5c3d11b9
+      vst_dir: .
+      build: bash build.sh
+      plugin_id: jv-880
+      license: "MAME license"
+      user_data: jv880-roms
+      requires: "Your own JV-880 ROMs in the plugin folder's jv880-roms/roms/ (see docs/ROMS.md)"
+      about: "Roland JV-880 emulation with a native MPC skin: BANKS browser, one-page PLAY, tone editors."
+      dry_run: ${{ inputs.dry_run }}
