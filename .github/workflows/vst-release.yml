@@ -18,13 +18,13 @@ on:
 
 jobs:
   release:
-    uses: sd88me/mpc-vst-plugins/.github/workflows/vst-release.yml@d55a4316ac57b08b5eec31a417559c1a5c3d11b9
+    uses: sd88me/mpc-vst-plugins/.github/workflows/vst-release.yml@8dd6eabd79686c68169a892ab952094022cc9c11
     permissions:
       contents: write
     with:
       tag: v${{ inputs.version }}
       version: ${{ inputs.version }}
-      tools_ref: d55a4316ac57b08b5eec31a417559c1a5c3d11b9
+      tools_ref: 8dd6eabd79686c68169a892ab952094022cc9c11
       vst_dir: .
       build: bash build.sh
       plugin_id: jv-880
