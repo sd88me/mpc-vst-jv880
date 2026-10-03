@@ -1,5 +1,8 @@
 # JV-880 Emulator VST Plugin for MPC OS
 
+> **Requires MPC OS 3.x.** MPC OS 2.x needs further development: the touchscreen skins do not draw there yet (the page
+> stays empty). See [MPC OS 2.x vs 3.x](https://github.com/sd88me/mpc-vst-plugins#mpc-os-2x-vs-3x) in the main repo.
+
 **JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
 
