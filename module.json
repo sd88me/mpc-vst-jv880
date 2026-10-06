@@ -190,7 +190,8 @@
         "min": 0,
         "max": 8191,
         "default": 0,
-        "display": "int"
+        "display": "int",
+        "nudge_pct": 10
       },
       {
         "key": "preset_prev",
@@ -213,6 +214,1798 @@
         "access": "write",
         "step_of": "preset",
         "step_delta": 1
+      },
+      {
+        "key": "browse_bank_index",
+        "name": "BROWSE BANK",
+        "type": "int",
+        "min": 0,
+        "max": 21,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "prev_browse_bank",
+        "name": "BROWSE BANK -",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0,
+        "access": "write"
+      },
+      {
+        "key": "next_browse_bank",
+        "name": "BROWSE BANK +",
+        "type": "int",
+        "min": 0,
+        "max": 1,
+        "default": 0,
+        "access": "write"
+      },
+      {
+        "key": "patch_page_index",
+        "name": "PATCH PAGE",
+        "type": "int",
+        "min": 0,
+        "max": 255,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "env_view_0",
+        "name": "ENV VIEW",
+        "type": "enum",
+        "options": ["OFF", "ON"],
+        "default": 0
+      },
+      {
+        "key": "env_view_1",
+        "name": "ENV VIEW",
+        "type": "enum",
+        "options": ["OFF", "ON"],
+        "default": 0
+      },
+      {
+        "key": "env_view_2",
+        "name": "ENV VIEW",
+        "type": "enum",
+        "options": ["OFF", "ON"],
+        "default": 0
+      },
+      {
+        "key": "env_view_3",
+        "name": "ENV VIEW",
+        "type": "enum",
+        "options": ["OFF", "ON"],
+        "default": 0
+      },
+      {
+        "key": "envv_p_h_01",
+        "name": "PITCH ENV TOP 1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_02",
+        "name": "PITCH ENV TOP 2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_03",
+        "name": "PITCH ENV TOP 3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_04",
+        "name": "PITCH ENV TOP 4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_05",
+        "name": "PITCH ENV TOP 5",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_06",
+        "name": "PITCH ENV TOP 6",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_07",
+        "name": "PITCH ENV TOP 7",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_08",
+        "name": "PITCH ENV TOP 8",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_09",
+        "name": "PITCH ENV TOP 9",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_10",
+        "name": "PITCH ENV TOP 10",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_11",
+        "name": "PITCH ENV TOP 11",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_12",
+        "name": "PITCH ENV TOP 12",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_13",
+        "name": "PITCH ENV TOP 13",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_14",
+        "name": "PITCH ENV TOP 14",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_15",
+        "name": "PITCH ENV TOP 15",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_16",
+        "name": "PITCH ENV TOP 16",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_17",
+        "name": "PITCH ENV TOP 17",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_18",
+        "name": "PITCH ENV TOP 18",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_19",
+        "name": "PITCH ENV TOP 19",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_20",
+        "name": "PITCH ENV TOP 20",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_21",
+        "name": "PITCH ENV TOP 21",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_22",
+        "name": "PITCH ENV TOP 22",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_23",
+        "name": "PITCH ENV TOP 23",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_24",
+        "name": "PITCH ENV TOP 24",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_25",
+        "name": "PITCH ENV TOP 25",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_26",
+        "name": "PITCH ENV TOP 26",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_27",
+        "name": "PITCH ENV TOP 27",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_28",
+        "name": "PITCH ENV TOP 28",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_29",
+        "name": "PITCH ENV TOP 29",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_30",
+        "name": "PITCH ENV TOP 30",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_31",
+        "name": "PITCH ENV TOP 31",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_h_32",
+        "name": "PITCH ENV TOP 32",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_01",
+        "name": "PITCH ENV BOT 1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_02",
+        "name": "PITCH ENV BOT 2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_03",
+        "name": "PITCH ENV BOT 3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_04",
+        "name": "PITCH ENV BOT 4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_05",
+        "name": "PITCH ENV BOT 5",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_06",
+        "name": "PITCH ENV BOT 6",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_07",
+        "name": "PITCH ENV BOT 7",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_08",
+        "name": "PITCH ENV BOT 8",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_09",
+        "name": "PITCH ENV BOT 9",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_10",
+        "name": "PITCH ENV BOT 10",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_11",
+        "name": "PITCH ENV BOT 11",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_12",
+        "name": "PITCH ENV BOT 12",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_13",
+        "name": "PITCH ENV BOT 13",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_14",
+        "name": "PITCH ENV BOT 14",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_15",
+        "name": "PITCH ENV BOT 15",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_16",
+        "name": "PITCH ENV BOT 16",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_17",
+        "name": "PITCH ENV BOT 17",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_18",
+        "name": "PITCH ENV BOT 18",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_19",
+        "name": "PITCH ENV BOT 19",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_20",
+        "name": "PITCH ENV BOT 20",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_21",
+        "name": "PITCH ENV BOT 21",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_22",
+        "name": "PITCH ENV BOT 22",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_23",
+        "name": "PITCH ENV BOT 23",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_24",
+        "name": "PITCH ENV BOT 24",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_25",
+        "name": "PITCH ENV BOT 25",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_26",
+        "name": "PITCH ENV BOT 26",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_27",
+        "name": "PITCH ENV BOT 27",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_28",
+        "name": "PITCH ENV BOT 28",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_29",
+        "name": "PITCH ENV BOT 29",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_30",
+        "name": "PITCH ENV BOT 30",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_31",
+        "name": "PITCH ENV BOT 31",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_p_l_32",
+        "name": "PITCH ENV BOT 32",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_01",
+        "name": "FILTER ENV TOP 1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_02",
+        "name": "FILTER ENV TOP 2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_03",
+        "name": "FILTER ENV TOP 3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_04",
+        "name": "FILTER ENV TOP 4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_05",
+        "name": "FILTER ENV TOP 5",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_06",
+        "name": "FILTER ENV TOP 6",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_07",
+        "name": "FILTER ENV TOP 7",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_08",
+        "name": "FILTER ENV TOP 8",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_09",
+        "name": "FILTER ENV TOP 9",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_10",
+        "name": "FILTER ENV TOP 10",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_11",
+        "name": "FILTER ENV TOP 11",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_12",
+        "name": "FILTER ENV TOP 12",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_13",
+        "name": "FILTER ENV TOP 13",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_14",
+        "name": "FILTER ENV TOP 14",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_15",
+        "name": "FILTER ENV TOP 15",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_16",
+        "name": "FILTER ENV TOP 16",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_17",
+        "name": "FILTER ENV TOP 17",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_18",
+        "name": "FILTER ENV TOP 18",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_19",
+        "name": "FILTER ENV TOP 19",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_20",
+        "name": "FILTER ENV TOP 20",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_21",
+        "name": "FILTER ENV TOP 21",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_22",
+        "name": "FILTER ENV TOP 22",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_23",
+        "name": "FILTER ENV TOP 23",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_24",
+        "name": "FILTER ENV TOP 24",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_25",
+        "name": "FILTER ENV TOP 25",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_26",
+        "name": "FILTER ENV TOP 26",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_27",
+        "name": "FILTER ENV TOP 27",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_28",
+        "name": "FILTER ENV TOP 28",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_29",
+        "name": "FILTER ENV TOP 29",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_30",
+        "name": "FILTER ENV TOP 30",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_31",
+        "name": "FILTER ENV TOP 31",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_h_32",
+        "name": "FILTER ENV TOP 32",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_01",
+        "name": "FILTER ENV BOT 1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_02",
+        "name": "FILTER ENV BOT 2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_03",
+        "name": "FILTER ENV BOT 3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_04",
+        "name": "FILTER ENV BOT 4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_05",
+        "name": "FILTER ENV BOT 5",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_06",
+        "name": "FILTER ENV BOT 6",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_07",
+        "name": "FILTER ENV BOT 7",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_08",
+        "name": "FILTER ENV BOT 8",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_09",
+        "name": "FILTER ENV BOT 9",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_10",
+        "name": "FILTER ENV BOT 10",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_11",
+        "name": "FILTER ENV BOT 11",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_12",
+        "name": "FILTER ENV BOT 12",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_13",
+        "name": "FILTER ENV BOT 13",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_14",
+        "name": "FILTER ENV BOT 14",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_15",
+        "name": "FILTER ENV BOT 15",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_16",
+        "name": "FILTER ENV BOT 16",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_17",
+        "name": "FILTER ENV BOT 17",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_18",
+        "name": "FILTER ENV BOT 18",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_19",
+        "name": "FILTER ENV BOT 19",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_20",
+        "name": "FILTER ENV BOT 20",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_21",
+        "name": "FILTER ENV BOT 21",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_22",
+        "name": "FILTER ENV BOT 22",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_23",
+        "name": "FILTER ENV BOT 23",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_24",
+        "name": "FILTER ENV BOT 24",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_25",
+        "name": "FILTER ENV BOT 25",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_26",
+        "name": "FILTER ENV BOT 26",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_27",
+        "name": "FILTER ENV BOT 27",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_28",
+        "name": "FILTER ENV BOT 28",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_29",
+        "name": "FILTER ENV BOT 29",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_30",
+        "name": "FILTER ENV BOT 30",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_31",
+        "name": "FILTER ENV BOT 31",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_f_l_32",
+        "name": "FILTER ENV BOT 32",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_01",
+        "name": "AMP ENV TOP 1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_02",
+        "name": "AMP ENV TOP 2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_03",
+        "name": "AMP ENV TOP 3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_04",
+        "name": "AMP ENV TOP 4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_05",
+        "name": "AMP ENV TOP 5",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_06",
+        "name": "AMP ENV TOP 6",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_07",
+        "name": "AMP ENV TOP 7",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_08",
+        "name": "AMP ENV TOP 8",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_09",
+        "name": "AMP ENV TOP 9",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_10",
+        "name": "AMP ENV TOP 10",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_11",
+        "name": "AMP ENV TOP 11",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_12",
+        "name": "AMP ENV TOP 12",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_13",
+        "name": "AMP ENV TOP 13",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_14",
+        "name": "AMP ENV TOP 14",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_15",
+        "name": "AMP ENV TOP 15",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_16",
+        "name": "AMP ENV TOP 16",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_17",
+        "name": "AMP ENV TOP 17",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_18",
+        "name": "AMP ENV TOP 18",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_19",
+        "name": "AMP ENV TOP 19",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_20",
+        "name": "AMP ENV TOP 20",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_21",
+        "name": "AMP ENV TOP 21",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_22",
+        "name": "AMP ENV TOP 22",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_23",
+        "name": "AMP ENV TOP 23",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_24",
+        "name": "AMP ENV TOP 24",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_25",
+        "name": "AMP ENV TOP 25",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_26",
+        "name": "AMP ENV TOP 26",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_27",
+        "name": "AMP ENV TOP 27",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_28",
+        "name": "AMP ENV TOP 28",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_29",
+        "name": "AMP ENV TOP 29",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_30",
+        "name": "AMP ENV TOP 30",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_31",
+        "name": "AMP ENV TOP 31",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_h_32",
+        "name": "AMP ENV TOP 32",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_01",
+        "name": "AMP ENV BOT 1",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_02",
+        "name": "AMP ENV BOT 2",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_03",
+        "name": "AMP ENV BOT 3",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_04",
+        "name": "AMP ENV BOT 4",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_05",
+        "name": "AMP ENV BOT 5",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_06",
+        "name": "AMP ENV BOT 6",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_07",
+        "name": "AMP ENV BOT 7",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_08",
+        "name": "AMP ENV BOT 8",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_09",
+        "name": "AMP ENV BOT 9",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_10",
+        "name": "AMP ENV BOT 10",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_11",
+        "name": "AMP ENV BOT 11",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_12",
+        "name": "AMP ENV BOT 12",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_13",
+        "name": "AMP ENV BOT 13",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_14",
+        "name": "AMP ENV BOT 14",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_15",
+        "name": "AMP ENV BOT 15",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_16",
+        "name": "AMP ENV BOT 16",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_17",
+        "name": "AMP ENV BOT 17",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_18",
+        "name": "AMP ENV BOT 18",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_19",
+        "name": "AMP ENV BOT 19",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_20",
+        "name": "AMP ENV BOT 20",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_21",
+        "name": "AMP ENV BOT 21",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_22",
+        "name": "AMP ENV BOT 22",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_23",
+        "name": "AMP ENV BOT 23",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_24",
+        "name": "AMP ENV BOT 24",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_25",
+        "name": "AMP ENV BOT 25",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_26",
+        "name": "AMP ENV BOT 26",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_27",
+        "name": "AMP ENV BOT 27",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_28",
+        "name": "AMP ENV BOT 28",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_29",
+        "name": "AMP ENV BOT 29",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_30",
+        "name": "AMP ENV BOT 30",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_31",
+        "name": "AMP ENV BOT 31",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
+      },
+      {
+        "key": "envv_a_l_32",
+        "name": "AMP ENV BOT 32",
+        "type": "int",
+        "min": 0,
+        "max": 127,
+        "default": 0,
+        "display": "int"
       },
       {
         "key": "bank_index",

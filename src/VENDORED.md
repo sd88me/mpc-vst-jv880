@@ -35,6 +35,18 @@ applied here to schwung-jv880.
 
 Everything else in `dsp/` is byte-for-byte upstream.
 
+## Local changes in 1.0.6
+
+All in `dsp/jv880_plugin.cpp`:
+
+- `v2_write_one_tone_param` sets `tone_cache_valid = 0`: the 50 ms read cache made `get_param` return the old option right
+  after a write, so option segments (LFO waveform, wave group) flickered back and needed several taps.
+- BANKS tab steppers: `browse_bank_index` / `prev_browse_bank` / `next_browse_bank` (browse a bank, loads nothing),
+  `patch_page_index`, and `v2_browse_follow_patch()` so a `preset` change moves the browsed bank and page to the patch.
+- Envelope view on the TONE pages: `env_view_N`, the computed `envv_*` columns, `v2_envv_update()` and the `display_rev`
+  value (needs `"HAS_DISPLAY_REV": 1` in `vst.json`). An envelope level/time `set_param` that changes the value opens
+  the view for `ENVV_TIMEOUT_MS`. See docs/DESIGN-NOTES.md.
+
 ## Updating from upstream
 
 1. Diff `dsp/jv880_plugin.cpp` against a fresh clone of schwung-jv880 to isolate our local changes
