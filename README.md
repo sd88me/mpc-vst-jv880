@@ -2,10 +2,13 @@
 
 💬 Questions or feedback? Join the [Open MPC Discord](https://discord.gg/sRRysZSgu3).
 
-> **MPC OS:** tested on a Force (MPC OS 3.x). From v1.0.6 the plugin library and the touchscreen skin are built in the
-> shapes MPC OS 2.15.1 reads (the plugin catalog's checks label it "MPC OS 2.x + 3.x"), but **it has not been tried on
-> a 2.x unit yet**: testers on an MPC Live / One / X / Key running 2.x are welcome (Discord link above). See
-> [MPC OS 2.x vs 3.x](https://github.com/sd88me/mpc-vst-plugins#mpc-os-2x-vs-3x) in the main repo.
+> **MPC OS.** Tested on a Force (MPC OS 3.x). From v1.0.6 the plugin library and the touchscreen skin are built in the
+> shapes MPC OS 2.15.1 reads, and the [catalog](https://sd88me.github.io/mpc-vst-plugins/) labels that release
+> "MPC OS 2.x + 3.x" from its checks, but **it has not been tried on a 2.x unit yet**: testers on an MPC Live / One /
+> X / Key running 2.x are welcome (Discord link above). Earlier releases (v1.0.5 and before) are 3.x only: on 2.x they
+> load and play from the Q-Links, but the touchscreen page stays empty. The catalog shows which MPC OS each release
+> works on, and the installers warn before putting a 3.x-only plugin on a 2.x device.
+> See [MPC OS 2.x vs 3.x](https://github.com/sd88me/mpc-vst-plugins#mpc-os-2x-vs-3x) in the main repo.
 
 **JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
