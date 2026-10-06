@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <pthread.h>
@@ -673,6 +674,14 @@ typedef struct {
      * a patch in the right list is what actually calls v2_select_patch. */
     int browse_bank;
     int browse_page;
+    /* TONE pages' envelope view (layout.conf "when=env_view_N:ON"): which tone's three envelopes are drawn, and
+     * the curves as meter columns, [pitch,filter,amp][bright top, dim bottom][column] 0..127. See v2_envv_update. */
+    int env_view[4];                /* 1 = that tone's envelope curves are showing */
+    int env_pinned[4];              /* opened with the toggle: stays until toggled off (else it times out) */
+    uint64_t env_deadline[4];       /* auto-opened by an envelope knob: close when this time (ms) passes */
+    uint8_t envv[3][2][32];
+    uint32_t envv_rev;
+    uint32_t envv_hash;
 
     /* Performance mode */
     int performance_mode;
@@ -846,6 +855,7 @@ static void v2_set_mode(jv880_instance_t *inst, int performance_mode);
 static void v2_send_all_notes_off(jv880_instance_t *inst);
 static void v2_set_param(void *instance, const char *key, const char *val);
 static int v2_get_param(void *instance, const char *key, char *buf, int buf_len);
+static uint64_t get_time_ms(void);
 static void v2_snap_link_tones(jv880_instance_t *inst);
 static void v2_restore_link_tones(jv880_instance_t *inst);
 
@@ -2628,6 +2638,16 @@ static void v2_jump_to_bank(jv880_instance_t *inst, int direction) {
     fprintf(stderr, "JV880 v2: Jumped to bank %d: %s\n", new_bank, inst->bank_names[new_bank]);
 }
 
+/* BANKS page: after a patch is picked by the PATCH stepper/Q-Link/wheel, move the browsed bank and page to
+ * where that patch lives so the lists follow it (taps on bank tiles still only browse). */
+static void v2_browse_follow_patch(jv880_instance_t *inst) {
+    if (inst->current_patch < 0 || inst->current_patch >= inst->total_patches || inst->bank_count <= 0) return;
+    int bank = v2_get_bank_for_patch(inst, inst->current_patch);
+    if (bank < 0 || bank >= inst->bank_count) return;
+    inst->browse_bank = bank;
+    inst->browse_page = (inst->current_patch - inst->bank_starts[bank]) / PATCH_LIST_SLOTS;
+}
+
 /* Single bounded step to the next/prev expansion (wraps through -1 = factory), mirroring
  * v2_jump_to_bank's one-transition-per-call shape. Added for a real "next/prev expansion" verb --
  * the existing "jump_to_expansion" takes an absolute index and does its ROM swap (an 8MB memcpy,
@@ -2851,6 +2871,9 @@ static void v2_write_one_tone_param(jv880_instance_t *inst, int toneIdx,
                                     const char *paramName, const char *val) {
     if (!inst || !inst->mcu || toneIdx < 0 || toneIdx > 3) return;
     const int toneBase = NVRAM_PATCH_OFFSET + 26 + (toneIdx * 84);
+    /* NVRAM is about to change: drop the 50 ms read cache so the host reads the new value straight back (a stale
+     * read made option segments flicker back to the old option and need several taps). */
+    inst->tone_cache_valid = 0;
 
     const MatrixParam *mx = find_matrix_param(paramName);
     if (mx) {
@@ -2992,9 +3015,118 @@ static void v2_restore_link_tones(jv880_instance_t *inst) {
     inst->link_backup_valid = 0;
 }
 
+/* ---- TONE pages' envelope view -------------------------------------------------------------------------------
+ * A skin can't draw, so each envelope is ENVV_COLS display-only filmstrip columns ("meter" lines), each following a
+ * value computed here: the curve's top and bottom edge inside that column (0..127). Stacked, a bright bar from the
+ * bottom edge to the top edge makes a continuous line, a dim fill under it the area. The wrapper (HAS_DISPLAY_REV)
+ * polls "display_rev", so a bump redraws them. Only the tone whose env_view_N is ON is computed. */
+#define ENVV_COLS 32
+
+static int v2_envv_in(jv880_instance_t *inst, int tone, const char *name, int n) {
+    char k[64], b[24];
+    snprintf(k, sizeof k, "nvram_tone_%d_%s%d", tone, name, n);
+    b[0] = 0;
+    return v2_get_param(inst, k, b, sizeof b) > 0 ? atoi(b) : 0;
+}
+
+static void v2_envv_curve(jv880_instance_t *inst, int tone, int e) {
+    static const char *const NAME[3][2] = {{"penvlevel", "penvtime"}, {"tvfenvlevel", "tvfenvtime"},
+                                           {"tvaenvlevel", "tvaenvtime"}};
+    const int n = e == 2 ? 3 : 4;
+    double lv[4], tm[4];
+    for (int i = 0; i < n; i++) {
+        int l = v2_envv_in(inst, tone, NAME[e][0], i + 1), t = v2_envv_in(inst, tone, NAME[e][1], i + 1);
+        lv[i] = e == 0 ? (clamp_int(l, -63, 63) + 63) / 126.0 : clamp_int(l, 0, 127) / 127.0;
+        tm[i] = clamp_int(t, 0, 127) / 127.0;
+    }
+    /* key on: stages 1-3 up to level 3, held; key off: stage 4 to level 4 (pitch, filter) or down to 0 (amp) */
+    double px[6], py[6], span = 0;
+    int np = 0;
+    px[np] = 0; py[np] = e == 0 ? 0.5 : 0.0; np++;
+    for (int i = 0; i < 3; i++) { span += 0.25 + 0.75 * tm[i]; px[np] = span; py[np] = lv[i]; np++; }
+    span += 0.6; px[np] = span; py[np] = lv[2]; np++;
+    span += e == 2 ? 0.5 : 0.25 + 0.75 * tm[3]; px[np] = span; py[np] = e == 2 ? 0.0 : lv[3]; np++;
+    for (int i = 0; i < np; i++) px[i] *= ENVV_COLS / span;
+    for (int c = 0; c < ENVV_COLS; c++) {
+        double x0 = c, x1 = c + 1, lo = 2, hi = -1;
+        for (int j = 0; j + 1 < np; j++) {
+            double a = px[j], b = px[j + 1];
+            if (b <= x0 || a >= x1) continue;
+            double xa = a > x0 ? a : x0, xb = b < x1 ? b : x1;
+            double ya = py[j] + (py[j + 1] - py[j]) * (b > a ? (xa - a) / (b - a) : 0);
+            double yb = py[j] + (py[j + 1] - py[j]) * (b > a ? (xb - a) / (b - a) : 0);
+            if (ya < lo) lo = ya; if (yb < lo) lo = yb;
+            if (ya > hi) hi = ya; if (yb > hi) hi = yb;
+        }
+        if (hi < lo) lo = hi = py[np - 1];
+        inst->envv[e][0][c] = (uint8_t)clamp_int((int)(hi * 127 + 0.5), 0, 127);
+        inst->envv[e][1][c] = (uint8_t)clamp_int((int)(lo * 127 + 0.5), 0, 127);
+    }
+}
+
+/* Recompute the columns when the viewed tone's envelope (or which tone is viewed) changed; bumps envv_rev. */
+#define ENVV_TIMEOUT_MS 3000
+static void v2_envv_update(jv880_instance_t *inst) {
+    int tone = -1;
+    uint64_t now = get_time_ms();
+    for (int t = 0; t < 4; t++)
+        if (inst->env_view[t] && !inst->env_pinned[t] && now > inst->env_deadline[t]) { inst->env_view[t] = 0; inst->envv_rev++; }
+    for (int t = 0; t < 4; t++) if (inst->env_view[t]) { tone = t; break; }
+    if (tone < 0 || !inst->mcu) return;
+    static const char *const NAME[3][2] = {{"penvlevel", "penvtime"}, {"tvfenvlevel", "tvfenvtime"},
+                                           {"tvaenvlevel", "tvaenvtime"}};
+    uint32_t h = 2166136261u ^ (uint32_t)(tone + 1);
+    for (int e = 0; e < 3; e++)
+        for (int i = 1; i <= (e == 2 ? 3 : 4); i++)
+            for (int k = 0; k < 2; k++) h = (h ^ (uint32_t)(v2_envv_in(inst, tone, NAME[e][k], i) + 200)) * 16777619u;
+    if (h == inst->envv_hash) return;
+    inst->envv_hash = h;
+    for (int e = 0; e < 3; e++) v2_envv_curve(inst, tone, e);
+    inst->envv_rev++;
+}
+
 static void v2_set_param(void *instance, const char *key, const char *val) {
     jv880_instance_t *inst = (jv880_instance_t*)instance;
     if (!inst) return;
+
+    /* An envelope level/time moved: show that tone's curves for a few seconds (unless the toggle already holds them). */
+    if (strncmp(key, "nvram_tone_", 11) == 0 && inst->mcu) {
+        int t = atoi(key + 11);
+        const char *u = strchr(key + 11, '_');
+        size_t kl = strlen(key);
+        if (u && t >= 0 && t < 4 && isdigit((unsigned char)key[kl - 1]) &&
+            (strncmp(u + 1, "penv", 4) == 0 || strncmp(u + 1, "tvfenv", 6) == 0 || strncmp(u + 1, "tvaenv", 6) == 0) &&
+            (strstr(u + 1, "level") || strstr(u + 1, "time"))) {
+            char cur[24];
+            cur[0] = 0;
+            if (v2_get_param(inst, key, cur, sizeof cur) > 0 && atoi(cur) != atoi(val)) {
+                if (!inst->env_view[t]) {
+                    for (int o = 0; o < 4; o++) inst->env_view[o] = 0;
+                    inst->env_view[t] = 1;
+                    inst->env_pinned[t] = 0;
+                    inst->envv_hash = 0;
+                    inst->envv_rev++;
+                }
+                if (!inst->env_pinned[t]) inst->env_deadline[t] = get_time_ms() + ENVV_TIMEOUT_MS;
+            }
+        }
+    }
+
+    if (strncmp(key, "env_view_", 9) == 0) {     /* TONE pages' envelope view on/off */
+        /* the toggle: ON pins the view open, OFF closes it. The same param also follows the auto open (a touched
+         * envelope knob) and its timeout, so a host echo of a value we already have changes nothing. */
+        int t = atoi(key + 9);
+        int on = atoi(val) != 0 || strcasecmp(val, "on") == 0;
+        if (t >= 0 && t < 4 && on != inst->env_view[t]) {
+            if (on) for (int o = 0; o < 4; o++) inst->env_view[o] = 0;
+            inst->env_view[t] = on;
+            inst->env_pinned[t] = on;
+            inst->envv_hash = 0;
+            inst->envv_rev++;
+        }
+        return;
+    }
+    if (strncmp(key, "envv_", 5) == 0) return;   /* computed display values: a touch on a meter is ignored */
 
     /* State restore from patch save */
     if (strcmp(key, "state") == 0) {
@@ -3102,6 +3234,7 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
                 inst->deferred_patch_countdown = 0;  /* Cancel any pending */
                 v2_select_patch(inst, idx);
             }
+            v2_browse_follow_patch(inst);
         }
     } else if (strcmp(key, "octave_transpose") == 0) {
         int v = atoi(val);
@@ -3136,6 +3269,19 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         v2_jump_to_expansion_step(inst, 1);
     } else if (strcmp(key, "prev_expansion") == 0) {
         v2_jump_to_expansion_step(inst, -1);
+    } else if (strcmp(key, "browse_bank_index") == 0) {
+        /* BANKS page Bank stepper / Q-Link / wheel: browse a bank (view only, loads nothing). */
+        int b = atoi(val);
+        if (b >= 0 && b < inst->bank_count && b != inst->browse_bank) {
+            inst->browse_bank = b;
+            inst->browse_page = 0;
+        }
+    } else if (strcmp(key, "next_browse_bank") == 0 || strcmp(key, "prev_browse_bank") == 0) {
+        if (inst->bank_count > 0) {
+            int d = key[0] == 'n' ? 1 : -1;
+            inst->browse_bank = (inst->browse_bank + d + inst->bank_count) % inst->bank_count;
+            inst->browse_page = 0;
+        }
     } else if (strncmp(key, "bank_slot_", 10) == 0) {
         /* BANKS page left list: pick which bank the right list (patch_slot_*) browses. Does NOT
          * load a patch by itself -- see browse_bank's own struct comment. */
@@ -3155,6 +3301,9 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
             if (idx >= bank_start && idx < bank_end && idx < inst->total_patches)
                 v2_select_patch(inst, idx);
         }
+    } else if (strcmp(key, "patch_page_index") == 0) {
+        int pg = atoi(val), pages = v2_browse_page_count(inst);
+        if (pg >= 0 && pg < pages) inst->browse_page = pg;
     } else if (strcmp(key, "patch_page_next") == 0) {
         int pages = v2_browse_page_count(inst);
         inst->browse_page = (inst->browse_page + 1) % pages;
@@ -3787,6 +3936,23 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     jv880_instance_t *inst = (jv880_instance_t*)instance;
     if (!inst) return -1;
 
+    if (strncmp(key, "env_view_", 9) == 0) {
+        int t = atoi(key + 9);
+        return snprintf(buf, buf_len, "%d", t >= 0 && t < 4 ? inst->env_view[t] : 0);
+    }
+    if (strcmp(key, "display_rev") == 0) {
+        v2_envv_update(inst);
+        return snprintf(buf, buf_len, "%u", (unsigned)inst->envv_rev);
+    }
+    if (strncmp(key, "envv_", 5) == 0) {          /* envv_<p|f|a>_<h|l>_<NN> */
+        static const char PFA[] = "pfa";
+        const char *e = key[5] ? strchr(PFA, key[5]) : NULL;
+        int c = atoi(key + 9) - 1;
+        if (e && key[6] == '_' && (key[7] == 'h' || key[7] == 'l') && c >= 0 && c < ENVV_COLS)
+            return snprintf(buf, buf_len, "%d", inst->envv[e - PFA][key[7] == 'h' ? 0 : 1][c]);
+        return snprintf(buf, buf_len, "0");
+    }
+
     /* Fast path for frequently-accessed tone params - uses cache to avoid NVRAM reads */
     if (strncmp(key, "nvram_tone_", 11) == 0 && inst->mcu) {
         int toneIdx = atoi(key + 11);
@@ -4305,6 +4471,12 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
         if (idx < bank_start || idx >= bank_end || idx >= inst->total_patches)
             return snprintf(buf, buf_len, "");
         return snprintf(buf, buf_len, "%s", inst->patches[idx].name);
+    }
+    if (strcmp(key, "patch_page_index") == 0) {
+        return snprintf(buf, buf_len, "%d", inst->browse_page);
+    }
+    if (strcmp(key, "browse_bank_index") == 0) {
+        return snprintf(buf, buf_len, "%d", inst->browse_bank);
     }
     if (strcmp(key, "browse_bank_name") == 0) {
         return snprintf(buf, buf_len, "%s", inst->bank_names[inst->browse_bank]);

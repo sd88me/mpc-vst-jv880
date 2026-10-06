@@ -2,13 +2,15 @@
 
 💬 Questions or feedback? Join the [Open MPC Discord](https://discord.gg/sRRysZSgu3).
 
-> **Requires MPC OS 3.x.** MPC OS 2.x needs further development: the touchscreen skins do not draw there yet (the page
-> stays empty). See [MPC OS 2.x vs 3.x](https://github.com/sd88me/mpc-vst-plugins#mpc-os-2x-vs-3x) in the main repo.
+> **MPC OS:** tested on a Force (MPC OS 3.x). From v1.0.6 the plugin library and the touchscreen skin are built in the
+> shapes MPC OS 2.15.1 reads (the plugin catalog's checks label it "MPC OS 2.x + 3.x"), but **it has not been tried on
+> a 2.x unit yet**: testers on an MPC Live / One / X / Key running 2.x are welcome (Discord link above). See
+> [MPC OS 2.x vs 3.x](https://github.com/sd88me/mpc-vst-plugins#mpc-os-2x-vs-3x) in the main repo.
 
 **JV-880** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
 Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
 
-Current release: **v1.0.0** — see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
+Current release: **v1.0.6** — see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
 
 ## Features
 
@@ -17,10 +19,13 @@ Current release: **v1.0.0** — see [Releases](https://github.com/sd88me/mpc-vst
   sustain, release), output (octave, patch pan, patch level, tone 1-4 on/off), patch settings (analog
   feel, bend range, portamento, key assign, velocity switch, solo legato) and reverb and chorus,
   all on one screen.
-- **Banks page**: a paginated list of every loaded bank and its patches. Tap a bank to browse it, tap a
-  patch to load it; the selected bank and the loaded patch stay highlighted. The top strip shows the
-  browsed bank, the current patch, the page number and PREV / NEXT paging.
-- **Tone 1-4 pages**: wave selection, pitch, pitch/filter/amp envelopes and both LFOs for each tone.
+- **Banks page**: a list of every loaded bank and its patches. Tap a bank to browse it, tap a patch to load
+  it; the selected bank and the loaded patch stay highlighted. The top strip has three steppers (bank,
+  patch, patch page) and the page's Q-Links and the data wheel step the bank, the patch and the page.
+  The lists number top to bottom, and stepping the patch across a bank follows it.
+- **Tone 1-4 pages**: wave selection, pitch, pitch/filter/amp envelopes (knobs for every level and time)
+  and both LFOs for each tone. Moving an envelope knob shows that tone's three envelope curves for a few
+  seconds in place of the LFO blocks; the VIEW switch on the Amp panel holds them open.
 - **SR-JV80 expansion cards** load automatically and appear as extra banks (up to 19 in addition to the
   3 built-in banks; verified with 4133 patches across 22 banks).
 - 16 Q-Links per page, following the page you are on.
@@ -44,13 +49,13 @@ them on the device yourself: see [docs/ROMS.md](docs/ROMS.md) for exact filename
 
 ## Install
 
-1. Download `JV-880-1.0.0-mpc-armv7.zip` from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest)
+1. Download `JV-880-1.0.6-mpc-armv7.zip` from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest)
    and unzip it.
 2. Copy the folder to the device and run the installer (it stops MPC, so save your project first):
 
    ```
-   scp -r JV-880-1.0.0 root@<device-ip>:/tmp/
-   ssh root@<device-ip> sh /tmp/JV-880-1.0.0/install.sh
+   scp -r JV-880-1.0.6 root@<device-ip>:/tmp/
+   ssh root@<device-ip> sh /tmp/JV-880-1.0.6/install.sh
    ```
 
 3. Stage your ROMs as described in [docs/ROMS.md](docs/ROMS.md).

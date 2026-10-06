@@ -14,4 +14,6 @@ set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 MPC_VST="${MPC_VST:-$here/../mpc-vst-plugins}"
 [ -x "$MPC_VST/tools/build_port.sh" ] || { echo "need an mpc-vst-plugins checkout (MPC_VST)" >&2; exit 1; }
+# MPC OS 2.x skin shape (also read by 3.x); build_port.sh passes it into the skin container.
+export SHADOW_SKIN_MPC_OS=2
 exec "$MPC_VST/tools/build_port.sh" "$here/vst.json"

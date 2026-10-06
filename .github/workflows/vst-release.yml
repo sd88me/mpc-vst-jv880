@@ -2,7 +2,8 @@
 # Actions -> "VST release (draft)" -> Run workflow. Then install that draft's zip on a device,
 # smoke-test it, and publish the draft (see mpc-vst-plugins docs/RELEASING.md).
 # dry_run builds the zip and skin previews as run artifacts only.
-# tools_ref is pinned to a commit on mpc-vst-plugins main (the portable layout, installer -n and MODES, user_data input).
+# tools_ref is pinned to a commit on mpc-vst-plugins main (the MPC OS 2.x skin shape, nudge_pct, order=cols, HAS_DISPLAY_REV).
+# build.sh sets SHADOW_SKIN_MPC_OS=2 itself.
 name: VST release (draft)
 
 on:
@@ -18,13 +19,13 @@ on:
 
 jobs:
   release:
-    uses: sd88me/mpc-vst-plugins/.github/workflows/vst-release.yml@8dd6eabd79686c68169a892ab952094022cc9c11
+    uses: sd88me/mpc-vst-plugins/.github/workflows/vst-release.yml@e15ce126d3a523f76f9e099ce5bc9bdc542e0cc3
     permissions:
       contents: write
     with:
       tag: v${{ inputs.version }}
       version: ${{ inputs.version }}
-      tools_ref: 8dd6eabd79686c68169a892ab952094022cc9c11
+      tools_ref: e15ce126d3a523f76f9e099ce5bc9bdc542e0cc3
       vst_dir: .
       build: bash build.sh
       plugin_id: jv-880

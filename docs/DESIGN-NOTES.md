@@ -137,6 +137,21 @@ that source, and why:
   tab's 44 controls split into "Wave/Pitch + Pitch Env" / "Filter Env + Amp Env" / "LFO 1 + LFO 2"
   rather than silently dropping everything past the first section).
 
+## Envelope curves on the Tone pages
+
+A skin can't draw, MPC only shows the frame of a filmstrip that matches a parameter's value (the idea comes from
+MPC Plaits and Helm, which draw an ADSR this way from layered strips). The JV-880's four-level envelopes need
+more than one parameter per picture, so the plugin computes the curve: `v2_envv_update` in
+`src/dsp/jv880_plugin.cpp` turns the viewed tone's levels and times into 32 columns per envelope (the curve's top and
+bottom edge inside each column, 0..127) and bumps `display_rev` when they change (`HAS_DISPLAY_REV` in `vst.json`;
+the wrapper polls it and tells MPC). Each column is two stacked display-only `meter` strips from
+`tools/make_env_strips.py` (`images/env_hi.png`, `images/env_lo.png`: bright fill to the top edge, opaque dim fill
+to the bottom edge), so what stays bright is a continuous line with a dim area under it. `env_view_N` (OFF/ON,
+`when=` panels in `layout.conf`) shows them: an envelope knob that changes value opens the view for 3 seconds
+(`ENVV_TIMEOUT_MS`), and the VIEW toggle pins it open or closes it. A meter frame is at most 128 px high (128 frames
+in a strip of at most 16384 px). The `envv_*` values are not saved and a touch on them is ignored.
+Not verified: whether opening the view marks a project as changed; the project-load behaviour.
+
 ## ROMs
 
 See `docs/ROMS.md`. Not included, not committed -- copyrighted Roland firmware, staged by the user
