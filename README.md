@@ -53,13 +53,13 @@ them on the device yourself: see [docs/ROMS.md](docs/ROMS.md) for exact filename
 
 ## Install
 
-1. Download `JV-880-1.0.6-mpc-armv7.zip` from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest)
+1. Download `JV-880-1.0.7-mpc-armv7.zip` from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest)
    and unzip it.
 2. Copy the folder to the device and run the installer (it stops MPC, so save your project first):
 
    ```
-   scp -r JV-880-1.0.6 root@<device-ip>:/tmp/
-   ssh root@<device-ip> sh /tmp/JV-880-1.0.6/install.sh
+   scp -r JV-880-1.0.7 root@<device-ip>:/tmp/
+   ssh root@<device-ip> sh /tmp/JV-880-1.0.7/install.sh
    ```
 
 3. Stage your ROMs as described in [docs/ROMS.md](docs/ROMS.md).

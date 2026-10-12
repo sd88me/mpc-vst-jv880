@@ -3,6 +3,7 @@
   "vendor": "sd88me",
   "uid": "JV88",
   "version": 1000,
+  "targets": ["armv7", "aarch64"],
   "so": "jv880.so",
   "module": "module.json",
   "layout": "layout.conf",
