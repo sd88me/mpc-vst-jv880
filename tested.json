@@ -11,5 +11,11 @@
   "firmware": "MPC OS 3.9.1",
   "date": "2026-10-14",
   "note": "Verified by the Gen2 tester on MPC OS 3.9.1."
+ },
+ {
+  "version": "1.0.7",
+  "device": "Akai Force",
+  "firmware": "MPC OS 3.9.1",
+  "date": "2026-10-14"
  }
 ]
