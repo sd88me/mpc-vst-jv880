@@ -24,5 +24,12 @@
   "firmware": "MPC OS 3.9.1",
   "date": "2026-10-21",
   "note": "Q-Links on track edit > automation, bank/patch readouts and PLAY-page macro knobs checked on the device."
+ },
+ {
+  "version": "1.0.8",
+  "device": "MPC Live III (Gen2)",
+  "firmware": "MPC OS 3.9.1",
+  "date": "2026-10-22",
+  "note": "aarch64 build installed to /nvme/Synths; loads, skin draws, expansions browse, makes sound."
  }
 ]
