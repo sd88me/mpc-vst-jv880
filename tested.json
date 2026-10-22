@@ -17,5 +17,12 @@
   "device": "Akai Force",
   "firmware": "MPC OS 3.9.1",
   "date": "2026-10-14"
+ },
+ {
+  "version": "1.0.8",
+  "device": "Akai Force",
+  "firmware": "MPC OS 3.9.1",
+  "date": "2026-10-21",
+  "note": "Q-Links on track edit > automation, bank/patch readouts and PLAY-page macro knobs checked on the device."
  }
 ]
