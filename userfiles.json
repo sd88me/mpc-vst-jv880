@@ -1,0 +1,25 @@
+[
+  {
+    "path": "jv880-roms/roms",
+    "label": "JV-880 ROMs",
+    "description": "JV-880 needs the five files of your own JV-880 (firmware v1.0.0). The plugin loads them by name.",
+    "hint": "Four files are told apart only by name, so keep the names jv880_rom1.bin, jv880_nvram.bin, jv880_waverom1.bin and jv880_waverom2.bin. The 256 KB rom2 file may have any name: it is saved as jv880_rom2.bin. A v1.0.1 dump does not run.",
+    "rules": [
+      {"label": "Program ROM (rom1)", "ext": [".bin"], "size": 32768, "names": ["jv880_rom1.bin"], "save_as": "jv880_rom1.bin"},
+      {"label": "Memory (nvram)", "ext": [".bin"], "size": 32768, "names": ["jv880_nvram.bin"], "save_as": "jv880_nvram.bin"},
+      {"label": "Program ROM (rom2)", "ext": [".bin"], "size": 262144, "save_as": "jv880_rom2.bin"},
+      {"label": "Wave ROM 1", "ext": [".bin"], "size": 2097152, "names": ["jv880_waverom1.bin"], "save_as": "jv880_waverom1.bin"},
+      {"label": "Wave ROM 2", "ext": [".bin"], "size": 2097152, "names": ["jv880_waverom2.bin"], "save_as": "jv880_waverom2.bin"}
+    ]
+  },
+  {
+    "path": "jv880-roms/roms/expansions",
+    "label": "Expansion cards (optional)",
+    "description": "SR-JV80 expansion card images. Add as many as you like; each one appears as banks in the BANKS browser.",
+    "hint": "The file name must contain SR-JV80, for example SR-JV80-01_Pop.bin.",
+    "rules": [
+      {"label": "SR-JV80 card", "ext": [".bin"], "size": 8388608, "name_contains": "SR-JV80"},
+      {"label": "SR-JV80 card (Experience)", "ext": [".bin"], "size": 2097152, "name_contains": "SR-JV80"}
+    ]
+  }
+]
