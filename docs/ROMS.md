@@ -31,7 +31,8 @@ runtime). With the portable install, where `<Synths>` is `/sdcard/Synths` (or an
 <Synths>/sd88me - VST - JV-880/jv880-roms/roms/jv880_nvram.bin
 ```
 
-Stage these yourself (scp/USB/MPC's own file browser) before first loading the plugin. Nothing in
+The installer app's **Your ROMs and files** step can do this for you: it checks each file before copying it into the right folder, saving `jv880_rom2.bin` under its name whatever it is called (rules: `userfiles.json`; four files share sizes, so keep their names).
+Or stage these yourself (scp/USB/MPC's own file browser) before first loading the plugin. Nothing in
 `tools/build_port.sh` or the release packager touches this path -- it's entirely separate from the
 `.so` and skin, same as any other user-supplied content on MPC.
 
