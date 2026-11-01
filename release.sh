@@ -17,7 +17,7 @@ for so in "$here/build/jv880.so" "$here/build/aarch64/jv880.so"; do
     --so "$so" \
     --skin "$here/build/skin/sd88me - VST - JV-880" \
     --entry "$here/build/pluginlist-entry.xml" \
-    --version "$VERSION" --user-data jv880-roms \
+    --version "$VERSION" --user-data jv880-roms --user-files "$here/user_files.json" \
     --repo sd88me/mpc-vst-jv880 --license "MAME license" --id jv-880 \
     --requires "Your own JV-880 ROMs in the plugin folder's jv880-roms/roms/ (see docs/ROMS.md)" \
     --about "Roland JV-880 emulation with a native MPC skin: BANKS browser, one-page PLAY, tone editors." \

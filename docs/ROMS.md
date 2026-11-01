@@ -15,7 +15,7 @@ Place these in a `roms/` folder:
 | `jv880_rom2.bin` | 256 KB | yes |
 | `jv880_waverom1.bin` | 2 MB | yes |
 | `jv880_waverom2.bin` | 2 MB | yes |
-| `jv880_nvram.bin` | 32 KB | yes |
+| `jv880_nvram.bin` | 32 KB | no (the plugin writes it when you save) |
 
 ## Where MPC expects them
 

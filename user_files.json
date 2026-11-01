@@ -1,0 +1,95 @@
+[
+  {
+    "path": "jv880-roms/roms",
+    "label": "JV-880 ROMs",
+    "description": "Your own Roland JV-880 v1.0.0 ROM dump (v1.0.1 does not work). Both program ROMs and both wave ROMs are needed; the NVRAM is optional.",
+    "hint": "docs/ROMS.md",
+    "rules": [
+      {
+        "label": "Program ROM 1",
+        "ext": [
+          ".bin"
+        ],
+        "size": 32768,
+        "names": [
+          "jv880_rom1.bin"
+        ],
+        "unverified": true,
+        "note": "Must be from a v1.0.0 unit. Program ROM 1 and the NVRAM are both 32 KB: keep the names jv880_rom1.bin and jv880_nvram.bin."
+      },
+      {
+        "label": "Program ROM 2",
+        "ext": [
+          ".bin"
+        ],
+        "size": 262144,
+        "save_as": "jv880_rom2.bin",
+        "unverified": true,
+        "note": "Must be from a v1.0.0 unit."
+      },
+      {
+        "label": "Wave ROM 1",
+        "ext": [
+          ".bin"
+        ],
+        "size": 2097152,
+        "names": [
+          "jv880_waverom1.bin"
+        ],
+        "unverified": true,
+        "note": "Both wave ROMs are 2 MB: keep the names jv880_waverom1.bin and jv880_waverom2.bin."
+      },
+      {
+        "label": "Wave ROM 2",
+        "ext": [
+          ".bin"
+        ],
+        "size": 2097152,
+        "names": [
+          "jv880_waverom2.bin"
+        ],
+        "unverified": true,
+        "note": "Both wave ROMs are 2 MB: keep the names jv880_waverom1.bin and jv880_waverom2.bin."
+      },
+      {
+        "label": "NVRAM (optional)",
+        "ext": [
+          ".bin"
+        ],
+        "size": 32768,
+        "names": [
+          "jv880_nvram.bin"
+        ],
+        "unverified": true,
+        "note": "Saved patches and performances. Not needed: the plugin writes it when you save."
+      }
+    ]
+  },
+  {
+    "path": "jv880-roms/roms/expansions",
+    "label": "SR-JV80 expansion cards (optional)",
+    "description": "Your own SR-JV80 card dumps. Several can be loaded at once.",
+    "rules": [
+      {
+        "label": "SR-JV80 card (8 MB)",
+        "ext": [
+          ".bin"
+        ],
+        "size": 8388608,
+        "name_contains": "SR-JV80",
+        "unverified": true,
+        "note": "Cards 01 to 19."
+      },
+      {
+        "label": "SR-JV80 Experience card (2 MB)",
+        "ext": [
+          ".bin"
+        ],
+        "size": 2097152,
+        "name_contains": "SR-JV80",
+        "unverified": true,
+        "note": "Cards 97, 98 and 99."
+      }
+    ]
+  }
+]
