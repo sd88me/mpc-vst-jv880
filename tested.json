@@ -31,5 +31,12 @@
   "firmware": "MPC OS 3.9.1",
   "date": "2026-10-22",
   "note": "aarch64 build installed to /nvme/Synths; loads, skin draws, expansions browse, makes sound."
+ },
+ {
+  "version": "1.0.9",
+  "device": "Akai Force",
+  "firmware": "MPC OS 3.9.1",
+  "date": "2026-11-01",
+  "note": "Upgrade kept the ROMs; the installer's ROM check accepts the five files and the SR-JV80 cards."
  }
 ]
