@@ -4,6 +4,7 @@
  * Multi-expansion support with unified patch list
  */
 
+#include "fast_cores.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1984,22 +1985,27 @@ static int v2_ring_free(jv880_instance_t *inst) {
  */
 static void v2_emu_thread_setup(void) {
 #ifdef __linux__
-    /* CPU affinity: cores 0, 1, 2 */
-    cpu_set_t cpuset;
-    CPU_ZERO(&cpuset);
-    CPU_SET(0, &cpuset);
-    CPU_SET(1, &cpuset);
-    CPU_SET(2, &cpuset);
-    if (pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset) != 0) {
-        fprintf(stderr, "JV880 v2: Failed to set CPU affinity: %s\n", strerror(errno));
+    /* CPU affinity. Gen2 big.LITTLE (Live III: A55 0-3, A76 4-7): the fast cores minus MPC's "Audio Processing" core,
+     * ~2.5x less CPU than on 0-2, which are the slow A55s there (measured 2026-11-03, mpc-vst-plugins
+     * docs/EMULATOR_PORTS.md). Same-speed CPUs (Force, Gen1): cores 0-2 as before. */
+    if (!fastcores::pin_this_thread()) {
+        cpu_set_t cpuset;
+        CPU_ZERO(&cpuset);
+        CPU_SET(0, &cpuset);
+        CPU_SET(1, &cpuset);
+        CPU_SET(2, &cpuset);
+        if (pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset) != 0) {
+            fprintf(stderr, "JV880 v2: Failed to set CPU affinity: %s\n", strerror(errno));
+        }
     }
 
-    /* Real-time scheduling: SCHED_FIFO priority 45 */
+    /* Real-time scheduling: SCHED_FIFO 45; on the Gen2 fast cores capped at 15, below MPC's own audio threads
+     * (SCHED_RR 20 on those cores), so the emulator never preempts MPC's audio engine. */
     struct sched_param sp;
-    sp.sched_priority = 45;
+    sp.sched_priority = fastcores::rt_priority(45);
     int rc = pthread_setschedparam(pthread_self(), SCHED_FIFO, &sp);
     if (rc != 0) {
-        fprintf(stderr, "JV880 v2: Could not set SCHED_FIFO 45 (%s) — continuing with default scheduling\n",
+        fprintf(stderr, "JV880 v2: Could not set SCHED_FIFO %d (%s) — continuing with default scheduling\n", sp.sched_priority,
                 strerror(rc));
     }
 #endif /* __linux__ */
