@@ -129,6 +129,8 @@ public:
         release_ = new std::atomic<bool>[n];
         hostMoved_ = new std::atomic<bool>[n];
         for (size_t i = 0; i < n; ++i) { held_[i].store(false); release_[i].store(false); hostMoved_[i].store(false); }
+        hostAt_ = new std::atomic<long long>[n];
+        for (size_t i = 0; i < n; ++i) hostAt_[i].store(0);
         told_ = new std::atomic<float>[n];
         for (size_t i = 0; i < n; ++i) told_[i].store(-1.0e9f);
         lastPos_.assign(n, -1.0f);
@@ -160,6 +162,7 @@ public:
         delete[] release_;
         delete[] hostMoved_;
         delete[] told_;
+        delete[] hostAt_;
     }
 
     void prepare(double, int) override {}
@@ -207,6 +210,7 @@ public:
         if (s.flags & kAnchor) { hostMoved_[index].store(true); return; }   // an envelope's fixed start level: put back
         if (s.flags & kUi) return;
         if (s.flags & kLocal) { localChanged(index, s, plain); return; }
+        hostAt_[index].store(nowMs());
         if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
         if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
         {
@@ -506,6 +510,9 @@ private:
             if (!(s.flags & kPolled)) continue;
             if (i == 0 && pend0At_.load()) continue;   // OCTAVE not applied yet
             if ((s.flags & kReadOnly) ? !(moved || revChanged || told_[i] < -1.0e8f) : !(moved || due)) continue;
+            // while the host is still moving it (an envelope handle or a cell being dragged), don't send the engine's value back
+            // under the finger: it would fight the drag. Read it back once the drag has rested for 300 ms.
+            if (!force && now - hostAt_[i].load() < 300) { if (moved) hostMoved_[i].store(true); continue; }
             if (!engineGet(s.key, buf, sizeof buf)) continue;
             float v = (float)std::atof(buf);
             v = std::min(std::max(v, s.min), s.max);
@@ -707,6 +714,7 @@ private:
     std::atomic<bool>* held_ = nullptr;
     std::atomic<bool>* release_ = nullptr;
     std::atomic<bool>* hostMoved_ = nullptr;   // read this one back and tell the host on the next pass
+    std::atomic<long long>* hostAt_ = nullptr;   // when the host last moved it (ms), per parameter
     std::atomic<float>* told_ = nullptr;       // the value the host was last told (or sent), per parameter
     std::vector<float> lastPos_;               // the host's last position, for settle()
     std::vector<uint32_t> textHash_;

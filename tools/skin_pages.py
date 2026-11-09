@@ -3,7 +3,7 @@
 tick scales, windows, the LCD) into a background PNG and records the live widgets (film-strip sliders, value labels, keys,
 envelopes, list tiles) for TUI.json at exactly the same positions. Structure from Dexed 2.0's tools/skin_pages.py.
 
-Tabs (the 1.x order, COMMON added last): PLAY, BANKS, TONE 1..4 (two sub-tabs each: MAIN and LFO), COMMON.
+Tabs: PLAY, BANKS, COMMON, TONE 1..4 (two sub-tabs each: MAIN and LFO).
 Every section is a block of up to four controls = one Q-Link group with its own printed panel (the MPC's bounds overlay).
 Content area: 1280 x 628 (the MPC's tab area starts 110 px down the screen).
 """
@@ -238,12 +238,14 @@ def header(p, right_title=None):
     p.lcd_field("preset", LX + SPLIT + 44, 10, LW - SPLIT - 88, 60)   # data wheel / Q-Link / drag steps the patch
     for key, x in (("prev_bank", 0), ("next_bank", SPLIT - 44), ("preset_prev", SPLIT), ("preset_next", LW - 44)):
         p.hit(key, LX + x, 10, 44, 60)
-    if right_title:
-        p.legend(1262, 26, right_title[0], 15, art.ORANGE, 650, anchor="ra")
-        p.d.text((1262, 30), right_title[1], font=art.font(40, 700), fill=art.BLUE, anchor="ra")
-    # RANDOM: a random patch from every bank, on every page
-    p.legend(1026, 14, "PATCH", 12, art.ORANGE, 650, anchor="ma")
-    p.momentary("patch_random", 976, 30, 100, 42, "RANDOM", led=False, size=15)
+    # on every page: RANDOM (a random patch from every bank), +FAV / -FAV (favourites in the MPC's PRESET list) and their count
+    p.legend(1024, 12, "PATCH", 12, art.ORANGE, 650, anchor="ma")
+    p.momentary("patch_random", 976, 30, 96, 42, "RANDOM", led=False, size=15)
+    p.kids.append(tui.label("Value", "1084 4 178 22", remap=tui.P("fav_text"), just="horizontallyCentred verticallyCentred",
+                            colour="ffec802e", style="SemiBold", case="Upper Case", h=15.0))
+    p.sample["fav_text$"] = "3 / 64 SAVED"
+    p.momentary("fav_save", 1084, 30, 82, 42, "+FAV", led=False, size=16)
+    p.momentary("fav_delete", 1180, 30, 82, 42, "-FAV", led=False, size=16)
     p.d.line([16, 84, 1262, 84], fill=art.BLUE_DIM, width=1)
 
 
@@ -300,26 +302,15 @@ def banks_page():
     names = ["Preset A", "Preset B", "Internal", "Card", "Pop", "Orchestral", "Piano", "Vintage", "World", "Dance", "Super Sound"]
     for i in range(22):
         c, r = divmod(i, 11)
-        x, y = 24 + c * 272, 116 + r * 30
+        x, y = 24 + c * 272, 116 + r * 45
         k = "bank_slot_%d" % (i + 1)
-        p.d.rectangle([x, y, x + 261, y + 25], fill=(12, 12, 13))
-        p.kids.append(tui.label("Value", "%d %d 236 26" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=17.0))
-        p.kids.append(tui.button(k, k, asset("tile_262x26_on.png", lambda: art.tile_frame(262, 26, True)),
-                                 asset("tile_262x26_off.png", lambda: art.tile_frame(262, 26, False)), "%d %d 262 26" % (x, y)))
+        p.d.rectangle([x, y, x + 261, y + 39], fill=(12, 12, 13))
+        p.kids.append(tui.label("Value", "%d %d 236 40" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=22.0))
+        p.kids.append(tui.button(k, k, asset("tile_262x40_on.png", lambda: art.tile_frame(262, 40, True)),
+                                 asset("tile_262x40_off.png", lambda: art.tile_frame(262, 40, False)), "%d %d 262 40" % (x, y)))
         p.sample[k + "$"] = names[i] if i < len(names) else ""
         p.sample[k + "#"] = 1 if i == 0 else 0
-    # favourites: saved into the MPC's own PRESET list (+FAV: the current patch with its edits; -FAV: the one picked there)
-    p.header(24, 560, 474, "FAVOURITES")
-    p.momentary("fav_save", 24, 494, 160, 48, "+FAV", led=False, size=18)
-    p.momentary("fav_delete", 200, 494, 160, 48, "-FAV", led=False, size=18)
-    p.kids.append(tui.label("Value", "380 494 180 48", remap=tui.P("fav_text"), just="left verticallyCentred",
-                            colour="ffe2e4e6", style="Medium", case="Original", h=19.0))
-    p.sample["fav_text$"] = "3 / 64 SAVED"
-    p.legend(24, 562, "Saved patches appear in the MPC's PRESET list,", 13, art.INK_DIM, 500)
-    p.legend(24, 580, "with your edits. -FAV removes the one picked there.", 13, art.INK_DIM, 500)
     p.header(590, 1262, 104, "PATCHES")
-    p.kids.append(tui.label("Value", "690 86 400 24", remap=tui.P("browse_bank_name"), colour="ffec802e", style="Medium", case="Original", h=17.0))
-    p.sample["browse_bank_name$"] = "Preset A"
     pn = ["A.Piano 1", "A.Piano 2", "Mellow Piano", "Pop Piano 1", "Pop Piano 2", "Pop Piano 3", "MIDIed Grand", "Country Bar",
           "Glass Piano", "Shimmer Pno", "Rock Piano", "Ballad Piano", "Echo Piano", "E.Piano 1"]
     for i in range(28):
@@ -327,7 +318,7 @@ def banks_page():
         x, y = 590 + c * 340, 116 + r * 32
         k = "patch_slot_%d" % (i + 1)
         p.d.rectangle([x, y, x + 329, y + 27], fill=(12, 12, 13))
-        p.kids.append(tui.label("Value", "%d %d 300 28" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Regular", case="Original", h=17.0))
+        p.kids.append(tui.label("Value", "%d %d 300 28" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=21.0))
         p.kids.append(tui.button(k, k, asset("tile_330x28_on.png", lambda: art.tile_frame(330, 28, True)),
                                  asset("tile_330x28_off.png", lambda: art.tile_frame(330, 28, False)), "%d %d 330 28" % (x, y)))
         p.sample[k + "$"] = (pn + pn)[i]
@@ -343,8 +334,7 @@ def banks_page():
 
 
 def tone_head(p, t):
-    header(p, ("TONE", str(t + 1)))
-    p.toggle("nvram_tone_%d_toneswitch" % t, 1100, 30, 84, 42, "ON", lit=True)
+    header(p)
 
 
 def tone_envelopes(p, t):
@@ -359,7 +349,7 @@ def tone_envelopes(p, t):
 def tone_main_page(t):
     """TONE n, MAIN: WAVE / FILTER / AMP blocks of four (Q-Link groups 1-3), the wave group and FXM on the right, and the tone's
     three live envelopes (pitch, filter, amp: drag the points)."""
-    p = Page("TONE %d" % (t + 1), "TONE %d" % (t + 1), 2 + t, sub=0, seed=20 + t)
+    p = Page("TONE %d" % (t + 1), "TONE %d" % (t + 1), 3 + t, sub=0, seed=20 + t)
     tone_head(p, t)
     k = lambda s: "nvram_tone_%d_%s" % (t, s)
     rows = [("WAVE", [(k("wavenumber"), "WAVE NUMBER", .03), (k("pitchcoarse"), "COARSE TUNE", .5), (k("pitchfine"), "FINE TUNE", .5),
@@ -376,12 +366,13 @@ def tone_main_page(t):
         if title == "FILTER":   # 4th Q-Link: the filter mode (its keys are in the right column)
             keys.append(k("filtermode"))
         p.qlink_group((X0, y - 16, X1, y + 76), keys)
-    p.header(RX, 1262, 104, "WAVE GROUP")
-    p.segments(k("wavegroup"), RX, 118, RW, 32, cols=2, sel=0)
-    p.header(RX, 1262, 204, "FXM")
-    p.toggle(k("fxmswitch"), RX, 218, RW, 44, "FXM")
-    p.header(RX, 1262, 304, "FILTER MODE")
-    p.segments(k("filtermode"), RX, 318, RW, 40, gap=8, sel=1)
+    p.header(RX, 1262, 104, "TONE %d" % (t + 1))
+    p.toggle(k("toneswitch"), RX, 116, RW, 40, "TONE %d ON" % (t + 1), lit=True)
+    p.header(RX, 1262, 184, "WAVE GROUP")
+    p.segments(k("wavegroup"), RX, 196, RW, 32, cols=2, sel=0)
+    p.header(RX, 1262, 284, "FXM / FILTER MODE")
+    p.toggle(k("fxmswitch"), RX, 296, RW, 40, "FXM")
+    p.segments(k("filtermode"), RX, 350, RW, 40, gap=8, sel=1)
     tone_envelopes(p, t)
     return p
 
@@ -407,7 +398,7 @@ def lfo_block(p, t, n, x0, x1):
 def tone_lfo_page(t):
     """TONE n, LFO (second press of the TONE key): LFO 1 and LFO 2 side by side, each a TIME and a DEPTH block of three
     (Q-Link groups 1-4), the waveform keys; the three envelopes again underneath."""
-    p = Page("TONE %d LFO" % (t + 1), "TONE %d" % (t + 1), 2 + t, sub=1, seed=30 + t)
+    p = Page("TONE %d LFO" % (t + 1), "TONE %d" % (t + 1), 3 + t, sub=1, seed=30 + t)
     tone_head(p, t)
     lfo_block(p, t, 1, X0, 632)
     lfo_block(p, t, 2, 648, 1264)
@@ -418,7 +409,7 @@ def tone_lfo_page(t):
 
 def common_page():
     """COMMON (new in 2.0, last key): bend / portamento, reverb and chorus in full, the key-mode switches."""
-    p = Page("COMMON", "COMMON", 6, seed=13)
+    p = Page("COMMON", "COMMON", 2, seed=13)
     header(p)
     c = lambda s: "nvram_patchCommon_" + s
     p.header(X0 + 8, X1 - 8, 104, "BEND / PORTAMENTO", q=True)
@@ -479,8 +470,7 @@ def all_pages():
 
 
 def _build():
-    pages = [play_page(), banks_page()]
+    pages = [play_page(), banks_page(), common_page()]
     for t in range(4):
         pages += [tone_main_page(t), tone_lfo_page(t)]
-    pages.append(common_page())
     return pages

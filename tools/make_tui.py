@@ -98,7 +98,7 @@ def envelope(handles, name, line="ff1a2008", accent="ff1a2008"):
     return Obj(*([("version", 1), ("envelopeType", "Pitch" if handles[0][0].startswith("pitch") else "ADSR"),
                   ("envelopeStyle", "WithoutHeader"), ("envelopeName", name),
                   ("backgroundColour", "00000000"), ("scaleColour", "00000000"), ("lineColour", line), ("fillColour", "00000000"),
-                  ("highlightColour", accent), ("lineWidth", 3), ("handleWidth", 18), ("handleHeight", 18), ("handleShape", "Circle"),
+                  ("highlightColour", accent), ("lineWidth", 3), ("handleWidth", 26), ("handleHeight", 26), ("handleShape", "Circle"),
                   ("handleLineWidth", 2), ("handleLineColour", accent), ("handleFillColour", "ffc4dc58"), ("handleTextColour", "00000000"),
                   ("handleLineWidthOnPressed", 3), ("handleLineColourOnPressed", "ffffffff"), ("handleFillColourOnPressed", "ffff2e22"),
                   ("handleTextColourOnPressed", "00000000"), ("handleArrowLineColourOnPressed", "ffffffff"),
