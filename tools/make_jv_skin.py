@@ -273,3 +273,106 @@ def tile_frame(w, h, lit):
     d.rectangle([5, 6, 7, h - 7], fill=(LED_ON if lit else LED_OFF) + (255,))
     d.rectangle([0, 0, w - 1, h - 1], outline=(BLUE if lit else (58, 60, 66)) + (255,), width=1 if not lit else 2)
     return img
+
+
+# ---- alternative control styles (JV_CTRL=cells | knobs | ladder; "fader" = the LED-ladder horizontal fader above) ------------
+def lcd_cell(img, x0, y0, x1, y1):
+    """Static art of an LCD parameter cell: a small backlit yellow-green pane in a black bezel."""
+    d = ImageDraw.Draw(img)
+    d.rectangle([x0 - 4, y0 - 4, x1 + 4, y1 + 4], fill=(6, 6, 7))
+    d.line([x0 - 4, y1 + 4, x1 + 4, y1 + 4], fill=(60, 62, 68))
+    for y in range(y0, y1 + 1):
+        t = abs((y - y0) / max(1, y1 - y0) - 0.45)
+        d.line([x0, y, x1, y], fill=lerp((198, 222, 86), (152, 178, 48), t * 1.6))
+
+
+def cell_frame(w, h, value, bipolar=False):
+    """Film-strip frame of an LCD cell's bar graph (dark LCD segments, transparent elsewhere: the cell art shows through)."""
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    x0, x1, yb = 10, w - 10, h - 12
+    n = max(8, (x1 - x0) // 7)
+    sw = (x1 - x0) / n
+    mid = n / 2
+    pos = value * n
+    for i in range(n):
+        c = i + 0.5
+        on = (min(mid, pos) <= c <= max(mid, pos)) if bipolar else c <= pos
+        col = (24, 30, 8, 255) if on else (24, 30, 8, 34)
+        d.rectangle([x0 + i * sw + 1, yb - 8, x0 + (i + 1) * sw - 2, yb], fill=col)
+    if bipolar:
+        d.line([(x0 + x1) // 2, yb - 12, (x0 + x1) // 2, yb + 3], fill=(24, 30, 8, 255), width=2)
+    return img
+
+
+_KNOB = {}
+
+
+def knob_frame(D, value, bipolar=False):
+    """Film-strip frame of a rack knob: a red LED dot ring (lit to the value, from the top when bipolar) around a black
+    knurled cap with a white pointer. 270 degrees of travel."""
+    S2 = SS
+    W = D * S2
+    img = Image.new("RGBA", (W, W), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    c = W / 2
+    R_ring = W * 0.46
+    a0, a1 = 135.0, 405.0
+    av = a0 + value * (a1 - a0)
+    amid = 270.0
+    n = 21
+    for i in range(n):
+        a = a0 + i * (a1 - a0) / (n - 1)
+        on = (min(amid, av) - 0.1 <= a <= max(amid, av) + 0.1) if bipolar else a <= av + 0.1
+        r = W * 0.028
+        x, y = c + R_ring * math.cos(math.radians(a)), c + R_ring * math.sin(math.radians(a))
+        d.ellipse([x - r, y - r, x + r, y + r], fill=(LED_ON if on else LED_OFF) + (255,))
+    key = D
+    if key not in _KNOB:
+        cap = Image.new("RGBA", (W, W), (0, 0, 0, 0))
+        cd = ImageDraw.Draw(cap)
+        Rc = W * 0.34
+        sh = Image.new("L", (W, W), 0)
+        ImageDraw.Draw(sh).ellipse([c - Rc + S2, c - Rc + 3 * S2, c + Rc + S2, c + Rc + 3 * S2], fill=200)
+        cap.paste((0, 0, 0, 255), (0, 0), sh.filter(ImageFilter.GaussianBlur(3 * S2)))
+        for i in range(36):   # knurled skirt
+            a = math.radians(i * 10)
+            cd.line([c + Rc * math.cos(a), c + Rc * math.sin(a), c + Rc * 0.86 * math.cos(a), c + Rc * 0.86 * math.sin(a)],
+                    fill=(70, 72, 78, 255), width=S2)
+        cd.ellipse([c - Rc, c - Rc, c + Rc, c + Rc], outline=(8, 8, 9, 255), width=S2)
+        Rt = Rc * 0.8
+        for k in range(int(Rt), 0, -1):
+            t = k / Rt
+            cd.ellipse([c - k - Rt * 0.1 * (1 - t), c - k - Rt * 0.15 * (1 - t), c + k, c + k],
+                       fill=lerp((22, 22, 24), (74, 76, 82), 1 - t) + (255,))
+        _KNOB[key] = cap
+    img.alpha_composite(_KNOB[key])
+    Rc = W * 0.34
+    a = math.radians(av)
+    d.line([c + Rc * 0.25 * math.cos(a), c + Rc * 0.25 * math.sin(a), c + Rc * 0.78 * math.cos(a), c + Rc * 0.78 * math.sin(a)],
+           fill=(250, 250, 250, 255), width=3 * S2)
+    return img.resize((D, D), Image.LANCZOS)
+
+
+def ladder_frame(w, h, value, bipolar=False):
+    """Film-strip frame of a vertical LED ladder: a black slot of red segments, lit from the bottom (from the middle when
+    bipolar) up to the value, with a small white level mark."""
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.rectangle([0, 0, w - 1, h - 1], fill=(4, 4, 5, 255), outline=(56, 58, 64, 255))
+    n = max(6, (h - 6) // 5)
+    sh_ = (h - 6) / n
+    pos = value * n
+    mid = n / 2
+    glow = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    gd = ImageDraw.Draw(glow)
+    for i in range(n):
+        c = i + 0.5
+        on = (min(mid, pos) <= c <= max(mid, pos)) if bipolar else c <= pos
+        y1 = h - 3 - i * sh_
+        y0 = y1 - sh_ + 2
+        d.rectangle([4, y0, w - 5, y1], fill=(LED_ON if on else (52, 18, 18)) + (255,))
+        if on:
+            gd.rectangle([2, y0 - 1, w - 3, y1 + 1], fill=LED_ON + (110,))
+    img.alpha_composite(glow.filter(ImageFilter.GaussianBlur(2)))
+    return img

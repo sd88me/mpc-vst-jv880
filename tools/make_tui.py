@@ -127,12 +127,12 @@ def adsr_env(a, d, s, r, name):
     return envelope([("attackHandle", P(a)), ("decayHandle", P(d)), ("sustainHandle", P(s)), ("releaseHandle", P(r))], name)
 
 
-SLIDERS = {}   # (width, tag) -> film strip file, for the hslider<w><tag> components
+SLIDERS = {}   # component name -> (film strip file, w, h, drag orientation)
 FIELDS = set()
 
 
-def need_slider(w, tag, strip):
-    SLIDERS[(w, tag)] = strip
+def need_slider(name, strip, w, h, orient="Horizontal"):
+    SLIDERS[name] = (strip, w, h, orient)
 
 
 def need_field(w, h):
@@ -143,11 +143,12 @@ def slider_defs():
     """One reusable component per slider width: the film strip (a Knob dragged sideways), a focus ring, Q-Link on touch, the big
     knob overlay on double tap / Enter. LCD fields: an invisible value slider over live text (data wheel, Q-Link, drag)."""
     out = []
-    for (w, tag), strip in sorted(SLIDERS.items()):
-        out.append({"key": "hslider%d%s" % (w, tag), "value": component([
-            entry("focus", "Focus", FOCUS, "-6 -30 %d 66" % (w + 12), visible="WhenFocussed"),
+    for name, (strip, w, h, orient) in sorted(SLIDERS.items()):
+        fb = "-6 -30 %d 66" % (w + 12) if h <= 30 else "-4 -4 %d %d" % (w + 8, h + 8)
+        out.append({"key": name, "value": component([
+            entry("focus", "Focus", FOCUS, fb, visible="WhenFocussed"),
             entry("strip", "Knob", {"version": 3, "knobType": "FilmStrip", "filmStrip": strip, "numFrames": 128, "invert": False,
-                                    "dragOrientation": "Horizontal", "handleName": "Data"}, "0 0 %d 30" % w),
+                                    "dragOrientation": orient, "handleName": "Data"}, "0 0 %d %d" % (w, h)),
         ], actions=[act("Mouse Down", "Q-Link"), act("Double Click", "Show Overlay", "knob overlay"),
                     act("Enter Pressed", "Show Overlay", "knob overlay")])})
     for w, h in sorted(FIELDS):
@@ -198,8 +199,8 @@ def render_preview(page, tab_names, active, qlink_group=0):
         key = KEYS[int(remap.split()[-1])] if remap and remap.startswith("Parameter") else None
         if typ == "Image" and data.get("imageType") == "Regular":
             continue
-        if typ.startswith("hslider"):
-            strip = Image.open(os.path.join(OUT, SLIDERS[(int(re.match(r"hslider(\d+)", typ).group(1)), typ[len(re.match(r"hslider\d+", typ).group(0)):])]))
+        if typ in SLIDERS:
+            strip = Image.open(os.path.join(OUT, SLIDERS[typ][0]))
             v = S.get(key, 0.5)
             fh = strip.height // 128
             f = strip.crop((0, int(round(v * 127)) * fh, strip.width, int(round(v * 127)) * fh + fh))

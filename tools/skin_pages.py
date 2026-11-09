@@ -19,6 +19,7 @@ NUM = {k: None for k in tui.KEYS}
 X0, X1 = 16, 1010          # left block area; the right column runs from RX to 1262
 RX, RW = 1030, 232
 SW = 232                   # slider width in a row of four
+STYLE = os.environ.get("JV_CTRL", "fader")   # continuous-control style (see Page.slider)
 
 
 def asset(name, make):
@@ -68,20 +69,58 @@ class Page:
 
     # ---- widgets ----
     def slider(self, key, x, y, w, name, sample=0.5):
-        """Name (baked) + live value (Label) + horizontal film-strip fader + tick scale (baked). Bipolar when the range
-        straddles zero (lit from the centre)."""
+        """One continuous control in a w-wide column, y = its top (about 64 px tall). Style from JV_CTRL:
+        fader  name + value + horizontal LED-ladder fader + tick scale
+        cells  a backlit LCD cell: name, big value, bar graph (drag sideways anywhere on it)
+        knobs  a rack knob with a red LED dot ring, name and value beside it (drag up / down)
+        ladder a vertical LED ladder at the right, name and value beside it (drag up / down)
+        Bipolar when the range straddles zero (lit from the centre)."""
         lo, hi, _ = spec(key)
         bip = lo < 0 < hi
+        tag = "b" if bip else ""
+        self.sample[key] = sample
+        self.sample[key + "$"] = str(int(round(lo + sample * (hi - lo))))
+        if STYLE == "cells":
+            h = 62
+            art.lcd_cell(self.bg, x, y - 4, x + w - 1, y - 4 + h - 1)
+            self.legend(x + 8, y - 1, name, 12, art.LCD_INK, 700)
+            self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 108, y + 12), remap=tui.P(key),
+                                       just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
+            comp = "cell%d%s" % (w, tag)
+            tui.need_slider(comp, asset("cell_%d%s.png" % (w, tag), lambda: art.film_strip(
+                [art.cell_frame(w, h, i / 127, bip) for i in range(128)])), w, h)
+            self.kids.append(tui.entry(key, comp, {"version": 1, "handleName": "Data"}, "%d %d %d %d" % (x, y - 4, w, h),
+                                       remap=tui.P(key), focus="Yes"))
+            return
+        if STYLE == "knobs":
+            D = 60
+            self.legend(x + D + 10, y + 2, name, 12)
+            self.kids.append(tui.label("Value", "%d %d %d 32" % (x + D + 10, y + 20, w - D - 10), remap=tui.P(key),
+                                       just="left verticallyCentred", colour="fff4f1e8", style="Medium", h=28.0))
+            comp = "knob%d%s" % (D, tag)
+            tui.need_slider(comp, asset("knob_%d%s.png" % (D, tag), lambda: art.film_strip(
+                [art.knob_frame(D, i / 127, bip) for i in range(128)])), D, D, "Vertical")
+            self.kids.append(tui.entry(key, comp, {"version": 1, "handleName": "Data"}, "%d %d %d %d" % (x, y - 2, D, D),
+                                       remap=tui.P(key), focus="Yes"))
+            return
+        if STYLE == "ladder":
+            LW_, LH = 24, 60
+            self.legend(x, y + 2, name, 12)
+            self.kids.append(tui.label("Value", "%d %d %d 32" % (x, y + 22, w - LW_ - 16), remap=tui.P(key),
+                                       just="left verticallyCentred", colour="fff4f1e8", style="Medium", h=28.0))
+            comp = "ladder%d%s" % (LH, tag)
+            tui.need_slider(comp, asset("ladder_%d%s.png" % (LH, tag), lambda: art.film_strip(
+                [art.ladder_frame(LW_, LH, i / 127, bip) for i in range(128)])), LW_, LH, "Vertical")
+            self.kids.append(tui.entry(key, comp, {"version": 1, "handleName": "Data"}, "%d %d %d %d" % (x + w - LW_ - 8, y - 2, LW_, LH),
+                                       remap=tui.P(key), focus="Yes"))
+            return
         self.legend(x, y, name)
         art.scale_ticks(self.d, x + 9, y + 50, w - 18)
         self.kids.append(tui.label("Value", "%d %d 110 24" % (x + w - 110, y - 5), remap=tui.P(key),
                                    just="right verticallyCentred", colour="fff4f1e8", style="Medium", h=23.0))
-        tag = "b" if bip else ""
+        tui.need_slider("hslider%d%s" % (w, tag), slider_strip(w, bip), w, 30)
         self.kids.append(tui.entry(key, "hslider%d%s" % (w, tag), {"version": 1, "handleName": "Data"},
                                    "%d %d %d 30" % (x, y + 20, w), remap=tui.P(key), focus="Yes"))
-        tui.need_slider(w, tag, slider_strip(w, bip))
-        self.sample[key] = sample
-        self.sample[key + "$"] = str(int(round(lo + sample * (hi - lo))))
 
     def toggle(self, key, x, y, w, h, caption, lit=False):
         """An OFF/ON choice (or a momentary verb) as one rubber key with an LED (single Button: buttonId 1)."""
