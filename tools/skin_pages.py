@@ -194,7 +194,8 @@ class Page:
         self.kids.append(tui.button(key, key, on, off, "%d %d %d %d" % (x, y, w, h), focus="No"))
 
     def envelope_window(self, x0, y0, x1, y1, title, data, name, mid=False, sample=None):
-        self.header(x0, x1, y0 - 14, title)
+        if title:
+            self.header(x0, x1, y0 - 14, title)
         art.window(self.bg, x0, y0, x1, y1, grid=(8, 4), mid=mid)
         self.kids.append(tui.entry(name, "Envelope", data, "%d %d %d %d" % (x0, y0, x1 - x0, y1 - y0), focus="Yes"))
         if sample:
@@ -276,13 +277,13 @@ def play_page():
     # macro envelope: four sliders (Q-Link block) beside the live ADSR
     # bottom row: the envelope macros (2 x 2 cells, a Q-Link block) and the live ADSR, side by side at the same height
     EW = 232
-    p.header(X0 + 8, 518, 418, "ENVELOPE  (MACRO)", q=True)
+    p.header(X0 + 8, X1 - 8, 402, "ENVELOPE  (MACRO)", q=True)   # one rule over both the macro cells and the ADSR
     env = [("macro_attack", "ATTACK", .1), ("macro_decay", "DECAY", .45), ("macro_sustain", "SUSTAIN", .6), ("macro_release", "RELEASE", .35)]
     for i, (k, n, s_) in enumerate(env):
         r, c = divmod(i, 2)
-        p.slider(k, col(c, EW), 430 + r * 92, EW, n, s_)
-    p.qlink_group((X0, 402, 526, 604), [e[0] for e in env])
-    p.envelope_window(552, 414, 1002, 598, "ENVELOPE", tui.adsr_env(*[e[0] for e in env], name="macro env"), "macro env",
+        p.slider(k, col(c, EW), 436 + r * 90, EW, n, s_)
+    p.qlink_group((X0, 410, 526, 606), [e[0] for e in env])
+    p.envelope_window(552, 420, 1002, 600, None, tui.adsr_env(*[e[0] for e in env], name="macro env"), "macro env",
                       sample=[(0, 0), (.12, 1), (.35, .6), (.7, .6), (.92, 0)])
     # right column: tone on/off, velocity switch, key mode (screen only)
     tone_switches(p, RX, 104)
