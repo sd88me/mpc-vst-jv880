@@ -414,3 +414,17 @@ def lcd_key(w, h, lit, caption, size=None):
         d.text(((x0 + x1) // 2, (y0 + y1) // 2), caption, font=font(s * SS, 700),
                fill=((196, 220, 86) if lit else LCD_INK) + (255,), anchor="mm")
     return img.resize((w + pad * 2, h + pad * 2), Image.LANCZOS)
+
+
+def lcd_tile(w, h, lit):
+    """A list row on an LCD (bank / patch): transparent, so the dark name Label under it shows; lit = an ink frame with a
+    solid marker at the left (the selected line), unlit = a faint dotted rule under the row."""
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    if lit:
+        d.rectangle([0, 0, w - 1, h - 1], fill=LCD_INK + (40,), outline=LCD_INK + (255,), width=2)
+        d.polygon([(5, 6), (5, h - 7), (12, h // 2)], fill=LCD_INK + (255,))
+    else:
+        for x in range(4, w - 4, 4):
+            d.point((x, h - 2), fill=LCD_INK + (70,))
+    return img

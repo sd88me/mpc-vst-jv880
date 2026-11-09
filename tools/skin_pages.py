@@ -299,15 +299,16 @@ def banks_page():
     p = Page("BANKS", "BANKS", 1, seed=11)
     header(p)
     p.header(24, 560, 104, "BANKS", q=True)
+    art.lcd_screen(p.bg, 18, 120, 566, 612)            # the lists as LCD screens (rows in ink, the selected one framed)
+    art.lcd_screen(p.bg, 584, 120, 1266, 568)
     names = ["Preset A", "Preset B", "Internal", "Card", "Pop", "Orchestral", "Piano", "Vintage", "World", "Dance", "Super Sound"]
     for i in range(22):
         c, r = divmod(i, 11)
-        x, y = 24 + c * 272, 116 + r * 45
+        x, y = 24 + c * 272, 124 + r * 44
         k = "bank_slot_%d" % (i + 1)
-        p.d.rectangle([x, y, x + 261, y + 39], fill=(12, 12, 13))
-        p.kids.append(tui.label("Value", "%d %d 236 40" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=22.0))
-        p.kids.append(tui.button(k, k, asset("tile_262x40_on.png", lambda: art.tile_frame(262, 40, True)),
-                                 asset("tile_262x40_off.png", lambda: art.tile_frame(262, 40, False)), "%d %d 262 40" % (x, y)))
+        p.kids.append(tui.label("Value", "%d %d 236 40" % (x + 18, y), remap=tui.P(k), colour="ff161a08", style="Medium", case="Original", h=22.0))
+        p.kids.append(tui.button(k, k, asset("lcdtile_262x40_on.png", lambda: art.lcd_tile(262, 40, True)),
+                                 asset("lcdtile_262x40_off.png", lambda: art.lcd_tile(262, 40, False)), "%d %d 262 40" % (x, y)))
         p.sample[k + "$"] = names[i] if i < len(names) else ""
         p.sample[k + "#"] = 1 if i == 0 else 0
     p.header(590, 1262, 104, "PATCHES")
@@ -315,15 +316,14 @@ def banks_page():
           "Glass Piano", "Shimmer Pno", "Rock Piano", "Ballad Piano", "Echo Piano", "E.Piano 1"]
     for i in range(28):
         c, r = divmod(i, 14)
-        x, y = 590 + c * 340, 116 + r * 32
+        x, y = 590 + c * 340, 124 + r * 31
         k = "patch_slot_%d" % (i + 1)
-        p.d.rectangle([x, y, x + 329, y + 27], fill=(12, 12, 13))
-        p.kids.append(tui.label("Value", "%d %d 300 28" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=21.0))
-        p.kids.append(tui.button(k, k, asset("tile_330x28_on.png", lambda: art.tile_frame(330, 28, True)),
-                                 asset("tile_330x28_off.png", lambda: art.tile_frame(330, 28, False)), "%d %d 330 28" % (x, y)))
+        p.kids.append(tui.label("Value", "%d %d 300 28" % (x + 18, y), remap=tui.P(k), colour="ff161a08", style="Medium", case="Original", h=21.0))
+        p.kids.append(tui.button(k, k, asset("lcdtile_330x28_on.png", lambda: art.lcd_tile(330, 28, True)),
+                                 asset("lcdtile_330x28_off.png", lambda: art.lcd_tile(330, 28, False)), "%d %d 330 28" % (x, y)))
         p.sample[k + "$"] = (pn + pn)[i]
         p.sample[k + "#"] = 1 if i == 0 else 0
-    y = 572
+    y = 582
     p.momentary("patch_page_prev", 590, y, 110, 40, "< PAGE", size=15)
     p.kids.append(tui.label("Value", "716 %d 230 40" % y, remap=tui.P("patch_page_text"), just="horizontallyCentred verticallyCentred",
                             colour="ffd6d4cc", style="Medium", case="Original", h=19.0))
