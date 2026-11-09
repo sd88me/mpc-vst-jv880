@@ -100,7 +100,7 @@ class Page:
         self.slider_keys.add(key)
         if STYLE == "screen" and self.inside(x, y):
             h = 62
-            qx = 30 if x == col(0) else 4   # first column: clear of the MPC's Q tag (about 36 px on the device)
+            qx = 30 if any(abs(x - r[0]) < 40 for r in self.screens) else 4   # a screen's first column: clear of the Q tag (~36 px)
             self.legend(x + qx, y - 1, name, 12, art.LCD_INK, 700)
             self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 114, y + 12), remap=tui.P(key),
                                        just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
