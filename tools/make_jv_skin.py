@@ -96,14 +96,14 @@ def legend(d, x, y, text, size=15, col=INK, wght=500, anchor="la"):
     d.text((x, y), text, font=font(size, wght), fill=col, anchor=anchor)
 
 
-def group_header(d, x0, x1, y, text, col=BLUE, indent=0):
+def group_header(d, x0, x1, y, text, col=BLUE, indent=0, rule=None):
     """The rack's bracket print: a thin line across the section whose ends turn down, the title on it in blue
     (left, after `indent`, clear of the MPC's Q tag)."""
     f = font(15, 650)
     tx = x0 + 10 + indent
     tw = d.textlength(text, font=f)
     ly = y - 5
-    lc = BLUE_DIM
+    lc = rule or BLUE_DIM
     d.line([x0, ly, tx - 6, ly], fill=lc, width=1)
     d.line([tx + tw + 6, ly, x1, ly], fill=lc, width=1)
     d.line([x0, ly, x0, ly + 7], fill=lc, width=1)
@@ -376,3 +376,41 @@ def ladder_frame(w, h, value, bipolar=False):
             gd.rectangle([2, y0 - 1, w - 3, y1 + 1], fill=LED_ON + (110,))
     img.alpha_composite(glow.filter(ImageFilter.GaussianBlur(2)))
     return img
+
+
+# ---- "screen" style: the parameter blocks as one big backlit LCD ----------------------------------------------------------
+LCD_RULE = (96, 118, 30)
+
+
+def lcd_screen(img, x0, y0, x1, y1):
+    """A large backlit LCD in a black bezel with a rolled frame and a top shadow (static art; the controls draw on it)."""
+    d = ImageDraw.Draw(img)
+    d.rectangle([x0 - 9, y0 - 9, x1 + 9, y1 + 9], fill=(6, 6, 7))
+    d.rectangle([x0 - 9, y0 - 9, x1 + 9, y1 + 9], outline=(54, 56, 62))
+    for y in range(y0, y1 + 1):
+        t = abs((y - y0) / max(1, y1 - y0) - 0.42)
+        d.line([x0, y, x1, y], fill=lerp((200, 224, 88), (156, 182, 50), t * 1.4))
+    sh = Image.new("L", img.size, 0)
+    ImageDraw.Draw(sh).rectangle([x0, y0, x1, y0 + 7], fill=120)
+    sh = sh.filter(ImageFilter.GaussianBlur(4))
+    clip = Image.new("L", img.size, 0)
+    ImageDraw.Draw(clip).rectangle([x0, y0, x1, y1], fill=255)
+    img.paste((0, 0, 0), (0, 0), ImageChops.multiply(sh, clip))
+
+
+def lcd_key(w, h, lit, caption, size=None):
+    """An on-screen LCD choice (not a physical key): ink outline and text; selected = inverse video. Same padding as key()."""
+    pad = 6
+    W, H = (w + pad * 2) * SS, (h + pad * 2) * SS
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    x0, y0, x1, y1 = pad * SS, pad * SS, (pad + w) * SS - 1, (pad + h) * SS - 1
+    if lit:
+        d.rectangle([x0, y0, x1, y1], fill=LCD_INK + (255,))
+    else:
+        d.rectangle([x0, y0, x1, y1], outline=LCD_INK + (255,), width=2 * SS)
+    if caption:
+        s = size or min(15, h * 0.42)
+        d.text(((x0 + x1) // 2, (y0 + y1) // 2), caption, font=font(s * SS, 700),
+               fill=((196, 220, 86) if lit else LCD_INK) + (255,), anchor="mm")
+    return img.resize((w + pad * 2, h + pad * 2), Image.LANCZOS)

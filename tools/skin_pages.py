@@ -58,14 +58,31 @@ class Page:
         self.d = ImageDraw.Draw(self.bg)
         self.kids, self.groups, self.qlink_rows, self.choices = [], [], [], {}
         self.sample, self.env_samples = {}, {}
+        self.slider_keys, self.screen_groups = set(), []
+        self.screens = SCREENS.get(name, [])   # "screen" style: the LCD rects found by the first pass (see all_pages)
+        for r in self.screens:
+            art.lcd_screen(self.bg, *r)
+
+    def inside(self, x, y):
+        return any(r[0] - 2 <= x <= r[2] + 2 and r[1] - 2 <= y <= r[3] + 2 for r in self.screens)
+
+    def keyimg(self, x, y, w, h, lit, caption, led=True, size=None):
+        """A physical key, or (inside the big LCD) an on-screen choice."""
+        if self.inside(x, y):
+            slug = re.sub(r"[^A-Za-z0-9]", "_", (caption or "blank").replace("+", "p").replace("-", "m"))
+            return asset("lcdkey_%dx%d_%s_%s.png" % (w, h, "on" if lit else "off", slug), lambda: art.lcd_key(w, h, lit, caption, size))
+        return key_img(w, h, lit, caption, led=led, size=size)
 
     # ---- static art ----
     def header(self, x0, x1, y, text, q=False):
         """Section print. q: the section is a Q-Link block, whose top-left corner gets the MPC's "Q" tag: start the title clear of it."""
-        art.group_header(self.d, x0, x1, y, text, indent=28 if q else 0)
+        if self.inside(x0 + 4, y):
+            art.group_header(self.d, x0, x1, y, text, col=art.LCD_INK, indent=28 if q else 0, rule=art.LCD_RULE)
+        else:
+            art.group_header(self.d, x0, x1, y, text, indent=28 if q else 0)
 
     def legend(self, x, y, text, size=13, col=art.INK_DIM, wght=600, anchor="la"):
-        art.legend(self.d, x, y, text, size, col, wght, anchor)
+        art.legend(self.d, x, y, text, size, art.LCD_INK if self.inside(x, y) else col, wght, anchor)
 
     # ---- widgets ----
     def slider(self, key, x, y, w, name, sample=0.5):
@@ -80,6 +97,18 @@ class Page:
         tag = "b" if bip else ""
         self.sample[key] = sample
         self.sample[key + "$"] = str(int(round(lo + sample * (hi - lo))))
+        self.slider_keys.add(key)
+        if STYLE == "screen" and self.inside(x, y):
+            h = 62
+            self.legend(x + 4, y - 1, name, 12, art.LCD_INK, 700)
+            self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 114, y + 12), remap=tui.P(key),
+                                       just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
+            comp = "cell%d%s" % (w, tag)
+            tui.need_slider(comp, asset("cell_%d%s.png" % (w, tag), lambda: art.film_strip(
+                [art.cell_frame(w, h, i / 127, bip) for i in range(128)])), w, h)
+            self.kids.append(tui.entry(key, comp, {"version": 1, "handleName": "Data"}, "%d %d %d %d" % (x, y - 4, w, h),
+                                       remap=tui.P(key), focus="Yes"))
+            return
         if STYLE == "cells":
             h = 62
             art.lcd_cell(self.bg, x, y - 4, x + w - 1, y - 4 + h - 1)
@@ -124,7 +153,7 @@ class Page:
 
     def toggle(self, key, x, y, w, h, caption, lit=False):
         """An OFF/ON choice (or a momentary verb) as one rubber key with an LED (single Button: buttonId 1)."""
-        on, off = key_img(w, h, True, caption), key_img(w, h, False, caption)
+        on, off = self.keyimg(x, y, w, h, True, caption), self.keyimg(x, y, w, h, False, caption)
         self.kids.append(tui.button(key, key, on, off, "%d %d %d %d" % (x - 6, y - 6, w + 12, h + 12)))
         _, _, opts = spec(key)
         if opts:
@@ -132,7 +161,7 @@ class Page:
         self.sample[key + "#"] = 1 if lit else 0
 
     def momentary(self, key, x, y, w, h, caption, led=False, size=None):
-        on, off = key_img(w, h, True, caption, led=led, size=size), key_img(w, h, False, caption, led=led, size=size)
+        on, off = self.keyimg(x, y, w, h, True, caption, led, size), self.keyimg(x, y, w, h, False, caption, led, size)
         self.kids.append(tui.button(key, key, on, off, "%d %d %d %d" % (x - 6, y - 6, w + 12, h + 12)))
 
     def segments(self, key, x, y, w, h, labels=None, cols=None, gap=6, sel=0, row_gap=8):
@@ -143,7 +172,8 @@ class Page:
         bw = (w - (cols - 1) * gap) // cols
         for i, lb in enumerate(labels):
             r, c = divmod(i, cols)
-            on, off = key_img(bw, h, True, lb), key_img(bw, h, False, lb)
+            bx, by = x + c * (bw + gap), y + r * (h + row_gap)
+            on, off = self.keyimg(bx, by, bw, h, True, lb), self.keyimg(bx, by, bw, h, False, lb)
             self.kids.append(tui.button("%s %d" % (key, i), key, on, off,
                                         "%d %d %d %d" % (x + c * (bw + gap) - 3, y + r * (h + row_gap) - 3, bw + 6, h + 6),
                                         button_id=i, group=len(labels)))
@@ -172,7 +202,10 @@ class Page:
     def qlink_group(self, rect, keys):
         """One Q-Link block (up to four controls), with a faint printed panel so the bounds overlay frames a real section."""
         x0, y0, x1, y1 = rect
-        self.d.rounded_rectangle([x0, y0, x1, y1], 6, outline=(58, 58, 60), width=1)
+        if any(k in self.slider_keys for k in keys):
+            self.screen_groups.append(rect)
+        if not self.inside(x0 + 10, y0 + 10):
+            self.d.rounded_rectangle([x0, y0, x1, y1], 6, outline=(58, 58, 60), width=1)
         self.groups.append("%d %d %d %d" % (x0, y0, x1 - x0, y1 - y0))
         self.qlink_rows.append(keys)
 
@@ -430,7 +463,31 @@ def common_page():
     return p
 
 
+SCREENS = {}
+
+
+def merge_screens(rects):
+    """Q-Link blocks with sliders -> LCD rects: blocks in one column (same x span) that touch vertically become one screen."""
+    out = []
+    for r in sorted(rects, key=lambda r: (r[0], r[2], r[1])):
+        r = list(r)
+        if out and out[-1][0] == r[0] and out[-1][2] == r[2] and r[1] - out[-1][3] <= 24:
+            out[-1][3] = max(out[-1][3], r[3])
+        else:
+            out.append(r)
+    return [tuple(r) for r in out]
+
+
 def all_pages():
+    if STYLE == "screen" and not SCREENS:   # first pass: find each page's slider blocks, then build again on the LCDs
+        for p in _build():
+            SCREENS[p.name] = [(r[0] + 8, r[1] + 4, r[2] - 8, r[3] - 4) for r in merge_screens(p.screen_groups)]
+        _made.clear()
+        tui.SLIDERS.clear()
+    return _build()
+
+
+def _build():
     pages = [play_page(), banks_page()]
     for t in range(4):
         pages += [tone_main_page(t), tone_lfo_page(t)]
