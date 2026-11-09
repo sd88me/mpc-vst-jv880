@@ -19,7 +19,7 @@ NUM = {k: None for k in tui.KEYS}
 X0, X1 = 16, 1010          # left block area; the right column runs from RX to 1262
 RX, RW = 1030, 232
 SW = 232                   # slider width in a row of four
-STYLE = os.environ.get("JV_CTRL", "fader")   # continuous-control style (see Page.slider)
+STYLE = os.environ.get("JV_CTRL", "screen")   # continuous-control style (see Page.slider)
 
 
 def asset(name, make):
@@ -441,24 +441,20 @@ def common_page():
     for i, (k, n, s) in enumerate(ctl):
         p.slider(k, col(i), 316, SW, n, s)
     p.qlink_group((X0, 288, X1, 380), [x[0] for x in ctl])
-    # effect types: physical keys in the right column (the tone switches and velocity are on PLAY)
-    p.header(RX, 1262, 104, "REVERB TYPE")
-    p.segments(c("reverbtype"), RX, 118, RW, 32, cols=2, gap=8, sel=4)
-    p.header(RX, 1262, 304, "CHORUS TYPE")
-    p.segments(c("chorustype"), RX, 318, RW, 32, gap=6, sel=0)
-    p.header(RX, 1262, 384, "CHORUS OUTPUT")
-    p.toggle(c("chorusoutput"), RX, 398, RW, 32, "TO REVERB")
-    p.header(X0 + 8, X1 - 8, 500, "KEY MODE")
-    xs = [col(i) for i in range(4)]
-    p.legend(xs[0], 512, "KEY ASSIGN")
-    p.segments(c("keyassign"), xs[0], 532, SW, 44, sel=0)
-    p.legend(xs[1], 512, "PORTAMENTO")
-    p.toggle(c("portamentoswitch"), xs[1], 532, 100, 44, "PORTA")
-    p.toggle(c("sololegato"), xs[1] + 116, 532, SW - 116, 44, "LEGATO")
-    p.legend(xs[2], 512, "PORTA MODE")
-    p.segments(c("portamentomode"), xs[2], 532, SW, 44, sel=0)
-    p.legend(xs[3], 512, "PORTA TYPE")
-    p.segments(c("portamentotype"), xs[3], 532, SW, 44, sel=0)
+    # effect types: physical keys under the screen, on its column grid (two reverb types per column)
+    p.header(X0 + 8, X1 - 8, 412, "REVERB TYPE")
+    p.segments(c("reverbtype"), col(0), 424, 4 * SW + 48, 36, gap=8, sel=4)
+    p.header(X0 + 8, X1 - 8, 492, "CHORUS TYPE / OUTPUT")
+    p.segments(c("chorustype"), col(0), 504, 3 * SW + 32, 36, gap=16, sel=0)
+    p.toggle(c("chorusoutput"), col(3), 504, SW, 36, "TO REVERB")
+    # key mode: stacked in the right column
+    for title, y in (("KEY ASSIGN", 104), ("PORTAMENTO", 184), ("PORTA MODE", 264), ("PORTA TYPE", 344)):
+        p.header(RX, 1262, y, title)
+    p.segments(c("keyassign"), RX, 118, RW, 44, gap=12, sel=0)
+    p.toggle(c("portamentoswitch"), RX, 198, (RW - 12) // 2, 44, "PORTA")
+    p.toggle(c("sololegato"), RX + (RW - 12) // 2 + 12, 198, (RW - 12) // 2, 44, "LEGATO")
+    p.segments(c("portamentomode"), RX, 278, RW, 44, gap=12, sel=0)
+    p.segments(c("portamentotype"), RX, 358, RW, 44, gap=12, sel=0)
     return p
 
 

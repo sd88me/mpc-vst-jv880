@@ -68,7 +68,7 @@
           }
         },
         {
-          "key": "hslider140",
+          "key": "cell140",
           "value": {
             "version": 2,
             "actions": [
@@ -134,7 +134,7 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "WhenFocussed",
                   "boundsType": "Absolute",
-                  "bounds": "-6 -30 152 66"
+                  "bounds": "-4 -4 148 70"
                 }
               },
               {
@@ -146,7 +146,7 @@
                   "data": {
                     "version": 3,
                     "knobType": "FilmStrip",
-                    "filmStrip": "slider_140.png",
+                    "filmStrip": "cell_140.png",
                     "numFrames": 128,
                     "invert": false,
                     "dragOrientation": "Horizontal",
@@ -163,14 +163,14 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "Always",
                   "boundsType": "Absolute",
-                  "bounds": "0 0 140 30"
+                  "bounds": "0 0 140 62"
                 }
               }
             ]
           }
         },
         {
-          "key": "hslider185",
+          "key": "cell185",
           "value": {
             "version": 2,
             "actions": [
@@ -236,7 +236,7 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "WhenFocussed",
                   "boundsType": "Absolute",
-                  "bounds": "-6 -30 197 66"
+                  "bounds": "-4 -4 193 70"
                 }
               },
               {
@@ -248,7 +248,7 @@
                   "data": {
                     "version": 3,
                     "knobType": "FilmStrip",
-                    "filmStrip": "slider_185.png",
+                    "filmStrip": "cell_185.png",
                     "numFrames": 128,
                     "invert": false,
                     "dragOrientation": "Horizontal",
@@ -265,14 +265,14 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "Always",
                   "boundsType": "Absolute",
-                  "bounds": "0 0 185 30"
+                  "bounds": "0 0 185 62"
                 }
               }
             ]
           }
         },
         {
-          "key": "hslider185b",
+          "key": "cell185b",
           "value": {
             "version": 2,
             "actions": [
@@ -338,7 +338,7 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "WhenFocussed",
                   "boundsType": "Absolute",
-                  "bounds": "-6 -30 197 66"
+                  "bounds": "-4 -4 193 70"
                 }
               },
               {
@@ -350,7 +350,7 @@
                   "data": {
                     "version": 3,
                     "knobType": "FilmStrip",
-                    "filmStrip": "slider_185b.png",
+                    "filmStrip": "cell_185b.png",
                     "numFrames": 128,
                     "invert": false,
                     "dragOrientation": "Horizontal",
@@ -367,14 +367,14 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "Always",
                   "boundsType": "Absolute",
-                  "bounds": "0 0 185 30"
+                  "bounds": "0 0 185 62"
                 }
               }
             ]
           }
         },
         {
-          "key": "hslider232",
+          "key": "cell232",
           "value": {
             "version": 2,
             "actions": [
@@ -440,7 +440,7 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "WhenFocussed",
                   "boundsType": "Absolute",
-                  "bounds": "-6 -30 244 66"
+                  "bounds": "-4 -4 240 70"
                 }
               },
               {
@@ -452,7 +452,7 @@
                   "data": {
                     "version": 3,
                     "knobType": "FilmStrip",
-                    "filmStrip": "slider_232.png",
+                    "filmStrip": "cell_232.png",
                     "numFrames": 128,
                     "invert": false,
                     "dragOrientation": "Horizontal",
@@ -469,14 +469,14 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "Always",
                   "boundsType": "Absolute",
-                  "bounds": "0 0 232 30"
+                  "bounds": "0 0 232 62"
                 }
               }
             ]
           }
         },
         {
-          "key": "hslider232b",
+          "key": "cell232b",
           "value": {
             "version": 2,
             "actions": [
@@ -542,7 +542,7 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "WhenFocussed",
                   "boundsType": "Absolute",
-                  "bounds": "-6 -30 244 66"
+                  "bounds": "-4 -4 240 70"
                 }
               },
               {
@@ -554,7 +554,7 @@
                   "data": {
                     "version": 3,
                     "knobType": "FilmStrip",
-                    "filmStrip": "slider_232b.png",
+                    "filmStrip": "cell_232b.png",
                     "numFrames": 128,
                     "invert": false,
                     "dragOrientation": "Horizontal",
@@ -571,7 +571,7 @@
                   "showWhenDataModelInvalid": "Show",
                   "whenVisible": "Always",
                   "boundsType": "Absolute",
-                  "bounds": "0 0 232 30"
+                  "bounds": "0 0 232 62"
                 }
               }
             ]
@@ -1346,10 +1346,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1372,7 +1372,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 111 110 24"
+                "bounds": "148 128 100 30"
               }
             },
             {
@@ -1380,7 +1380,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_cutoff",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1401,7 +1401,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 136 232 30"
+                "bounds": "30 112 232 62"
               }
             },
             {
@@ -1417,10 +1417,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1443,7 +1443,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 111 110 24"
+                "bounds": "396 128 100 30"
               }
             },
             {
@@ -1451,7 +1451,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_resonance",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1472,7 +1472,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 136 232 30"
+                "bounds": "278 112 232 62"
               }
             },
             {
@@ -1488,10 +1488,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1514,7 +1514,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 111 110 24"
+                "bounds": "644 128 100 30"
               }
             },
             {
@@ -1522,7 +1522,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_tvf_env_depth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1543,7 +1543,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 136 232 30"
+                "bounds": "526 112 232 62"
               }
             },
             {
@@ -1559,10 +1559,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1585,7 +1585,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 111 110 24"
+                "bounds": "892 128 100 30"
               }
             },
             {
@@ -1593,7 +1593,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_lfo_depth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1614,7 +1614,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 136 232 30"
+                "bounds": "774 112 232 62"
               }
             },
             {
@@ -1630,10 +1630,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1656,7 +1656,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 211 110 24"
+                "bounds": "148 228 100 30"
               }
             },
             {
@@ -1664,7 +1664,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_patchlevel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1685,7 +1685,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 236 232 30"
+                "bounds": "30 212 232 62"
               }
             },
             {
@@ -1701,10 +1701,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1727,7 +1727,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 211 110 24"
+                "bounds": "396 228 100 30"
               }
             },
             {
@@ -1735,7 +1735,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_patchpan",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1756,7 +1756,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 236 232 30"
+                "bounds": "278 212 232 62"
               }
             },
             {
@@ -1772,10 +1772,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1798,7 +1798,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 211 110 24"
+                "bounds": "644 228 100 30"
               }
             },
             {
@@ -1806,7 +1806,7 @@
               "componentData": {
                 "version": 1,
                 "name": "octave_transpose",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1827,7 +1827,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 236 232 30"
+                "bounds": "526 212 232 62"
               }
             },
             {
@@ -1843,10 +1843,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1869,7 +1869,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 211 110 24"
+                "bounds": "892 228 100 30"
               }
             },
             {
@@ -1877,7 +1877,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_analogfeel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1898,7 +1898,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 236 232 30"
+                "bounds": "774 212 232 62"
               }
             },
             {
@@ -1914,10 +1914,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -1940,7 +1940,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 311 110 24"
+                "bounds": "148 328 100 30"
               }
             },
             {
@@ -1948,7 +1948,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_reverblevel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -1969,7 +1969,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 336 232 30"
+                "bounds": "30 312 232 62"
               }
             },
             {
@@ -1985,10 +1985,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2011,7 +2011,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 311 110 24"
+                "bounds": "396 328 100 30"
               }
             },
             {
@@ -2019,7 +2019,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_reverbtime",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2040,7 +2040,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 336 232 30"
+                "bounds": "278 312 232 62"
               }
             },
             {
@@ -2056,10 +2056,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2082,7 +2082,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 311 110 24"
+                "bounds": "644 328 100 30"
               }
             },
             {
@@ -2090,7 +2090,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_choruslevel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2111,7 +2111,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 336 232 30"
+                "bounds": "526 312 232 62"
               }
             },
             {
@@ -2127,10 +2127,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2153,7 +2153,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 311 110 24"
+                "bounds": "892 328 100 30"
               }
             },
             {
@@ -2161,7 +2161,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_chorusdepth",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2182,7 +2182,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 336 232 30"
+                "bounds": "774 312 232 62"
               }
             },
             {
@@ -2198,10 +2198,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2224,7 +2224,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "60 425 110 24"
+                "bounds": "56 442 100 30"
               }
             },
             {
@@ -2232,7 +2232,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_attack",
-                "type": "hslider140",
+                "type": "cell140",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2253,7 +2253,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 450 140 30"
+                "bounds": "30 426 140 62"
               }
             },
             {
@@ -2269,10 +2269,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2295,7 +2295,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "216 425 110 24"
+                "bounds": "212 442 100 30"
               }
             },
             {
@@ -2303,7 +2303,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_decay",
-                "type": "hslider140",
+                "type": "cell140",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2324,7 +2324,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "186 450 140 30"
+                "bounds": "186 426 140 62"
               }
             },
             {
@@ -2340,10 +2340,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2366,7 +2366,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "372 425 110 24"
+                "bounds": "368 442 100 30"
               }
             },
             {
@@ -2374,7 +2374,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_sustain",
-                "type": "hslider140",
+                "type": "cell140",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2395,7 +2395,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "342 450 140 30"
+                "bounds": "342 426 140 62"
               }
             },
             {
@@ -2411,10 +2411,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -2437,7 +2437,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "528 425 110 24"
+                "bounds": "524 442 100 30"
               }
             },
             {
@@ -2445,7 +2445,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_release",
-                "type": "hslider140",
+                "type": "cell140",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2466,7 +2466,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "498 450 140 30"
+                "bounds": "498 426 140 62"
               }
             },
             {
@@ -8152,10 +8152,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8178,7 +8178,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 111 110 24"
+                "bounds": "148 128 100 30"
               }
             },
             {
@@ -8186,7 +8186,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_wavenumber",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8207,7 +8207,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 136 232 30"
+                "bounds": "30 112 232 62"
               }
             },
             {
@@ -8223,10 +8223,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8249,7 +8249,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 111 110 24"
+                "bounds": "396 128 100 30"
               }
             },
             {
@@ -8257,7 +8257,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_pitchcoarse",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8278,7 +8278,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 136 232 30"
+                "bounds": "278 112 232 62"
               }
             },
             {
@@ -8294,10 +8294,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8320,7 +8320,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 111 110 24"
+                "bounds": "644 128 100 30"
               }
             },
             {
@@ -8328,7 +8328,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_pitchfine",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8349,7 +8349,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 136 232 30"
+                "bounds": "526 112 232 62"
               }
             },
             {
@@ -8365,10 +8365,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8391,7 +8391,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 111 110 24"
+                "bounds": "892 128 100 30"
               }
             },
             {
@@ -8399,7 +8399,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_fxmdepth",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8420,7 +8420,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 136 232 30"
+                "bounds": "774 112 232 62"
               }
             },
             {
@@ -8436,10 +8436,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8462,7 +8462,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 211 110 24"
+                "bounds": "148 228 100 30"
               }
             },
             {
@@ -8470,7 +8470,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_cutofffrequency",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8491,7 +8491,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 236 232 30"
+                "bounds": "30 212 232 62"
               }
             },
             {
@@ -8507,10 +8507,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8533,7 +8533,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 211 110 24"
+                "bounds": "396 228 100 30"
               }
             },
             {
@@ -8541,7 +8541,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_resonance",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8562,7 +8562,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 236 232 30"
+                "bounds": "278 212 232 62"
               }
             },
             {
@@ -8578,10 +8578,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8604,7 +8604,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 211 110 24"
+                "bounds": "644 228 100 30"
               }
             },
             {
@@ -8612,7 +8612,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_tvfenvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8633,7 +8633,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 236 232 30"
+                "bounds": "526 212 232 62"
               }
             },
             {
@@ -8649,10 +8649,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8675,7 +8675,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 311 110 24"
+                "bounds": "148 328 100 30"
               }
             },
             {
@@ -8683,7 +8683,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_level",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8704,7 +8704,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 336 232 30"
+                "bounds": "30 312 232 62"
               }
             },
             {
@@ -8720,10 +8720,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8746,7 +8746,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 311 110 24"
+                "bounds": "396 328 100 30"
               }
             },
             {
@@ -8754,7 +8754,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_pan",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8775,7 +8775,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 336 232 30"
+                "bounds": "278 312 232 62"
               }
             },
             {
@@ -8791,10 +8791,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8817,7 +8817,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 311 110 24"
+                "bounds": "644 328 100 30"
               }
             },
             {
@@ -8825,7 +8825,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_tvaenvtime4",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8846,7 +8846,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 336 232 30"
+                "bounds": "526 312 232 62"
               }
             },
             {
@@ -8862,10 +8862,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -8888,7 +8888,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 311 110 24"
+                "bounds": "892 328 100 30"
               }
             },
             {
@@ -8896,7 +8896,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_penvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -8917,7 +8917,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 336 232 30"
+                "bounds": "774 312 232 62"
               }
             },
             {
@@ -9989,10 +9989,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10015,7 +10015,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 203 110 24"
+                "bounds": "101 220 100 30"
               }
             },
             {
@@ -10023,7 +10023,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo1rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10044,7 +10044,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 228 185 30"
+                "bounds": "30 204 185 62"
               }
             },
             {
@@ -10060,10 +10060,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10086,7 +10086,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 203 110 24"
+                "bounds": "302 220 100 30"
               }
             },
             {
@@ -10094,7 +10094,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo1delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10115,7 +10115,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 228 185 30"
+                "bounds": "231 204 185 62"
               }
             },
             {
@@ -10131,10 +10131,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10157,7 +10157,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 203 110 24"
+                "bounds": "503 220 100 30"
               }
             },
             {
@@ -10165,7 +10165,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo1fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10186,7 +10186,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 228 185 30"
+                "bounds": "432 204 185 62"
               }
             },
             {
@@ -10202,10 +10202,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10228,7 +10228,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 303 110 24"
+                "bounds": "101 320 100 30"
               }
             },
             {
@@ -10236,7 +10236,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo1pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10257,7 +10257,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 328 185 30"
+                "bounds": "30 304 185 62"
               }
             },
             {
@@ -10273,10 +10273,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10299,7 +10299,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 303 110 24"
+                "bounds": "302 320 100 30"
               }
             },
             {
@@ -10307,7 +10307,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo1tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10328,7 +10328,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 328 185 30"
+                "bounds": "231 304 185 62"
               }
             },
             {
@@ -10344,10 +10344,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10370,7 +10370,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 303 110 24"
+                "bounds": "503 320 100 30"
               }
             },
             {
@@ -10378,7 +10378,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo1tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10399,7 +10399,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 328 185 30"
+                "bounds": "432 304 185 62"
               }
             },
             {
@@ -10619,10 +10619,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10645,7 +10645,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 203 110 24"
+                "bounds": "733 220 100 30"
               }
             },
             {
@@ -10653,7 +10653,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo2rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10674,7 +10674,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 228 185 30"
+                "bounds": "662 204 185 62"
               }
             },
             {
@@ -10690,10 +10690,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10716,7 +10716,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 203 110 24"
+                "bounds": "934 220 100 30"
               }
             },
             {
@@ -10724,7 +10724,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo2delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10745,7 +10745,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 228 185 30"
+                "bounds": "863 204 185 62"
               }
             },
             {
@@ -10761,10 +10761,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10787,7 +10787,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 203 110 24"
+                "bounds": "1135 220 100 30"
               }
             },
             {
@@ -10795,7 +10795,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo2fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10816,7 +10816,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 228 185 30"
+                "bounds": "1064 204 185 62"
               }
             },
             {
@@ -10832,10 +10832,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10858,7 +10858,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 303 110 24"
+                "bounds": "733 320 100 30"
               }
             },
             {
@@ -10866,7 +10866,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo2pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10887,7 +10887,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 328 185 30"
+                "bounds": "662 304 185 62"
               }
             },
             {
@@ -10903,10 +10903,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -10929,7 +10929,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 303 110 24"
+                "bounds": "934 320 100 30"
               }
             },
             {
@@ -10937,7 +10937,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo2tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -10958,7 +10958,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 328 185 30"
+                "bounds": "863 304 185 62"
               }
             },
             {
@@ -10974,10 +10974,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11000,7 +11000,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 303 110 24"
+                "bounds": "1135 320 100 30"
               }
             },
             {
@@ -11008,7 +11008,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_0_lfo2tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -11029,7 +11029,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 328 185 30"
+                "bounds": "1064 304 185 62"
               }
             },
             {
@@ -11592,10 +11592,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11618,7 +11618,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 111 110 24"
+                "bounds": "148 128 100 30"
               }
             },
             {
@@ -11626,7 +11626,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_wavenumber",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -11647,7 +11647,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 136 232 30"
+                "bounds": "30 112 232 62"
               }
             },
             {
@@ -11663,10 +11663,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11689,7 +11689,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 111 110 24"
+                "bounds": "396 128 100 30"
               }
             },
             {
@@ -11697,7 +11697,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_pitchcoarse",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -11718,7 +11718,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 136 232 30"
+                "bounds": "278 112 232 62"
               }
             },
             {
@@ -11734,10 +11734,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11760,7 +11760,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 111 110 24"
+                "bounds": "644 128 100 30"
               }
             },
             {
@@ -11768,7 +11768,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_pitchfine",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -11789,7 +11789,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 136 232 30"
+                "bounds": "526 112 232 62"
               }
             },
             {
@@ -11805,10 +11805,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11831,7 +11831,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 111 110 24"
+                "bounds": "892 128 100 30"
               }
             },
             {
@@ -11839,7 +11839,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_fxmdepth",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -11860,7 +11860,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 136 232 30"
+                "bounds": "774 112 232 62"
               }
             },
             {
@@ -11876,10 +11876,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11902,7 +11902,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 211 110 24"
+                "bounds": "148 228 100 30"
               }
             },
             {
@@ -11910,7 +11910,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_cutofffrequency",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -11931,7 +11931,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 236 232 30"
+                "bounds": "30 212 232 62"
               }
             },
             {
@@ -11947,10 +11947,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -11973,7 +11973,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 211 110 24"
+                "bounds": "396 228 100 30"
               }
             },
             {
@@ -11981,7 +11981,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_resonance",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -12002,7 +12002,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 236 232 30"
+                "bounds": "278 212 232 62"
               }
             },
             {
@@ -12018,10 +12018,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -12044,7 +12044,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 211 110 24"
+                "bounds": "644 228 100 30"
               }
             },
             {
@@ -12052,7 +12052,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_tvfenvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -12073,7 +12073,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 236 232 30"
+                "bounds": "526 212 232 62"
               }
             },
             {
@@ -12089,10 +12089,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -12115,7 +12115,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 311 110 24"
+                "bounds": "148 328 100 30"
               }
             },
             {
@@ -12123,7 +12123,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_level",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -12144,7 +12144,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 336 232 30"
+                "bounds": "30 312 232 62"
               }
             },
             {
@@ -12160,10 +12160,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -12186,7 +12186,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 311 110 24"
+                "bounds": "396 328 100 30"
               }
             },
             {
@@ -12194,7 +12194,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_pan",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -12215,7 +12215,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 336 232 30"
+                "bounds": "278 312 232 62"
               }
             },
             {
@@ -12231,10 +12231,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -12257,7 +12257,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 311 110 24"
+                "bounds": "644 328 100 30"
               }
             },
             {
@@ -12265,7 +12265,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_tvaenvtime4",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -12286,7 +12286,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 336 232 30"
+                "bounds": "526 312 232 62"
               }
             },
             {
@@ -12302,10 +12302,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -12328,7 +12328,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 311 110 24"
+                "bounds": "892 328 100 30"
               }
             },
             {
@@ -12336,7 +12336,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_penvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -12357,7 +12357,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 336 232 30"
+                "bounds": "774 312 232 62"
               }
             },
             {
@@ -13429,10 +13429,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -13455,7 +13455,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 203 110 24"
+                "bounds": "101 220 100 30"
               }
             },
             {
@@ -13463,7 +13463,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo1rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -13484,7 +13484,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 228 185 30"
+                "bounds": "30 204 185 62"
               }
             },
             {
@@ -13500,10 +13500,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -13526,7 +13526,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 203 110 24"
+                "bounds": "302 220 100 30"
               }
             },
             {
@@ -13534,7 +13534,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo1delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -13555,7 +13555,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 228 185 30"
+                "bounds": "231 204 185 62"
               }
             },
             {
@@ -13571,10 +13571,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -13597,7 +13597,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 203 110 24"
+                "bounds": "503 220 100 30"
               }
             },
             {
@@ -13605,7 +13605,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo1fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -13626,7 +13626,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 228 185 30"
+                "bounds": "432 204 185 62"
               }
             },
             {
@@ -13642,10 +13642,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -13668,7 +13668,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 303 110 24"
+                "bounds": "101 320 100 30"
               }
             },
             {
@@ -13676,7 +13676,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo1pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -13697,7 +13697,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 328 185 30"
+                "bounds": "30 304 185 62"
               }
             },
             {
@@ -13713,10 +13713,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -13739,7 +13739,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 303 110 24"
+                "bounds": "302 320 100 30"
               }
             },
             {
@@ -13747,7 +13747,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo1tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -13768,7 +13768,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 328 185 30"
+                "bounds": "231 304 185 62"
               }
             },
             {
@@ -13784,10 +13784,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -13810,7 +13810,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 303 110 24"
+                "bounds": "503 320 100 30"
               }
             },
             {
@@ -13818,7 +13818,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo1tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -13839,7 +13839,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 328 185 30"
+                "bounds": "432 304 185 62"
               }
             },
             {
@@ -14059,10 +14059,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -14085,7 +14085,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 203 110 24"
+                "bounds": "733 220 100 30"
               }
             },
             {
@@ -14093,7 +14093,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo2rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -14114,7 +14114,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 228 185 30"
+                "bounds": "662 204 185 62"
               }
             },
             {
@@ -14130,10 +14130,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -14156,7 +14156,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 203 110 24"
+                "bounds": "934 220 100 30"
               }
             },
             {
@@ -14164,7 +14164,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo2delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -14185,7 +14185,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 228 185 30"
+                "bounds": "863 204 185 62"
               }
             },
             {
@@ -14201,10 +14201,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -14227,7 +14227,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 203 110 24"
+                "bounds": "1135 220 100 30"
               }
             },
             {
@@ -14235,7 +14235,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo2fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -14256,7 +14256,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 228 185 30"
+                "bounds": "1064 204 185 62"
               }
             },
             {
@@ -14272,10 +14272,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -14298,7 +14298,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 303 110 24"
+                "bounds": "733 320 100 30"
               }
             },
             {
@@ -14306,7 +14306,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo2pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -14327,7 +14327,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 328 185 30"
+                "bounds": "662 304 185 62"
               }
             },
             {
@@ -14343,10 +14343,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -14369,7 +14369,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 303 110 24"
+                "bounds": "934 320 100 30"
               }
             },
             {
@@ -14377,7 +14377,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo2tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -14398,7 +14398,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 328 185 30"
+                "bounds": "863 304 185 62"
               }
             },
             {
@@ -14414,10 +14414,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -14440,7 +14440,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 303 110 24"
+                "bounds": "1135 320 100 30"
               }
             },
             {
@@ -14448,7 +14448,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_1_lfo2tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -14469,7 +14469,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 328 185 30"
+                "bounds": "1064 304 185 62"
               }
             },
             {
@@ -15032,10 +15032,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15058,7 +15058,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 111 110 24"
+                "bounds": "148 128 100 30"
               }
             },
             {
@@ -15066,7 +15066,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_wavenumber",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15087,7 +15087,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 136 232 30"
+                "bounds": "30 112 232 62"
               }
             },
             {
@@ -15103,10 +15103,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15129,7 +15129,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 111 110 24"
+                "bounds": "396 128 100 30"
               }
             },
             {
@@ -15137,7 +15137,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_pitchcoarse",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15158,7 +15158,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 136 232 30"
+                "bounds": "278 112 232 62"
               }
             },
             {
@@ -15174,10 +15174,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15200,7 +15200,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 111 110 24"
+                "bounds": "644 128 100 30"
               }
             },
             {
@@ -15208,7 +15208,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_pitchfine",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15229,7 +15229,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 136 232 30"
+                "bounds": "526 112 232 62"
               }
             },
             {
@@ -15245,10 +15245,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15271,7 +15271,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 111 110 24"
+                "bounds": "892 128 100 30"
               }
             },
             {
@@ -15279,7 +15279,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_fxmdepth",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15300,7 +15300,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 136 232 30"
+                "bounds": "774 112 232 62"
               }
             },
             {
@@ -15316,10 +15316,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15342,7 +15342,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 211 110 24"
+                "bounds": "148 228 100 30"
               }
             },
             {
@@ -15350,7 +15350,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_cutofffrequency",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15371,7 +15371,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 236 232 30"
+                "bounds": "30 212 232 62"
               }
             },
             {
@@ -15387,10 +15387,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15413,7 +15413,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 211 110 24"
+                "bounds": "396 228 100 30"
               }
             },
             {
@@ -15421,7 +15421,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_resonance",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15442,7 +15442,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 236 232 30"
+                "bounds": "278 212 232 62"
               }
             },
             {
@@ -15458,10 +15458,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15484,7 +15484,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 211 110 24"
+                "bounds": "644 228 100 30"
               }
             },
             {
@@ -15492,7 +15492,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_tvfenvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15513,7 +15513,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 236 232 30"
+                "bounds": "526 212 232 62"
               }
             },
             {
@@ -15529,10 +15529,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15555,7 +15555,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 311 110 24"
+                "bounds": "148 328 100 30"
               }
             },
             {
@@ -15563,7 +15563,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_level",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15584,7 +15584,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 336 232 30"
+                "bounds": "30 312 232 62"
               }
             },
             {
@@ -15600,10 +15600,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15626,7 +15626,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 311 110 24"
+                "bounds": "396 328 100 30"
               }
             },
             {
@@ -15634,7 +15634,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_pan",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15655,7 +15655,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 336 232 30"
+                "bounds": "278 312 232 62"
               }
             },
             {
@@ -15671,10 +15671,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15697,7 +15697,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 311 110 24"
+                "bounds": "644 328 100 30"
               }
             },
             {
@@ -15705,7 +15705,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_tvaenvtime4",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15726,7 +15726,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 336 232 30"
+                "bounds": "526 312 232 62"
               }
             },
             {
@@ -15742,10 +15742,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -15768,7 +15768,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 311 110 24"
+                "bounds": "892 328 100 30"
               }
             },
             {
@@ -15776,7 +15776,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_penvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -15797,7 +15797,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 336 232 30"
+                "bounds": "774 312 232 62"
               }
             },
             {
@@ -16869,10 +16869,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -16895,7 +16895,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 203 110 24"
+                "bounds": "101 220 100 30"
               }
             },
             {
@@ -16903,7 +16903,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo1rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -16924,7 +16924,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 228 185 30"
+                "bounds": "30 204 185 62"
               }
             },
             {
@@ -16940,10 +16940,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -16966,7 +16966,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 203 110 24"
+                "bounds": "302 220 100 30"
               }
             },
             {
@@ -16974,7 +16974,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo1delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -16995,7 +16995,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 228 185 30"
+                "bounds": "231 204 185 62"
               }
             },
             {
@@ -17011,10 +17011,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17037,7 +17037,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 203 110 24"
+                "bounds": "503 220 100 30"
               }
             },
             {
@@ -17045,7 +17045,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo1fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17066,7 +17066,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 228 185 30"
+                "bounds": "432 204 185 62"
               }
             },
             {
@@ -17082,10 +17082,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17108,7 +17108,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 303 110 24"
+                "bounds": "101 320 100 30"
               }
             },
             {
@@ -17116,7 +17116,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo1pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17137,7 +17137,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 328 185 30"
+                "bounds": "30 304 185 62"
               }
             },
             {
@@ -17153,10 +17153,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17179,7 +17179,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 303 110 24"
+                "bounds": "302 320 100 30"
               }
             },
             {
@@ -17187,7 +17187,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo1tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17208,7 +17208,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 328 185 30"
+                "bounds": "231 304 185 62"
               }
             },
             {
@@ -17224,10 +17224,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17250,7 +17250,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 303 110 24"
+                "bounds": "503 320 100 30"
               }
             },
             {
@@ -17258,7 +17258,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo1tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17279,7 +17279,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 328 185 30"
+                "bounds": "432 304 185 62"
               }
             },
             {
@@ -17499,10 +17499,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17525,7 +17525,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 203 110 24"
+                "bounds": "733 220 100 30"
               }
             },
             {
@@ -17533,7 +17533,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo2rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17554,7 +17554,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 228 185 30"
+                "bounds": "662 204 185 62"
               }
             },
             {
@@ -17570,10 +17570,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17596,7 +17596,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 203 110 24"
+                "bounds": "934 220 100 30"
               }
             },
             {
@@ -17604,7 +17604,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo2delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17625,7 +17625,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 228 185 30"
+                "bounds": "863 204 185 62"
               }
             },
             {
@@ -17641,10 +17641,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17667,7 +17667,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 203 110 24"
+                "bounds": "1135 220 100 30"
               }
             },
             {
@@ -17675,7 +17675,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo2fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17696,7 +17696,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 228 185 30"
+                "bounds": "1064 204 185 62"
               }
             },
             {
@@ -17712,10 +17712,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17738,7 +17738,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 303 110 24"
+                "bounds": "733 320 100 30"
               }
             },
             {
@@ -17746,7 +17746,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo2pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17767,7 +17767,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 328 185 30"
+                "bounds": "662 304 185 62"
               }
             },
             {
@@ -17783,10 +17783,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17809,7 +17809,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 303 110 24"
+                "bounds": "934 320 100 30"
               }
             },
             {
@@ -17817,7 +17817,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo2tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17838,7 +17838,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 328 185 30"
+                "bounds": "863 304 185 62"
               }
             },
             {
@@ -17854,10 +17854,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -17880,7 +17880,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 303 110 24"
+                "bounds": "1135 320 100 30"
               }
             },
             {
@@ -17888,7 +17888,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_2_lfo2tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -17909,7 +17909,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 328 185 30"
+                "bounds": "1064 304 185 62"
               }
             },
             {
@@ -18472,10 +18472,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18498,7 +18498,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 111 110 24"
+                "bounds": "148 128 100 30"
               }
             },
             {
@@ -18506,7 +18506,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_wavenumber",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18527,7 +18527,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 136 232 30"
+                "bounds": "30 112 232 62"
               }
             },
             {
@@ -18543,10 +18543,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18569,7 +18569,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 111 110 24"
+                "bounds": "396 128 100 30"
               }
             },
             {
@@ -18577,7 +18577,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_pitchcoarse",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18598,7 +18598,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 136 232 30"
+                "bounds": "278 112 232 62"
               }
             },
             {
@@ -18614,10 +18614,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18640,7 +18640,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 111 110 24"
+                "bounds": "644 128 100 30"
               }
             },
             {
@@ -18648,7 +18648,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_pitchfine",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18669,7 +18669,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 136 232 30"
+                "bounds": "526 112 232 62"
               }
             },
             {
@@ -18685,10 +18685,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18711,7 +18711,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 111 110 24"
+                "bounds": "892 128 100 30"
               }
             },
             {
@@ -18719,7 +18719,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_fxmdepth",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18740,7 +18740,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 136 232 30"
+                "bounds": "774 112 232 62"
               }
             },
             {
@@ -18756,10 +18756,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18782,7 +18782,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 211 110 24"
+                "bounds": "148 228 100 30"
               }
             },
             {
@@ -18790,7 +18790,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_cutofffrequency",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18811,7 +18811,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 236 232 30"
+                "bounds": "30 212 232 62"
               }
             },
             {
@@ -18827,10 +18827,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18853,7 +18853,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 211 110 24"
+                "bounds": "396 228 100 30"
               }
             },
             {
@@ -18861,7 +18861,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_resonance",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18882,7 +18882,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 236 232 30"
+                "bounds": "278 212 232 62"
               }
             },
             {
@@ -18898,10 +18898,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18924,7 +18924,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 211 110 24"
+                "bounds": "644 228 100 30"
               }
             },
             {
@@ -18932,7 +18932,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_tvfenvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -18953,7 +18953,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 236 232 30"
+                "bounds": "526 212 232 62"
               }
             },
             {
@@ -18969,10 +18969,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -18995,7 +18995,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 311 110 24"
+                "bounds": "148 328 100 30"
               }
             },
             {
@@ -19003,7 +19003,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_level",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -19024,7 +19024,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 336 232 30"
+                "bounds": "30 312 232 62"
               }
             },
             {
@@ -19040,10 +19040,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -19066,7 +19066,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 311 110 24"
+                "bounds": "396 328 100 30"
               }
             },
             {
@@ -19074,7 +19074,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_pan",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -19095,7 +19095,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 336 232 30"
+                "bounds": "278 312 232 62"
               }
             },
             {
@@ -19111,10 +19111,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -19137,7 +19137,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 311 110 24"
+                "bounds": "644 328 100 30"
               }
             },
             {
@@ -19145,7 +19145,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_tvaenvtime4",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -19166,7 +19166,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 336 232 30"
+                "bounds": "526 312 232 62"
               }
             },
             {
@@ -19182,10 +19182,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -19208,7 +19208,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 311 110 24"
+                "bounds": "892 328 100 30"
               }
             },
             {
@@ -19216,7 +19216,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_penvdepth",
-                "type": "hslider232b",
+                "type": "cell232b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -19237,7 +19237,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 336 232 30"
+                "bounds": "774 312 232 62"
               }
             },
             {
@@ -20309,10 +20309,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20335,7 +20335,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 203 110 24"
+                "bounds": "101 220 100 30"
               }
             },
             {
@@ -20343,7 +20343,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo1rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20364,7 +20364,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 228 185 30"
+                "bounds": "30 204 185 62"
               }
             },
             {
@@ -20380,10 +20380,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20406,7 +20406,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 203 110 24"
+                "bounds": "302 220 100 30"
               }
             },
             {
@@ -20414,7 +20414,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo1delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20435,7 +20435,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 228 185 30"
+                "bounds": "231 204 185 62"
               }
             },
             {
@@ -20451,10 +20451,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20477,7 +20477,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 203 110 24"
+                "bounds": "503 220 100 30"
               }
             },
             {
@@ -20485,7 +20485,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo1fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20506,7 +20506,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 228 185 30"
+                "bounds": "432 204 185 62"
               }
             },
             {
@@ -20522,10 +20522,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20548,7 +20548,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "105 303 110 24"
+                "bounds": "101 320 100 30"
               }
             },
             {
@@ -20556,7 +20556,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo1pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20577,7 +20577,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 328 185 30"
+                "bounds": "30 304 185 62"
               }
             },
             {
@@ -20593,10 +20593,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20619,7 +20619,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "306 303 110 24"
+                "bounds": "302 320 100 30"
               }
             },
             {
@@ -20627,7 +20627,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo1tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20648,7 +20648,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "231 328 185 30"
+                "bounds": "231 304 185 62"
               }
             },
             {
@@ -20664,10 +20664,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20690,7 +20690,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "507 303 110 24"
+                "bounds": "503 320 100 30"
               }
             },
             {
@@ -20698,7 +20698,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo1tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20719,7 +20719,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "432 328 185 30"
+                "bounds": "432 304 185 62"
               }
             },
             {
@@ -20939,10 +20939,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -20965,7 +20965,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 203 110 24"
+                "bounds": "733 220 100 30"
               }
             },
             {
@@ -20973,7 +20973,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo2rate",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -20994,7 +20994,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 228 185 30"
+                "bounds": "662 204 185 62"
               }
             },
             {
@@ -21010,10 +21010,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21036,7 +21036,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 203 110 24"
+                "bounds": "934 220 100 30"
               }
             },
             {
@@ -21044,7 +21044,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo2delay",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -21065,7 +21065,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 228 185 30"
+                "bounds": "863 204 185 62"
               }
             },
             {
@@ -21081,10 +21081,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21107,7 +21107,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 203 110 24"
+                "bounds": "1135 220 100 30"
               }
             },
             {
@@ -21115,7 +21115,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo2fadetime",
-                "type": "hslider185",
+                "type": "cell185",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -21136,7 +21136,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 228 185 30"
+                "bounds": "1064 204 185 62"
               }
             },
             {
@@ -21152,10 +21152,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21178,7 +21178,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "737 303 110 24"
+                "bounds": "733 320 100 30"
               }
             },
             {
@@ -21186,7 +21186,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo2pitchdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -21207,7 +21207,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "662 328 185 30"
+                "bounds": "662 304 185 62"
               }
             },
             {
@@ -21223,10 +21223,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21249,7 +21249,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "938 303 110 24"
+                "bounds": "934 320 100 30"
               }
             },
             {
@@ -21257,7 +21257,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo2tvfdepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -21278,7 +21278,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "863 328 185 30"
+                "bounds": "863 304 185 62"
               }
             },
             {
@@ -21294,10 +21294,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21320,7 +21320,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1139 303 110 24"
+                "bounds": "1135 320 100 30"
               }
             },
             {
@@ -21328,7 +21328,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_tone_3_lfo2tvadepth",
-                "type": "hslider185b",
+                "type": "cell185b",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -21349,7 +21349,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1064 328 185 30"
+                "bounds": "1064 304 185 62"
               }
             },
             {
@@ -21878,10 +21878,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21904,7 +21904,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 111 110 24"
+                "bounds": "148 128 100 30"
               }
             },
             {
@@ -21912,7 +21912,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_bendrangeup",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -21933,7 +21933,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 136 232 30"
+                "bounds": "30 112 232 62"
               }
             },
             {
@@ -21949,10 +21949,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -21975,7 +21975,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 111 110 24"
+                "bounds": "396 128 100 30"
               }
             },
             {
@@ -21983,7 +21983,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_bendrangedown",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22004,7 +22004,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 136 232 30"
+                "bounds": "278 112 232 62"
               }
             },
             {
@@ -22020,10 +22020,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22046,7 +22046,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 111 110 24"
+                "bounds": "644 128 100 30"
               }
             },
             {
@@ -22054,7 +22054,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_portamentotime",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22075,7 +22075,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 136 232 30"
+                "bounds": "526 112 232 62"
               }
             },
             {
@@ -22091,10 +22091,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22117,7 +22117,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 111 110 24"
+                "bounds": "892 128 100 30"
               }
             },
             {
@@ -22125,7 +22125,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_analogfeel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22146,7 +22146,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 136 232 30"
+                "bounds": "774 112 232 62"
               }
             },
             {
@@ -22162,10 +22162,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22188,7 +22188,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 211 110 24"
+                "bounds": "148 228 100 30"
               }
             },
             {
@@ -22196,7 +22196,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_reverblevel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22217,7 +22217,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 236 232 30"
+                "bounds": "30 212 232 62"
               }
             },
             {
@@ -22233,10 +22233,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22259,7 +22259,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 211 110 24"
+                "bounds": "396 228 100 30"
               }
             },
             {
@@ -22267,7 +22267,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_reverbtime",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22288,7 +22288,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 236 232 30"
+                "bounds": "278 212 232 62"
               }
             },
             {
@@ -22304,10 +22304,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22330,7 +22330,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 211 110 24"
+                "bounds": "644 228 100 30"
               }
             },
             {
@@ -22338,7 +22338,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_reverbfeedback",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22359,7 +22359,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 236 232 30"
+                "bounds": "526 212 232 62"
               }
             },
             {
@@ -22375,10 +22375,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22401,7 +22401,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 311 110 24"
+                "bounds": "148 328 100 30"
               }
             },
             {
@@ -22409,7 +22409,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_choruslevel",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22430,7 +22430,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 336 232 30"
+                "bounds": "30 312 232 62"
               }
             },
             {
@@ -22446,10 +22446,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22472,7 +22472,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 311 110 24"
+                "bounds": "396 328 100 30"
               }
             },
             {
@@ -22480,7 +22480,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_chorusdepth",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22501,7 +22501,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 336 232 30"
+                "bounds": "278 312 232 62"
               }
             },
             {
@@ -22517,10 +22517,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22543,7 +22543,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 311 110 24"
+                "bounds": "644 328 100 30"
               }
             },
             {
@@ -22551,7 +22551,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_chorusrate",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22572,7 +22572,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 336 232 30"
+                "bounds": "526 312 232 62"
               }
             },
             {
@@ -22588,10 +22588,10 @@
                     "font": {
                       "version": 1,
                       "name": "Roboto",
-                      "style": "Medium",
-                      "height": 23.0
+                      "style": "Bold",
+                      "height": 28.0
                     },
-                    "colour": "fff4f1e8",
+                    "colour": "ff161a08",
                     "justification": "right verticallyCentred",
                     "case": "Upper Case"
                   },
@@ -22614,7 +22614,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 311 110 24"
+                "bounds": "892 328 100 30"
               }
             },
             {
@@ -22622,7 +22622,7 @@
               "componentData": {
                 "version": 1,
                 "name": "nvram_patchCommon_chorusfeedback",
-                "type": "hslider232",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -22643,7 +22643,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 336 232 30"
+                "bounds": "774 312 232 62"
               }
             },
             {
@@ -22654,8 +22654,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_ROOM1.png",
-                  "offImage": "key_112x32_off_ROOM1.png",
+                  "onImage": "key_115x36_on_ROOM1.png",
+                  "offImage": "key_115x36_off_ROOM1.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22677,7 +22677,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1027 115 118 38"
+                "bounds": "27 421 121 42"
               }
             },
             {
@@ -22688,8 +22688,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_ROOM2.png",
-                  "offImage": "key_112x32_off_ROOM2.png",
+                  "onImage": "key_115x36_on_ROOM2.png",
+                  "offImage": "key_115x36_off_ROOM2.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22711,7 +22711,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1147 115 118 38"
+                "bounds": "150 421 121 42"
               }
             },
             {
@@ -22722,8 +22722,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_STAGE1.png",
-                  "offImage": "key_112x32_off_STAGE1.png",
+                  "onImage": "key_115x36_on_STAGE1.png",
+                  "offImage": "key_115x36_off_STAGE1.png",
                   "buttonId": 2,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22745,7 +22745,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1027 155 118 38"
+                "bounds": "273 421 121 42"
               }
             },
             {
@@ -22756,8 +22756,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_STAGE2.png",
-                  "offImage": "key_112x32_off_STAGE2.png",
+                  "onImage": "key_115x36_on_STAGE2.png",
+                  "offImage": "key_115x36_off_STAGE2.png",
                   "buttonId": 3,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22779,7 +22779,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1147 155 118 38"
+                "bounds": "396 421 121 42"
               }
             },
             {
@@ -22790,8 +22790,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_HALL1.png",
-                  "offImage": "key_112x32_off_HALL1.png",
+                  "onImage": "key_115x36_on_HALL1.png",
+                  "offImage": "key_115x36_off_HALL1.png",
                   "buttonId": 4,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22813,7 +22813,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1027 195 118 38"
+                "bounds": "519 421 121 42"
               }
             },
             {
@@ -22824,8 +22824,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_HALL2.png",
-                  "offImage": "key_112x32_off_HALL2.png",
+                  "onImage": "key_115x36_on_HALL2.png",
+                  "offImage": "key_115x36_off_HALL2.png",
                   "buttonId": 5,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22847,7 +22847,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1147 195 118 38"
+                "bounds": "642 421 121 42"
               }
             },
             {
@@ -22858,8 +22858,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_DELAY.png",
-                  "offImage": "key_112x32_off_DELAY.png",
+                  "onImage": "key_115x36_on_DELAY.png",
+                  "offImage": "key_115x36_off_DELAY.png",
                   "buttonId": 6,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22881,7 +22881,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1027 235 118 38"
+                "bounds": "765 421 121 42"
               }
             },
             {
@@ -22892,8 +22892,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_112x32_on_PANmDLY.png",
-                  "offImage": "key_112x32_off_PANmDLY.png",
+                  "onImage": "key_115x36_on_PANmDLY.png",
+                  "offImage": "key_115x36_off_PANmDLY.png",
                   "buttonId": 7,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -22915,7 +22915,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1147 235 118 38"
+                "bounds": "888 421 121 42"
               }
             },
             {
@@ -22926,8 +22926,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_73x32_on_CHORUS1.png",
-                  "offImage": "key_73x32_off_CHORUS1.png",
+                  "onImage": "key_232x36_on_CHORUS1.png",
+                  "offImage": "key_232x36_off_CHORUS1.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 3,
                   "handleName": "Data",
@@ -22949,7 +22949,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1027 315 79 38"
+                "bounds": "27 501 238 42"
               }
             },
             {
@@ -22960,8 +22960,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_73x32_on_CHORUS2.png",
-                  "offImage": "key_73x32_off_CHORUS2.png",
+                  "onImage": "key_232x36_on_CHORUS2.png",
+                  "offImage": "key_232x36_off_CHORUS2.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 3,
                   "handleName": "Data",
@@ -22983,7 +22983,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1106 315 79 38"
+                "bounds": "275 501 238 42"
               }
             },
             {
@@ -22994,8 +22994,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_73x32_on_FLANGER.png",
-                  "offImage": "key_73x32_off_FLANGER.png",
+                  "onImage": "key_232x36_on_FLANGER.png",
+                  "offImage": "key_232x36_off_FLANGER.png",
                   "buttonId": 2,
                   "numButtonsInGroup": 3,
                   "handleName": "Data",
@@ -23017,7 +23017,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1185 315 79 38"
+                "bounds": "523 501 238 42"
               }
             },
             {
@@ -23028,8 +23028,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_232x32_on_TO_REVERB.png",
-                  "offImage": "key_232x32_off_TO_REVERB.png",
+                  "onImage": "key_232x36_on_TO_REVERB.png",
+                  "offImage": "key_232x36_off_TO_REVERB.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 1,
                   "handleName": "Data",
@@ -23051,7 +23051,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "1024 392 244 44"
+                "bounds": "768 498 244 48"
               }
             },
             {
@@ -23062,8 +23062,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_113x44_on_POLY.png",
-                  "offImage": "key_113x44_off_POLY.png",
+                  "onImage": "key_110x44_on_POLY.png",
+                  "offImage": "key_110x44_off_POLY.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 2,
                   "handleName": "Data",
@@ -23085,7 +23085,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "27 529 119 50"
+                "bounds": "1027 115 116 50"
               }
             },
             {
@@ -23096,8 +23096,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_113x44_on_SOLO.png",
-                  "offImage": "key_113x44_off_SOLO.png",
+                  "onImage": "key_110x44_on_SOLO.png",
+                  "offImage": "key_110x44_off_SOLO.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 2,
                   "handleName": "Data",
@@ -23119,7 +23119,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "146 529 119 50"
+                "bounds": "1149 115 116 50"
               }
             },
             {
@@ -23130,8 +23130,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_100x44_on_PORTA.png",
-                  "offImage": "key_100x44_off_PORTA.png",
+                  "onImage": "key_110x44_on_PORTA.png",
+                  "offImage": "key_110x44_off_PORTA.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 1,
                   "handleName": "Data",
@@ -23153,7 +23153,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "272 526 112 56"
+                "bounds": "1024 192 122 56"
               }
             },
             {
@@ -23164,8 +23164,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_116x44_on_LEGATO.png",
-                  "offImage": "key_116x44_off_LEGATO.png",
+                  "onImage": "key_110x44_on_LEGATO.png",
+                  "offImage": "key_110x44_off_LEGATO.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 1,
                   "handleName": "Data",
@@ -23187,7 +23187,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "388 526 128 56"
+                "bounds": "1146 192 122 56"
               }
             },
             {
@@ -23198,8 +23198,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_113x44_on_NORM.png",
-                  "offImage": "key_113x44_off_NORM.png",
+                  "onImage": "key_110x44_on_NORM.png",
+                  "offImage": "key_110x44_off_NORM.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 2,
                   "handleName": "Data",
@@ -23221,7 +23221,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "523 529 119 50"
+                "bounds": "1027 275 116 50"
               }
             },
             {
@@ -23232,8 +23232,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_113x44_on_LEGATO.png",
-                  "offImage": "key_113x44_off_LEGATO.png",
+                  "onImage": "key_110x44_on_LEGATO.png",
+                  "offImage": "key_110x44_off_LEGATO.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 2,
                   "handleName": "Data",
@@ -23255,7 +23255,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "642 529 119 50"
+                "bounds": "1149 275 116 50"
               }
             },
             {
@@ -23266,8 +23266,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_113x44_on_TIME.png",
-                  "offImage": "key_113x44_off_TIME.png",
+                  "onImage": "key_110x44_on_TIME.png",
+                  "offImage": "key_110x44_off_TIME.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 2,
                   "handleName": "Data",
@@ -23289,7 +23289,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "771 529 119 50"
+                "bounds": "1027 355 116 50"
               }
             },
             {
@@ -23300,8 +23300,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_113x44_on_RATE.png",
-                  "offImage": "key_113x44_off_RATE.png",
+                  "onImage": "key_110x44_on_RATE.png",
+                  "offImage": "key_110x44_off_RATE.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 2,
                   "handleName": "Data",
@@ -23323,7 +23323,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "890 529 119 50"
+                "bounds": "1149 355 116 50"
               }
             }
           ]
