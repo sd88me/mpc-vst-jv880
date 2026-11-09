@@ -166,10 +166,12 @@ def header(p, right_title=None):
     for key, x in (("prev_bank", 0), ("next_bank", SPLIT - 44), ("preset_prev", SPLIT), ("preset_next", LW - 44)):
         p.hit(key, LX + x, 10, 44, 60)
     if right_title:
-        p.legend(1262, 26, right_title[0], 15, art.AMBER, 650, anchor="ra")
-        p.d.text((1262, 30), right_title[1], font=art.font(40, 700), fill=art.INK, anchor="ra")
-    p.d.line([16, 84, 1262, 84], fill=(8, 8, 8), width=2)
-    p.d.line([16, 86, 1262, 86], fill=(70, 70, 72), width=1)
+        p.legend(1262, 26, right_title[0], 15, art.ORANGE, 650, anchor="ra")
+        p.d.text((1262, 30), right_title[1], font=art.font(40, 700), fill=art.BLUE, anchor="ra")
+    # RANDOM: a random patch from every bank, on every page
+    p.legend(1026, 14, "PATCH", 12, art.ORANGE, 650, anchor="ma")
+    p.momentary("patch_random", 976, 30, 100, 42, "RANDOM", led=False, size=15)
+    p.d.line([16, 84, 1262, 84], fill=art.BLUE_DIM, width=1)
 
 
 def tone_switches(p, x, y, w=108, h=50):
@@ -225,16 +227,30 @@ def banks_page():
     names = ["Preset A", "Preset B", "Internal", "Card", "Pop", "Orchestral", "Piano", "Vintage", "World", "Dance", "Super Sound"]
     for i in range(22):
         c, r = divmod(i, 11)
-        x, y = 24 + c * 272, 116 + r * 44
+        x, y = 24 + c * 272, 116 + r * 30
         k = "bank_slot_%d" % (i + 1)
-        p.d.rectangle([x, y, x + 261, y + 39], fill=(14, 14, 14))
-        p.kids.append(tui.label("Value", "%d %d 240 40" % (x + 12, y), remap=tui.P(k), colour="ffd6d4cc", style="Medium", case="Original", h=19.0))
-        p.kids.append(tui.button(k, k, asset("tile_262x40_on.png", lambda: art.tile_frame(262, 40, True)),
-                                 asset("tile_262x40_off.png", lambda: art.tile_frame(262, 40, False)), "%d %d 262 40" % (x, y)))
+        p.d.rectangle([x, y, x + 261, y + 25], fill=(12, 12, 13))
+        p.kids.append(tui.label("Value", "%d %d 236 26" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=17.0))
+        p.kids.append(tui.button(k, k, asset("tile_262x26_on.png", lambda: art.tile_frame(262, 26, True)),
+                                 asset("tile_262x26_off.png", lambda: art.tile_frame(262, 26, False)), "%d %d 262 26" % (x, y)))
         p.sample[k + "$"] = names[i] if i < len(names) else ""
         p.sample[k + "#"] = 1 if i == 0 else 0
+    # favourites: 8 slots (bank + patch, shared by every project); STORE on, then a slot, stores the current patch there
+    p.header(24, 430, 474, "FAVOURITES")
+    p.toggle("fav_store", 448, 454, 112, 34, "STORE")
+    favs = ["1: Velo Harmnix", "2: Nylon Chord", "3: ---", "4: ---", "5: ---", "6: ---", "7: ---", "8: ---"]
+    for i in range(8):
+        c, r = divmod(i, 4)
+        x, y = 24 + c * 272, 498 + r * 30
+        k = "fav_%d" % (i + 1)
+        p.d.rectangle([x, y, x + 261, y + 25], fill=(12, 12, 13))
+        p.kids.append(tui.label("Value", "%d %d 236 26" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=17.0))
+        p.kids.append(tui.button(k, k, asset("tile_262x26_on.png", lambda: art.tile_frame(262, 26, True)),
+                                 asset("tile_262x26_off.png", lambda: art.tile_frame(262, 26, False)), "%d %d 262 26" % (x, y)))
+        p.sample[k + "$"] = favs[i]
+        p.sample[k + "#"] = 1 if i == 1 else 0
     p.header(590, 1262, 104, "PATCHES")
-    p.kids.append(tui.label("Value", "690 86 400 24", remap=tui.P("browse_bank_name"), colour="fff2a83c", style="Medium", case="Original", h=17.0))
+    p.kids.append(tui.label("Value", "690 86 400 24", remap=tui.P("browse_bank_name"), colour="ffec802e", style="Medium", case="Original", h=17.0))
     p.sample["browse_bank_name$"] = "Preset A"
     pn = ["A.Piano 1", "A.Piano 2", "Mellow Piano", "Pop Piano 1", "Pop Piano 2", "Pop Piano 3", "MIDIed Grand", "Country Bar",
           "Glass Piano", "Shimmer Pno", "Rock Piano", "Ballad Piano", "Echo Piano", "E.Piano 1"]
@@ -242,8 +258,8 @@ def banks_page():
         c, r = divmod(i, 14)
         x, y = 590 + c * 340, 116 + r * 32
         k = "patch_slot_%d" % (i + 1)
-        p.d.rectangle([x, y, x + 329, y + 27], fill=(14, 14, 14))
-        p.kids.append(tui.label("Value", "%d %d 310 28" % (x + 10, y), remap=tui.P(k), colour="ffd6d4cc", style="Regular", case="Original", h=17.0))
+        p.d.rectangle([x, y, x + 329, y + 27], fill=(12, 12, 13))
+        p.kids.append(tui.label("Value", "%d %d 300 28" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Regular", case="Original", h=17.0))
         p.kids.append(tui.button(k, k, asset("tile_330x28_on.png", lambda: art.tile_frame(330, 28, True)),
                                  asset("tile_330x28_off.png", lambda: art.tile_frame(330, 28, False)), "%d %d 330 28" % (x, y)))
         p.sample[k + "$"] = (pn + pn)[i]
@@ -254,14 +270,13 @@ def banks_page():
                             colour="ffd6d4cc", style="Medium", case="Original", h=19.0))
     p.sample["patch_page_text$"] = "1 / 5"
     p.momentary("patch_page_next", 960, y, 110, 40, "PAGE >", size=15)
-    p.d.rectangle([24, 116 + 11 * 44 - 2, 560, 116 + 11 * 44], fill=(10, 10, 10))
     p.qlink_group((X0, 92, 1270, 622), ["browse_bank_index", "preset", "patch_page_index"])
     return p
 
 
 def tone_head(p, t):
     header(p, ("TONE", str(t + 1)))
-    p.toggle("nvram_tone_%d_toneswitch" % t, 1090, 22, 84, 44, "ON", lit=True)
+    p.toggle("nvram_tone_%d_toneswitch" % t, 1100, 30, 84, 42, "ON", lit=True)
 
 
 def tone_envelopes(p, t):

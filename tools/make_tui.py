@@ -93,16 +93,16 @@ def definitions():
     return [{"key": "knob overlay", "value": knob_overlay}]
 
 
-def envelope(handles, name, line="ffe8e2d0", accent="fff2a83c"):
+def envelope(handles, name, line="ff1a2008", accent="ff1a2008"):
     """The live envelope widget, transparent (the window art shows through), stage letters hidden. handles: [(key, binding)]."""
     return Obj(*([("version", 1), ("envelopeType", "Pitch" if handles[0][0].startswith("pitch") else "ADSR"),
                   ("envelopeStyle", "WithoutHeader"), ("envelopeName", name),
-                  ("backgroundColour", "00000000"), ("scaleColour", "ff3a3936"), ("lineColour", line), ("fillColour", "00000000"),
+                  ("backgroundColour", "00000000"), ("scaleColour", "00000000"), ("lineColour", line), ("fillColour", "00000000"),
                   ("highlightColour", accent), ("lineWidth", 3), ("handleWidth", 18), ("handleHeight", 18), ("handleShape", "Circle"),
-                  ("handleLineWidth", 2), ("handleLineColour", accent), ("handleFillColour", "ff141312"), ("handleTextColour", "00000000"),
-                  ("handleLineWidthOnPressed", 3), ("handleLineColourOnPressed", "ffffffff"), ("handleFillColourOnPressed", "ffd9861f"),
+                  ("handleLineWidth", 2), ("handleLineColour", accent), ("handleFillColour", "ffc4dc58"), ("handleTextColour", "00000000"),
+                  ("handleLineWidthOnPressed", 3), ("handleLineColourOnPressed", "ffffffff"), ("handleFillColourOnPressed", "ffff2e22"),
                   ("handleTextColourOnPressed", "00000000"), ("handleArrowLineColourOnPressed", "ffffffff"),
-                  ("handleArrowFillColourOnPressed", "ffd9861f")]
+                  ("handleArrowFillColourOnPressed", "ffff2e22")]
                  + handles
                  + ([("attackShapeHandle", "Invalid"), ("decayShapeHandle", "Invalid"), ("releaseShapeHandle", "Invalid")]
                     if not handles[0][0].startswith("pitch") else [])
@@ -154,7 +154,7 @@ def slider_defs():
         ts = {"version": 1, "font": {"version": 1, "name": "Roboto", "style": "Regular", "height": 20.0}, "colour": "00000000",
               "justification": "horizontallyCentred verticallyCentred", "case": "Original"}
         out.append({"key": "lcdfield%dx%d" % (w, h), "value": component([
-            entry("focus", "Focus", {"version": 1, "backgroundColour": "22d9861f", "outlineColour": "ffd9861f",
+            entry("focus", "Focus", {"version": 1, "backgroundColour": "224ea0e2", "outlineColour": "ff4ea0e2",
                                      "backgroundInset": 0.0, "outlineThickness": 2.0}, "0 0 %d %d" % (w, h), visible="WhenFocussed"),
             entry("field", "Knob", {"version": 4, "knobType": "ValueSlider", "textStyle": ts, "dragOrientation": "Horizontal",
                                     "handleName": "Data"}, "0 0 %d %d" % (w, h)),
@@ -223,9 +223,9 @@ def render_preview(page, tab_names, active, qlink_group=0):
             pts = page.env_samples.get(cd["name"])
             if pts:
                 P_ = [(x + px * w, y + (1 - py) * h) for px, py in pts]
-                d.line(P_, fill=(232, 226, 208), width=3)
+                d.line(P_, fill=(26, 32, 8), width=3)
                 for q in P_:
-                    d.ellipse([q[0] - 8, q[1] - 8, q[0] + 8, q[1] + 8], outline=(242, 168, 60), width=2, fill=(20, 19, 18))
+                    d.ellipse([q[0] - 8, q[1] - 8, q[0] + 8, q[1] + 8], outline=(26, 32, 8), width=2, fill=(196, 220, 88))
         elif typ.startswith("lcdfield"):
             pass
     if page.groups and qlink_group is not None and qlink_group < len(page.groups):
