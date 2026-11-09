@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 506, "506 params: 472 frozen + 34 appended (%d)", a->numParams);
+    CHECK(a->numParams == 516, "516 params: 472 frozen + 44 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2000, "version 2000");
     {
         int bad = 0;
@@ -208,6 +208,37 @@ int main(int argc, char** argv)
     a->setParameter(a, BSLOT2, 0.0f);   // the host toggles a lit tile off: it stays lit
     settle(a);
     CHECK(a->getParameter(a, BSLOT2) == 1.f && !disp(a, BSLOT2).empty(), "a lit tile stays lit, shows \"%s\"", disp(a, BSLOT2).c_str());
+    std::printf("== random patch, favourites\n");
+    {
+        const int RND = idx("patch_random"), FST = idx("fav_store"), F1 = idx("fav_1"), F2 = idx("fav_2");
+        const int pr = engi(a, "preset");
+        a->setParameter(a, RND, 1.0f);
+        settle(a, 200);
+        jv_dbg_tick(a);
+        const int pr2 = engi(a, "preset");
+        CHECK(pr2 != pr && a->getParameter(a, RND) == 0.f && std::lround(plainOf(a, PRESET)) == pr2,
+              "RANDOM: patch %d -> %d, host PATCH follows, button back to 0", pr, pr2);
+        const std::string nm = eng(a, "patch_name");
+        a->setParameter(a, FST, 1.0f);
+        a->setParameter(a, F2, 1.0f);
+        settle(a);
+        a->setParameter(a, F2, 0.0f);
+        settle(a);
+        CHECK(a->getParameter(a, FST) == 0.f && disp(a, F2) == "2: " + nm && a->getParameter(a, F2) == 1.f,
+              "STORE + FAV 2: \"%s\", lit, STORE off again", disp(a, F2).c_str());
+        CHECK(disp(a, F1) == "1: ---", "FAV 1 empty: \"%s\"", disp(a, F1).c_str());
+        a->setParameter(a, NEXT, 1.0f);
+        settle(a, 200);
+        a->setParameter(a, NEXT, 0.0f);
+        settle(a);
+        CHECK(a->getParameter(a, F2) == 0.f, "another patch: FAV 2 goes dark");
+        a->setParameter(a, F2, 1.0f);
+        settle(a, 200);
+        jv_dbg_tick(a);
+        CHECK(engi(a, "preset") == pr2 && eng(a, "patch_name") == nm && a->getParameter(a, F2) == 1.f, "FAV 2 recalls patch %d \"%s\"",
+              engi(a, "preset"), eng(a, "patch_name").c_str());
+        a->setParameter(a, F2, 0.0f);
+    }
     run(a, 2, {{0xB0, 20, 64}});   // CC 20 -> the first mapped control
     settle(a);
     CHECK(g_ccMap[0] == CUT && engi(a, "macro_cutoff") == 64 && std::lround(plainOf(a, CUT)) == 64, "CC 20 64 -> CUTOFF %d", engi(a, "macro_cutoff"));

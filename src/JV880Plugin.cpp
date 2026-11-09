@@ -13,6 +13,9 @@
 //     the param drops back to 0. PATCH -/+ (kStep) nudge PATCH. List tiles (kTile) fire on a tap and show the engine's "<key>_on".
 //   * text readouts (kText): the value text is the engine's text; the value is a counter bumped when the text changes, because the
 //     host only re-reads a param's text when its value moves.
+//   * front-end functions (kLocal, no engine key): RANDOM loads a random patch from every bank; FAV 1-8 recall a stored bank + patch
+//     (with FAV STORE on, a tap stores the current patch there instead). The slots live in <plugin folder>/jv880-favourites.txt, so
+//     they are shared by every project.
 //   * ui_open (kUi): which drawn pick-list the skin shows; never reaches the engine.
 // Parameter 0 is OCTAVE. The host nudges parameter 0 to its far end and back on every prepare: a change applies only after it has
 // held for ~40 ms, and a pair that ends where it started does nothing.
@@ -27,6 +30,9 @@
 #include "params_gen.h"
 
 #include <pthread.h>
+#include <fstream>
+#include <mutex>
+#include <random>
 #include <sys/stat.h>
 
 #include <algorithm>
@@ -136,6 +142,8 @@ public:
 
         api_ = move_plugin_init_v2(nullptr);   // the engine ignores the host struct
         if (api_) inst_ = api_->create_instance(dataDir().c_str(), nullptr);   // fast: the ROM load runs on the engine's own thread
+        if (std::strcmp(g_pspecs[kRandom].key, "patch_random") || std::strcmp(g_pspecs[kFav1].key, "fav_1")) std::abort();
+        loadFavs();
         worker_ = std::thread(&JV880Plugin::workerMain, this);
     }
 
@@ -195,6 +203,7 @@ public:
         const PSpec& s = g_pspecs[index];
         if (s.flags & kAnchor) { hostMoved_[index].store(true); return; }   // an envelope's fixed start level: put back
         if (s.flags & kUi) return;
+        if (s.flags & kLocal) { localChanged(index, s, plain); return; }
         if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
         if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
         {
@@ -250,6 +259,7 @@ public:
         (void)plain;
         if (index < 0 || index >= kNumParams) return false;
         const PSpec& s = g_pspecs[index];
+        if ((s.flags & kText) && (s.flags & kLocal)) { out = localText(index); return true; }
         if (s.flags & kText)   // the engine's text (a tile's name, a bank / patch name, the page text)
         {
             char buf[128];
@@ -423,6 +433,7 @@ private:
         }
         for (int i = 0; i < kNumParams; ++i)
             if (release_[i].exchange(false)) { held_[i].store(false); pushValue(i, 0.0f); }
+        if (storeOff_.exchange(false)) pushValue(kFavStore, 0.0f);
         if (notifyUi_.exchange(false)) { t_pushing = kUiParam; notifyHostParameterChanged(kUiParam); t_pushing = -1; }
         if (resync_.exchange(false))
         {
@@ -470,7 +481,8 @@ private:
                 if (!(moved || due)) continue;
                 char k2[64];
                 std::snprintf(k2, sizeof k2, "%s_on", s.key);
-                const float on = engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f;
+                const float on = (s.flags & kLocal) ? (favLit(i) ? 1.0f : 0.0f)
+                                                    : (engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f);
                 if (moved || on != told_[i]) { pushValue(i, on); if (!moved) ++changed; }
                 continue;
             }
@@ -491,7 +503,8 @@ private:
             {
                 const PSpec& s = g_pspecs[i];
                 if (!(s.flags & kText)) continue;
-                const uint32_t h = engineGet(s.key, buf, sizeof buf) ? fnv(buf) | 1u : 1u;
+                const uint32_t h = (s.flags & kLocal) ? fnv(localText(i).c_str()) | 1u
+                                                      : engineGet(s.key, buf, sizeof buf) ? fnv(buf) | 1u : 1u;
                 if (h == textHash_[(size_t)i]) continue;
                 textHash_[(size_t)i] = h;
                 textChanged = true;
@@ -508,6 +521,111 @@ private:
             lastDisplay_ = now;
             requestDisplayUpdate();
         }
+    }
+
+    // ---- random patch, favourites (kLocal) ---------------------------------------------------------------------------------------
+    static constexpr int kRandom = 506, kFavStore = 507, kFav1 = 508, kFavs = 8;
+    struct Fav { int index = -1; std::string bank, name; };
+
+    static std::string favFile() { return mpc::detail::computePluginFolder() + "/jv880-favourites.txt"; }
+
+    void loadFavs()
+    {
+        std::lock_guard<std::mutex> g(favMu_);
+        std::ifstream f(favFile());
+        std::string line;
+        for (int n = 0; n < kFavs && std::getline(f, line); ++n)   // one slot per line: index <TAB> bank <TAB> patch name
+        {
+            const size_t a = line.find('\t'), b = a == std::string::npos ? a : line.find('\t', a + 1);
+            favs_[n] = Fav();
+            if (b == std::string::npos) continue;
+            favs_[n].index = std::atoi(line.substr(0, a).c_str());
+            favs_[n].bank = line.substr(a + 1, b - a - 1);
+            favs_[n].name = line.substr(b + 1);
+        }
+    }
+
+    void saveFavs()
+    {
+        std::lock_guard<std::mutex> g(favMu_);
+        const std::string tmp = favFile() + ".tmp";
+        {
+            std::ofstream f(tmp, std::ios::trunc);
+            if (!f) return;
+            for (const Fav& v : favs_) f << v.index << '\t' << v.bank << '\t' << v.name << '\n';
+        }
+        std::rename(tmp.c_str(), favFile().c_str());
+    }
+
+    std::string localText(int i)
+    {
+        if (i < kFav1 || i >= kFav1 + kFavs) return "";
+        std::lock_guard<std::mutex> g(favMu_);
+        const Fav& v = favs_[i - kFav1];
+        char b[96];
+        if (v.index < 0) std::snprintf(b, sizeof b, "%d: ---", i - kFav1 + 1);
+        else std::snprintf(b, sizeof b, "%d: %s", i - kFav1 + 1, v.name.c_str());
+        return b;
+    }
+
+    bool favLit(int i)
+    {
+        if (i < kFav1 || i >= kFav1 + kFavs) return false;
+        char b[32];
+        const int cur = engineGet("preset", b, sizeof b) ? std::atoi(b) : -1;
+        std::lock_guard<std::mutex> g(favMu_);
+        return favs_[i - kFav1].index >= 0 && favs_[i - kFav1].index == cur;
+    }
+
+    void selectPatch(int index)
+    {
+        char b[24];
+        std::snprintf(b, sizeof b, "%d", index);
+        engineSet("preset", b);
+        for (int i = 0; i < kNumParams; ++i)   // PATCH reads back on the next pass (the patch signature change sweeps the rest)
+            if (!std::strcmp(g_pspecs[i].key, "preset")) { told_[i].store(-1.0e9f); hostMoved_[i].store(true); }
+    }
+
+    void localChanged(int index, const PSpec& s, float plain)
+    {
+        if (!(s.flags & kMomentary)) return;   // FAV STORE: just its value
+        if (plain < 0.5f) { held_[index].store(false); if (s.flags & kTile) hostMoved_[index].store(true); return; }
+        if (held_[index].exchange(true)) return;
+        char b[128];
+        if (index == kRandom)
+        {
+            const int n = engineGet("total_patches", b, sizeof b) ? std::atoi(b) : 0;
+            if (n > 1)
+            {
+                const int cur = engineGet("preset", b, sizeof b) ? std::atoi(b) : -1;
+                int r;
+                do r = (int)(rng_() % (uint32_t)n); while (r == cur);
+                selectPatch(r);
+            }
+            release_[index].store(true);
+            return;
+        }
+        const int slot = index - kFav1;
+        if (get(kFavStore) > 0.5f)
+        {
+            Fav v;
+            v.index = engineGet("preset", b, sizeof b) ? std::atoi(b) : -1;
+            if (engineGet("bank_name", b, sizeof b)) v.bank = b;
+            if (engineGet("patch_name", b, sizeof b)) v.name = b;
+            if (v.index >= 0)
+            {
+                { std::lock_guard<std::mutex> g(favMu_); favs_[slot] = v; }
+                saveFavs();
+            }
+            storeOff_.store(true);
+        }
+        else
+        {
+            int target;
+            { std::lock_guard<std::mutex> g(favMu_); target = favs_[slot].index; }
+            if (target >= 0) selectPatch(target);
+        }
+        hostMoved_[index].store(true);
     }
 
 public:
@@ -542,6 +660,10 @@ private:
     std::atomic<float>* told_ = nullptr;       // the value the host was last told (or sent), per parameter
     std::vector<float> lastPos_;               // the host's last position, for settle()
     std::vector<uint32_t> textHash_;
+    std::mutex favMu_;
+    Fav favs_[kFavs];
+    std::mt19937 rng_{std::random_device{}()};
+    std::atomic<bool> storeOff_{false};
     std::string lastState_;
     int16_t block_[kBlock * 2] = {0};
     int pos_ = kBlock;
