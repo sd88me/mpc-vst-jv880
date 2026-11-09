@@ -386,7 +386,6 @@ def tone_main_page(t):
     p.toggle(k("fxmswitch"), RX, 218, RW, 44, "FXM")
     p.header(RX, 1262, 304, "FILTER MODE")
     p.segments(k("filtermode"), RX, 318, RW, 40, gap=8, sel=1)
-    p.legend(RX, 466, "LFOs: press TONE %d again" % (t + 1), 13, art.INK_DIM, 500)
     tone_envelopes(p, t)
     return p
 
