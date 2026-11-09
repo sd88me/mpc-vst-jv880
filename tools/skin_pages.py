@@ -274,23 +274,24 @@ def play_page():
             p.slider(k, col(i), y + 12, SW, n, s)
         p.qlink_group((X0, y - 16, X1, y + 76), [c[0] for c in ctl])
     # macro envelope: four sliders (Q-Link block) beside the live ADSR
-    EW = 140
-    p.header(X0 + 8, 632, 418, "ENVELOPE  (MACRO)", q=True)
+    # bottom row: the envelope macros (2 x 2 cells, a Q-Link block) and the live ADSR, side by side at the same height
+    EW = 232
+    p.header(X0 + 8, 518, 418, "ENVELOPE  (MACRO)", q=True)
     env = [("macro_attack", "ATTACK", .1), ("macro_decay", "DECAY", .45), ("macro_sustain", "SUSTAIN", .6), ("macro_release", "RELEASE", .35)]
-    for i, (k, n, s) in enumerate(env):
-        p.slider(k, col(i, EW), 430, EW, n, s)
-    p.qlink_group((X0, 402, 640, 494), [e[0] for e in env])
-    p.envelope_window(666, 412, 1256, 612, "ENVELOPE", tui.adsr_env(*[e[0] for e in env], name="macro env"), "macro env",
+    for i, (k, n, s_) in enumerate(env):
+        r, c = divmod(i, 2)
+        p.slider(k, col(c, EW), 430 + r * 92, EW, n, s_)
+    p.qlink_group((X0, 402, 526, 604), [e[0] for e in env])
+    p.envelope_window(552, 414, 1002, 598, "ENVELOPE", tui.adsr_env(*[e[0] for e in env], name="macro env"), "macro env",
                       sample=[(0, 0), (.12, 1), (.35, .6), (.7, .6), (.92, 0)])
-    # key mode (screen only)
-    p.header(X0 + 8, 632, 528, "KEY MODE")
-    p.segments("nvram_patchCommon_keyassign", col(0, EW), 542, 2 * EW + 16, 44)
-    p.toggle("nvram_patchCommon_sololegato", col(2, EW), 542, EW, 44, "LEGATO")
-    p.toggle("nvram_patchCommon_portamentoswitch", col(3, EW), 542, EW, 44, "PORTA")
-    # right column: tone on/off, velocity switch
+    # right column: tone on/off, velocity switch, key mode (screen only)
     tone_switches(p, RX, 104)
     p.header(RX, 1262, 262, "VELOCITY")
     p.toggle("nvram_patchCommon_velocityswitch", RX, 276, RW, 44, "VELOCITY SWITCH")
+    p.header(RX, 1262, 418, "KEY MODE")
+    p.segments("nvram_patchCommon_keyassign", RX, 432, RW, 44, gap=12)
+    p.toggle("nvram_patchCommon_sololegato", RX, 498, (RW - 12) // 2, 44, "LEGATO")
+    p.toggle("nvram_patchCommon_portamentoswitch", RX + (RW - 12) // 2 + 12, 498, (RW - 12) // 2, 44, "PORTA")
     return p
 
 

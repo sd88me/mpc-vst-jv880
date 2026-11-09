@@ -68,108 +68,6 @@
           }
         },
         {
-          "key": "cell140",
-          "value": {
-            "version": 2,
-            "actions": [
-              {
-                "version": 1,
-                "onAction": "Mouse Down",
-                "handler": "Q-Link",
-                "handleName": "Data",
-                "additionalData": ""
-              },
-              {
-                "version": 1,
-                "onAction": "Double Click",
-                "handler": "Show Overlay",
-                "handleName": "Data",
-                "additionalData": "knob overlay"
-              },
-              {
-                "version": 1,
-                "onAction": "Enter Pressed",
-                "handler": "Show Overlay",
-                "handleName": "Data",
-                "additionalData": "knob overlay"
-              }
-            ],
-            "backgroundData": {
-              "version": 1,
-              "focussed": {
-                "version": 1,
-                "colour": "0",
-                "image": ""
-              },
-              "unfocussed": {
-                "version": 1,
-                "colour": "0",
-                "image": ""
-              }
-            },
-            "ignoreMousePresses": false,
-            "disableCoarseDataWheel": false,
-            "componentsData": [
-              {
-                "version": 2,
-                "componentData": {
-                  "version": 1,
-                  "name": "focus",
-                  "type": "Focus",
-                  "data": {
-                    "version": 1,
-                    "backgroundColour": "19ffffff",
-                    "outlineColour": "ffe81f40",
-                    "backgroundInset": 4.0,
-                    "outlineThickness": 1.0
-                  }
-                },
-                "handle remapping": {
-                  "version": 1,
-                  "map": []
-                },
-                "bounds": {
-                  "version": 1,
-                  "acceptsHWFocus": "No",
-                  "showWhenDataModelInvalid": "Show",
-                  "whenVisible": "WhenFocussed",
-                  "boundsType": "Absolute",
-                  "bounds": "-4 -4 148 70"
-                }
-              },
-              {
-                "version": 2,
-                "componentData": {
-                  "version": 1,
-                  "name": "strip",
-                  "type": "Knob",
-                  "data": {
-                    "version": 3,
-                    "knobType": "FilmStrip",
-                    "filmStrip": "cell_140.png",
-                    "numFrames": 128,
-                    "invert": false,
-                    "dragOrientation": "Horizontal",
-                    "handleName": "Data"
-                  }
-                },
-                "handle remapping": {
-                  "version": 1,
-                  "map": []
-                },
-                "bounds": {
-                  "version": 1,
-                  "acceptsHWFocus": "No",
-                  "showWhenDataModelInvalid": "Show",
-                  "whenVisible": "Always",
-                  "boundsType": "Absolute",
-                  "bounds": "0 0 140 62"
-                }
-              }
-            ]
-          }
-        },
-        {
           "key": "cell185",
           "value": {
             "version": 2,
@@ -678,27 +576,6 @@
     },
     "replacementStrings": [
       {
-        "key": "Parameter 228",
-        "value": [
-          "POLY",
-          "SOLO"
-        ]
-      },
-      {
-        "key": "Parameter 227",
-        "value": [
-          "OFF",
-          "ON"
-        ]
-      },
-      {
-        "key": "Parameter 232",
-        "value": [
-          "OFF",
-          "ON"
-        ]
-      },
-      {
         "key": "Parameter 13",
         "value": [
           "OFF",
@@ -728,6 +605,27 @@
       },
       {
         "key": "Parameter 226",
+        "value": [
+          "OFF",
+          "ON"
+        ]
+      },
+      {
+        "key": "Parameter 228",
+        "value": [
+          "POLY",
+          "SOLO"
+        ]
+      },
+      {
+        "key": "Parameter 227",
+        "value": [
+          "OFF",
+          "ON"
+        ]
+      },
+      {
+        "key": "Parameter 232",
         "value": [
           "OFF",
           "ON"
@@ -2327,7 +2225,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "56 442 100 30"
+                "bounds": "148 442 100 30"
               }
             },
             {
@@ -2335,7 +2233,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_attack",
-                "type": "cell140",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2356,7 +2254,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 426 140 62"
+                "bounds": "30 426 232 62"
               }
             },
             {
@@ -2398,7 +2296,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "212 442 100 30"
+                "bounds": "396 442 100 30"
               }
             },
             {
@@ -2406,7 +2304,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_decay",
-                "type": "cell140",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2427,7 +2325,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "186 426 140 62"
+                "bounds": "278 426 232 62"
               }
             },
             {
@@ -2469,7 +2367,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "368 442 100 30"
+                "bounds": "148 534 100 30"
               }
             },
             {
@@ -2477,7 +2375,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_sustain",
-                "type": "cell140",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2498,7 +2396,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "342 426 140 62"
+                "bounds": "30 518 232 62"
               }
             },
             {
@@ -2540,7 +2438,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "524 442 100 30"
+                "bounds": "396 534 100 30"
               }
             },
             {
@@ -2548,7 +2446,7 @@
               "componentData": {
                 "version": 1,
                 "name": "macro_release",
-                "type": "cell140",
+                "type": "cell232",
                 "data": {
                   "version": 1,
                   "handleName": "Data"
@@ -2569,7 +2467,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "498 426 140 62"
+                "bounds": "278 518 232 62"
               }
             },
             {
@@ -2624,143 +2522,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "666 412 590 200"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_keyassign 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_145x44_on_POLY.png",
-                  "offImage": "key_145x44_off_POLY.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 2,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 228"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "24 536 157 56"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_keyassign 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_145x44_on_SOLO.png",
-                  "offImage": "key_145x44_off_SOLO.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 2,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 228"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "175 536 157 56"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_sololegato",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_140x44_on_LEGATO.png",
-                  "offImage": "key_140x44_off_LEGATO.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 227"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "336 536 152 56"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_portamentoswitch",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_140x44_on_PORTA.png",
-                  "offImage": "key_140x44_off_PORTA.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 232"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "492 536 152 56"
+                "bounds": "552 414 450 184"
               }
             },
             {
@@ -2932,6 +2694,142 @@
                 "boundsType": "Absolute",
                 "bounds": "1024 270 244 56"
               }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_keyassign 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_110x44_on_POLY.png",
+                  "offImage": "key_110x44_off_POLY.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 2,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 228"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1024 426 122 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_keyassign 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_110x44_on_SOLO.png",
+                  "offImage": "key_110x44_off_SOLO.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 2,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 228"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1146 426 122 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_sololegato",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_110x44_on_LEGATO.png",
+                  "offImage": "key_110x44_off_LEGATO.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 1,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 227"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1024 492 122 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_portamentoswitch",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_110x44_on_PORTA.png",
+                  "offImage": "key_110x44_off_PORTA.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 1,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 232"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1146 492 122 56"
+              }
             }
           ]
         },
@@ -2939,7 +2837,7 @@
           "16 88 994 92",
           "16 188 994 92",
           "16 288 994 92",
-          "16 402 624 92"
+          "16 402 510 202"
         ]
       },
       {
