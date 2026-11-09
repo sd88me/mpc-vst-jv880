@@ -100,7 +100,8 @@ class Page:
         self.slider_keys.add(key)
         if STYLE == "screen" and self.inside(x, y):
             h = 62
-            self.legend(x + 4, y - 1, name, 12, art.LCD_INK, 700)
+            qx = 30 if x == col(0) else 4   # first column: clear of the MPC's Q tag (about 36 px on the device)
+            self.legend(x + qx, y - 1, name, 12, art.LCD_INK, 700)
             self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 114, y + 12), remap=tui.P(key),
                                        just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
             comp = "cell%d%s" % (w, tag)
@@ -175,7 +176,7 @@ class Page:
             bx, by = x + c * (bw + gap), y + r * (h + row_gap)
             on, off = self.keyimg(bx, by, bw, h, True, lb), self.keyimg(bx, by, bw, h, False, lb)
             self.kids.append(tui.button("%s %d" % (key, i), key, on, off,
-                                        "%d %d %d %d" % (x + c * (bw + gap) - 3, y + r * (h + row_gap) - 3, bw + 6, h + 6),
+                                        "%d %d %d %d" % (bx - 6, by - 6, bw + 12, h + 12),
                                         button_id=i, group=len(labels)))
         self.choices[key] = spec(key)[2] or labels
         self.sample[key + "#"] = sel

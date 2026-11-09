@@ -433,7 +433,12 @@ private:
         }
         for (int i = 0; i < kNumParams; ++i)
             if (release_[i].exchange(false)) { held_[i].store(false); pushValue(i, 0.0f); }
-        if (storeOff_.exchange(false)) pushValue(kFavStore, 0.0f);
+        if (localDirty_.exchange(false))   // STORE / favourite lit states changed by a tap: push them and redraw
+        {
+            pushValue(kFavStore, storeArmed_.load() ? 1.0f : 0.0f);
+            for (int f = 0; f < kFavs; ++f) pushValue(kFav1 + f, favLit(kFav1 + f) ? 1.0f : 0.0f);
+            wantDisplay_ = true;
+        }
         if (notifyUi_.exchange(false)) { t_pushing = kUiParam; notifyHostParameterChanged(kUiParam); t_pushing = -1; }
         if (resync_.exchange(false))
         {
@@ -483,7 +488,12 @@ private:
                 std::snprintf(k2, sizeof k2, "%s_on", s.key);
                 const float on = (s.flags & kLocal) ? (favLit(i) ? 1.0f : 0.0f)
                                                     : (engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f);
-                if (moved || on != told_[i]) { pushValue(i, on); if (!moved) ++changed; }
+                if (moved || on != told_[i])
+                {
+                    if ((s.flags & kLocal) && on != told_[i]) wantDisplay_ = true;
+                    pushValue(i, on);
+                    if (!moved) ++changed;
+                }
                 continue;
             }
             if (s.flags & kAnchor) { if (moved || told_[i] < -1.0e8f) pushValue(i, s.def); continue; }
@@ -588,9 +598,17 @@ private:
 
     void localChanged(int index, const PSpec& s, float plain)
     {
-        if (!(s.flags & kMomentary)) return;   // FAV STORE: just its value
-        if (plain < 0.5f) { held_[index].store(false); if (s.flags & kTile) hostMoved_[index].store(true); return; }
-        if (held_[index].exchange(true)) return;
+        // The MPC's Buttons toggle: a tap on a lit button sends 0, on a dark one 1, so every change is one tap here. The lit state
+        // is the plugin's (pushed back by the worker, with a display update: the MPC redraws a button only then).
+        if (index == kFavStore)
+        {
+            if (std::fabs(plain - (storeArmed_.load() ? 1.0f : 0.0f)) < 0.5f) return;   // our own push echoed
+            storeArmed_.store(!storeArmed_.load());
+            localDirty_.store(true);
+            return;
+        }
+        if (s.flags & kTile) { if (std::fabs(plain - told_[index].load()) < 0.5f) return; }   // not a tap: the state we pushed
+        else if (plain < 0.5f) { held_[index].store(false); return; }
         char b[128];
         if (index == kRandom)
         {
@@ -606,7 +624,7 @@ private:
             return;
         }
         const int slot = index - kFav1;
-        if (get(kFavStore) > 0.5f)
+        if (storeArmed_.load())
         {
             Fav v;
             v.index = engineGet("preset", b, sizeof b) ? std::atoi(b) : -1;
@@ -617,7 +635,7 @@ private:
                 { std::lock_guard<std::mutex> g(favMu_); favs_[slot] = v; }
                 saveFavs();
             }
-            storeOff_.store(true);
+            storeArmed_.store(false);
         }
         else
         {
@@ -626,6 +644,7 @@ private:
             if (target >= 0) selectPatch(target);
         }
         hostMoved_[index].store(true);
+        localDirty_.store(true);
     }
 
 public:
@@ -663,7 +682,7 @@ private:
     std::mutex favMu_;
     Fav favs_[kFavs];
     std::mt19937 rng_{std::random_device{}()};
-    std::atomic<bool> storeOff_{false};
+    std::atomic<bool> storeArmed_{false}, localDirty_{false};
     std::string lastState_;
     int16_t block_[kBlock * 2] = {0};
     int pos_ = kBlock;
