@@ -193,6 +193,7 @@ public:
         if (index < 0 || index >= kNumParams || !inst_) return;
         if (t_pushing == index) return;          // the host echoing what the worker just told it
         const PSpec& s = g_pspecs[index];
+        if (s.flags & kAnchor) { hostMoved_[index].store(true); return; }   // an envelope's fixed start level: put back
         if (s.flags & kUi) return;
         if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
         if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
@@ -473,6 +474,7 @@ private:
                 if (moved || on != told_[i]) { pushValue(i, on); if (!moved) ++changed; }
                 continue;
             }
+            if (s.flags & kAnchor) { if (moved || told_[i] < -1.0e8f) pushValue(i, s.def); continue; }
             if (!(s.flags & kPolled)) continue;
             if (i == 0 && pend0At_.load()) continue;   // OCTAVE not applied yet
             if ((s.flags & kReadOnly) ? !(moved || revChanged || told_[i] < -1.0e8f) : !(moved || due)) continue;

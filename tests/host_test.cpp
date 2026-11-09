@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 472, "472 params (%d)", a->numParams);
+    CHECK(a->numParams == 506, "506 params: 472 frozen + 34 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2000, "version 2000");
     {
         int bad = 0;
@@ -150,6 +150,14 @@ int main(int argc, char** argv)
               "a sub-step nudge up moves one step (%d -> engine %d, host %.0f)", (int)cur, engi(a, "nvram_patchCommon_patchlevel"), plainOf(a, P_LVL));
     }
 
+    {   // appended in 2.0: a tone's filter cutoff; an envelope anchor snaps back
+        const int TC = idx("nvram_tone_1_cutofffrequency"), AZ = idx("env_anchor_mid");
+        a->setParameter(a, TC, norm(TC, 33));
+        a->setParameter(a, AZ, 0.9f);
+        settle(a);
+        CHECK(engi(a, "nvram_tone_1_cutofffrequency") == 33, "T2 CUTOFF 33 -> engine %d", engi(a, "nvram_tone_1_cutofffrequency"));
+        CHECK(std::fabs(a->getParameter(a, AZ) - 0.5f) < 0.01f, "env_anchor_mid snaps back to the middle (%.2f)", a->getParameter(a, AZ));
+    }
     std::printf("== patch step, readback, text\n");
     const int p0 = engi(a, "preset");
     const std::string n0 = disp(a, PNAME);
