@@ -741,14 +741,6 @@
         ]
       },
       {
-        "key": "Parameter 474",
-        "value": [
-          "OFF",
-          "LPF",
-          "HPF"
-        ]
-      },
-      {
         "key": "Parameter 243",
         "value": [
           "INT-A",
@@ -762,6 +754,14 @@
         "value": [
           "OFF",
           "ON"
+        ]
+      },
+      {
+        "key": "Parameter 474",
+        "value": [
+          "OFF",
+          "LPF",
+          "HPF"
         ]
       },
       {
@@ -794,14 +794,6 @@
         ]
       },
       {
-        "key": "Parameter 482",
-        "value": [
-          "OFF",
-          "LPF",
-          "HPF"
-        ]
-      },
-      {
         "key": "Parameter 286",
         "value": [
           "INT-A",
@@ -815,6 +807,14 @@
         "value": [
           "OFF",
           "ON"
+        ]
+      },
+      {
+        "key": "Parameter 482",
+        "value": [
+          "OFF",
+          "LPF",
+          "HPF"
         ]
       },
       {
@@ -847,14 +847,6 @@
         ]
       },
       {
-        "key": "Parameter 490",
-        "value": [
-          "OFF",
-          "LPF",
-          "HPF"
-        ]
-      },
-      {
         "key": "Parameter 329",
         "value": [
           "INT-A",
@@ -868,6 +860,14 @@
         "value": [
           "OFF",
           "ON"
+        ]
+      },
+      {
+        "key": "Parameter 490",
+        "value": [
+          "OFF",
+          "LPF",
+          "HPF"
         ]
       },
       {
@@ -900,14 +900,6 @@
         ]
       },
       {
-        "key": "Parameter 498",
-        "value": [
-          "OFF",
-          "LPF",
-          "HPF"
-        ]
-      },
-      {
         "key": "Parameter 372",
         "value": [
           "INT-A",
@@ -921,6 +913,14 @@
         "value": [
           "OFF",
           "ON"
+        ]
+      },
+      {
+        "key": "Parameter 498",
+        "value": [
+          "OFF",
+          "LPF",
+          "HPF"
         ]
       },
       {
@@ -8640,108 +8640,6 @@
               "version": 2,
               "componentData": {
                 "version": 1,
-                "name": "nvram_tone_0_filtermode 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_OFF.png",
-                  "offImage": "key_73x34_off_OFF.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 474"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "771 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_0_filtermode 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_LPF.png",
-                  "offImage": "key_73x34_off_LPF.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 474"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "850 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_0_filtermode 2",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_HPF.png",
-                  "offImage": "key_73x34_off_HPF.png",
-                  "buttonId": 2,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 474"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "929 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
                 "name": "label",
                 "type": "Label",
                 "data": {
@@ -9190,6 +9088,108 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "1024 212 244 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_0_filtermode 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_OFF.png",
+                  "offImage": "key_72x40_off_OFF.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 474"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_0_filtermode 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_LPF.png",
+                  "offImage": "key_72x40_off_LPF.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 474"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1107 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_0_filtermode 2",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_HPF.png",
+                  "offImage": "key_72x40_off_HPF.png",
+                  "buttonId": 2,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 474"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1187 315 78 46"
               }
             },
             {
@@ -12080,108 +12080,6 @@
               "version": 2,
               "componentData": {
                 "version": 1,
-                "name": "nvram_tone_1_filtermode 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_OFF.png",
-                  "offImage": "key_73x34_off_OFF.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 482"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "771 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_1_filtermode 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_LPF.png",
-                  "offImage": "key_73x34_off_LPF.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 482"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "850 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_1_filtermode 2",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_HPF.png",
-                  "offImage": "key_73x34_off_HPF.png",
-                  "buttonId": 2,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 482"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "929 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
                 "name": "label",
                 "type": "Label",
                 "data": {
@@ -12630,6 +12528,108 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "1024 212 244 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_1_filtermode 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_OFF.png",
+                  "offImage": "key_72x40_off_OFF.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 482"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_1_filtermode 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_LPF.png",
+                  "offImage": "key_72x40_off_LPF.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 482"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1107 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_1_filtermode 2",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_HPF.png",
+                  "offImage": "key_72x40_off_HPF.png",
+                  "buttonId": 2,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 482"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1187 315 78 46"
               }
             },
             {
@@ -15520,108 +15520,6 @@
               "version": 2,
               "componentData": {
                 "version": 1,
-                "name": "nvram_tone_2_filtermode 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_OFF.png",
-                  "offImage": "key_73x34_off_OFF.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 490"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "771 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_2_filtermode 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_LPF.png",
-                  "offImage": "key_73x34_off_LPF.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 490"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "850 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_2_filtermode 2",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_HPF.png",
-                  "offImage": "key_73x34_off_HPF.png",
-                  "buttonId": 2,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 490"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "929 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
                 "name": "label",
                 "type": "Label",
                 "data": {
@@ -16070,6 +15968,108 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "1024 212 244 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_2_filtermode 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_OFF.png",
+                  "offImage": "key_72x40_off_OFF.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 490"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_2_filtermode 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_LPF.png",
+                  "offImage": "key_72x40_off_LPF.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 490"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1107 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_2_filtermode 2",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_HPF.png",
+                  "offImage": "key_72x40_off_HPF.png",
+                  "buttonId": 2,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 490"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1187 315 78 46"
               }
             },
             {
@@ -18960,108 +18960,6 @@
               "version": 2,
               "componentData": {
                 "version": 1,
-                "name": "nvram_tone_3_filtermode 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_OFF.png",
-                  "offImage": "key_73x34_off_OFF.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 498"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "771 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_3_filtermode 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_LPF.png",
-                  "offImage": "key_73x34_off_LPF.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 498"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "850 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_3_filtermode 2",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_73x34_on_HPF.png",
-                  "offImage": "key_73x34_off_HPF.png",
-                  "buttonId": 2,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 498"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "929 235 79 40"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
                 "name": "label",
                 "type": "Label",
                 "data": {
@@ -19510,6 +19408,108 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "1024 212 244 56"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_3_filtermode 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_OFF.png",
+                  "offImage": "key_72x40_off_OFF.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 498"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_3_filtermode 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_LPF.png",
+                  "offImage": "key_72x40_off_LPF.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 498"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1107 315 78 46"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_tone_3_filtermode 2",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_72x40_on_HPF.png",
+                  "offImage": "key_72x40_off_HPF.png",
+                  "buttonId": 2,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 498"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1187 315 78 46"
               }
             },
             {
@@ -22153,278 +22153,6 @@
               "version": 2,
               "componentData": {
                 "version": 1,
-                "name": "nvram_patchCommon_reverbtype 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_ROOM1.png",
-                  "offImage": "key_116x30_off_ROOM1.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "27 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_ROOM2.png",
-                  "offImage": "key_116x30_off_ROOM2.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "148 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 2",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_STAGE1.png",
-                  "offImage": "key_116x30_off_STAGE1.png",
-                  "buttonId": 2,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "269 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 3",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_STAGE2.png",
-                  "offImage": "key_116x30_off_STAGE2.png",
-                  "buttonId": 3,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "390 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 4",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_HALL1.png",
-                  "offImage": "key_116x30_off_HALL1.png",
-                  "buttonId": 4,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "511 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 5",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_HALL2.png",
-                  "offImage": "key_116x30_off_HALL2.png",
-                  "buttonId": 5,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "632 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 6",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_DELAY.png",
-                  "offImage": "key_116x30_off_DELAY.png",
-                  "buttonId": 6,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "753 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_reverbtype 7",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_116x30_on_PANmDLY.png",
-                  "offImage": "key_116x30_off_PANmDLY.png",
-                  "buttonId": 7,
-                  "numButtonsInGroup": 8,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 235"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "874 213 122 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
                 "name": "label",
                 "type": "Label",
                 "data": {
@@ -22460,7 +22188,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 257 110 24"
+                "bounds": "152 211 110 24"
               }
             },
             {
@@ -22489,7 +22217,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 282 232 30"
+                "bounds": "30 236 232 30"
               }
             },
             {
@@ -22531,7 +22259,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 257 110 24"
+                "bounds": "400 211 110 24"
               }
             },
             {
@@ -22560,7 +22288,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 282 232 30"
+                "bounds": "278 236 232 30"
               }
             },
             {
@@ -22602,7 +22330,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 257 110 24"
+                "bounds": "648 211 110 24"
               }
             },
             {
@@ -22631,143 +22359,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 282 232 30"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_chorustype 0",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_239x30_on_CHORUS1.png",
-                  "offImage": "key_239x30_off_CHORUS1.png",
-                  "buttonId": 0,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 238"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "27 361 245 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_chorustype 1",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_239x30_on_CHORUS2.png",
-                  "offImage": "key_239x30_off_CHORUS2.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 238"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "271 361 245 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_chorustype 2",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_239x30_on_FLANGER.png",
-                  "offImage": "key_239x30_off_FLANGER.png",
-                  "buttonId": 2,
-                  "numButtonsInGroup": 3,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 238"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "515 361 245 36"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_chorusoutput",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_232x30_on_OUTPUT__REVERB.png",
-                  "offImage": "key_232x30_off_OUTPUT__REVERB.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 242"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "768 358 244 42"
+                "bounds": "526 236 232 30"
               }
             },
             {
@@ -22809,7 +22401,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "152 405 110 24"
+                "bounds": "152 311 110 24"
               }
             },
             {
@@ -22838,7 +22430,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "30 430 232 30"
+                "bounds": "30 336 232 30"
               }
             },
             {
@@ -22880,7 +22472,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "400 405 110 24"
+                "bounds": "400 311 110 24"
               }
             },
             {
@@ -22909,7 +22501,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "278 430 232 30"
+                "bounds": "278 336 232 30"
               }
             },
             {
@@ -22951,7 +22543,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "648 405 110 24"
+                "bounds": "648 311 110 24"
               }
             },
             {
@@ -22980,7 +22572,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "526 430 232 30"
+                "bounds": "526 336 232 30"
               }
             },
             {
@@ -23022,7 +22614,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "896 405 110 24"
+                "bounds": "896 311 110 24"
               }
             },
             {
@@ -23051,7 +22643,415 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "774 430 232 30"
+                "bounds": "774 336 232 30"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_ROOM1.png",
+                  "offImage": "key_112x32_off_ROOM1.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 115 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_ROOM2.png",
+                  "offImage": "key_112x32_off_ROOM2.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1147 115 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 2",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_STAGE1.png",
+                  "offImage": "key_112x32_off_STAGE1.png",
+                  "buttonId": 2,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 155 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 3",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_STAGE2.png",
+                  "offImage": "key_112x32_off_STAGE2.png",
+                  "buttonId": 3,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1147 155 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 4",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_HALL1.png",
+                  "offImage": "key_112x32_off_HALL1.png",
+                  "buttonId": 4,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 195 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 5",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_HALL2.png",
+                  "offImage": "key_112x32_off_HALL2.png",
+                  "buttonId": 5,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1147 195 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 6",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_DELAY.png",
+                  "offImage": "key_112x32_off_DELAY.png",
+                  "buttonId": 6,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 235 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_reverbtype 7",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_112x32_on_PANmDLY.png",
+                  "offImage": "key_112x32_off_PANmDLY.png",
+                  "buttonId": 7,
+                  "numButtonsInGroup": 8,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 235"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1147 235 118 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_chorustype 0",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_73x32_on_CHORUS1.png",
+                  "offImage": "key_73x32_off_CHORUS1.png",
+                  "buttonId": 0,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 238"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1027 315 79 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_chorustype 1",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_73x32_on_CHORUS2.png",
+                  "offImage": "key_73x32_off_CHORUS2.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 238"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1106 315 79 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_chorustype 2",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_73x32_on_FLANGER.png",
+                  "offImage": "key_73x32_off_FLANGER.png",
+                  "buttonId": 2,
+                  "numButtonsInGroup": 3,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 238"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1185 315 79 38"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "nvram_patchCommon_chorusoutput",
+                "type": "Button",
+                "data": {
+                  "version": 2,
+                  "onImage": "key_232x32_on_TO_REVERB.png",
+                  "offImage": "key_232x32_off_TO_REVERB.png",
+                  "buttonId": 1,
+                  "numButtonsInGroup": 1,
+                  "handleName": "Data",
+                  "gestureBehaviour": "Instant"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 242"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "1024 392 244 44"
               }
             },
             {
@@ -23325,183 +23325,13 @@
                 "boundsType": "Absolute",
                 "bounds": "890 529 119 50"
               }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_0_toneswitch",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_108x50_on_TONE_1.png",
-                  "offImage": "key_108x50_off_TONE_1.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 13"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "1024 102 120 62"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_1_toneswitch",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_108x50_on_TONE_2.png",
-                  "offImage": "key_108x50_off_TONE_2.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 14"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "1148 102 120 62"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_2_toneswitch",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_108x50_on_TONE_3.png",
-                  "offImage": "key_108x50_off_TONE_3.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 15"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "1024 166 120 62"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_tone_3_toneswitch",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_108x50_on_TONE_4.png",
-                  "offImage": "key_108x50_off_TONE_4.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 16"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "1148 166 120 62"
-              }
-            },
-            {
-              "version": 2,
-              "componentData": {
-                "version": 1,
-                "name": "nvram_patchCommon_velocityswitch",
-                "type": "Button",
-                "data": {
-                  "version": 2,
-                  "onImage": "key_232x44_on_VELOCITY_SWITCH.png",
-                  "offImage": "key_232x44_off_VELOCITY_SWITCH.png",
-                  "buttonId": 1,
-                  "numButtonsInGroup": 1,
-                  "handleName": "Data",
-                  "gestureBehaviour": "Instant"
-                }
-              },
-              "handle remapping": {
-                "version": 1,
-                "map": [
-                  {
-                    "key": "Data",
-                    "value": "Parameter 226"
-                  }
-                ]
-              },
-              "bounds": {
-                "version": 1,
-                "acceptsHWFocus": "Yes",
-                "showWhenDataModelInvalid": "Show",
-                "whenVisible": "Always",
-                "boundsType": "Absolute",
-                "bounds": "1024 270 244 56"
-              }
             }
           ]
         },
         "qlinkBoundsData": [
           "16 88 994 92",
-          "16 188 994 138",
-          "16 336 994 138"
+          "16 188 994 92",
+          "16 288 994 92"
         ]
       }
     ]

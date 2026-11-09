@@ -377,17 +377,16 @@ def tone_main_page(t):
         for i, (key, n, s) in enumerate(ctl):
             p.slider(key, col(i), y + 12, SW, n, s)
         keys = [c[0] for c in ctl]
-        if title == "FILTER":   # 4th control: the filter mode keys
-            p.legend(col(3), y + 12, "FILTER MODE")
-            p.segments(k("filtermode"), col(3), y + 34, SW, 34, sel=1)
+        if title == "FILTER":   # 4th Q-Link: the filter mode (its keys are in the right column)
             keys.append(k("filtermode"))
         p.qlink_group((X0, y - 16, X1, y + 76), keys)
     p.header(RX, 1262, 104, "WAVE GROUP")
     p.segments(k("wavegroup"), RX, 118, RW, 32, cols=2, sel=0)
     p.header(RX, 1262, 204, "FXM")
     p.toggle(k("fxmswitch"), RX, 218, RW, 44, "FXM")
-    p.header(RX, 1262, 304, "MORE")
-    p.legend(RX, 318, "LFOs: press TONE %d again" % (t + 1), 13, art.INK_DIM, 500)
+    p.header(RX, 1262, 304, "FILTER MODE")
+    p.segments(k("filtermode"), RX, 318, RW, 40, gap=8, sel=1)
+    p.legend(RX, 466, "LFOs: press TONE %d again" % (t + 1), 13, art.INK_DIM, 500)
     tone_envelopes(p, t)
     return p
 
@@ -434,18 +433,22 @@ def common_page():
         p.slider(k, col(i), 116, SW, n, s)
     p.qlink_group((X0, 88, X1, 180), [x[0] for x in ctl])
     p.header(X0 + 8, X1 - 8, 204, "REVERB", q=True)
-    p.segments(c("reverbtype"), col(0), 216, X1 - X0 - 28, 30, gap=5, sel=4)
     ctl = [(c("reverblevel"), "LEVEL", .7), (c("reverbtime"), "TIME", .55), (c("reverbfeedback"), "FEEDBACK", .2)]
     for i, (k, n, s) in enumerate(ctl):
-        p.slider(k, col(i), 262, SW, n, s)
-    p.qlink_group((X0, 188, X1, 326), [x[0] for x in ctl] + [c("reverbtype")])
-    p.header(X0 + 8, X1 - 8, 352, "CHORUS", q=True)
-    p.segments(c("chorustype"), col(0), 364, 3 * SW + 32, 30, gap=5, sel=0)
-    p.toggle(c("chorusoutput"), col(3), 364, SW, 30, "OUTPUT: REVERB")
+        p.slider(k, col(i), 216, SW, n, s)
+    p.qlink_group((X0, 188, X1, 280), [x[0] for x in ctl] + [c("reverbtype")])
+    p.header(X0 + 8, X1 - 8, 304, "CHORUS", q=True)
     ctl = [(c("choruslevel"), "LEVEL", .7), (c("chorusdepth"), "DEPTH", .12), (c("chorusrate"), "RATE", .3), (c("chorusfeedback"), "FEEDBACK", 0)]
     for i, (k, n, s) in enumerate(ctl):
-        p.slider(k, col(i), 410, SW, n, s)
-    p.qlink_group((X0, 336, X1, 474), [x[0] for x in ctl])
+        p.slider(k, col(i), 316, SW, n, s)
+    p.qlink_group((X0, 288, X1, 380), [x[0] for x in ctl])
+    # effect types: physical keys in the right column (the tone switches and velocity are on PLAY)
+    p.header(RX, 1262, 104, "REVERB TYPE")
+    p.segments(c("reverbtype"), RX, 118, RW, 32, cols=2, gap=8, sel=4)
+    p.header(RX, 1262, 304, "CHORUS TYPE")
+    p.segments(c("chorustype"), RX, 318, RW, 32, gap=6, sel=0)
+    p.header(RX, 1262, 384, "CHORUS OUTPUT")
+    p.toggle(c("chorusoutput"), RX, 398, RW, 32, "TO REVERB")
     p.header(X0 + 8, X1 - 8, 500, "KEY MODE")
     xs = [col(i) for i in range(4)]
     p.legend(xs[0], 512, "KEY ASSIGN")
@@ -457,9 +460,6 @@ def common_page():
     p.segments(c("portamentomode"), xs[2], 532, SW, 44, sel=0)
     p.legend(xs[3], 512, "PORTA TYPE")
     p.segments(c("portamentotype"), xs[3], 532, SW, 44, sel=0)
-    tone_switches(p, RX, 104)
-    p.header(RX, 1262, 262, "VELOCITY")
-    p.toggle(c("velocityswitch"), RX, 276, RW, 44, "VELOCITY SWITCH")
     return p
 
 
