@@ -13,9 +13,10 @@
 //     the param drops back to 0. PATCH -/+ (kStep) nudge PATCH. List tiles (kTile) fire on a tap and show the engine's "<key>_on".
 //   * text readouts (kText): the value text is the engine's text; the value is a counter bumped when the text changes, because the
 //     host only re-reads a param's text when its value moves.
-//   * front-end functions (kLocal, no engine key): RANDOM loads a random patch from every bank; FAV 1-8 recall a stored bank + patch
-//     (with FAV STORE on, a tap stores the current patch there instead). The slots live in <plugin folder>/jv880-favourites.txt, so
-//     they are shared by every project.
+//   * front-end functions (kLocal, no engine key): RANDOM loads a random patch from every bank. Favourites live in the MPC's own
+//     PRESET list (the VST programs): +FAV saves the current patch with its edits (the engine's state: bank, patch, edited bytes) in
+//     the first free slot, -FAV deletes the favourite that is picked. Program 0 is "Current patch" (picking it does nothing). The
+//     slots are kept in <plugin folder>/jv880-favourites.dat, shared by every project.
 //   * ui_open (kUi): which drawn pick-list the skin shows; never reaches the engine.
 // Parameter 0 is OCTAVE. The host nudges parameter 0 to its far end and back on every prepare: a change applies only after it has
 // held for ~40 ms, and a pair that ends where it started does nothing.
@@ -142,7 +143,9 @@ public:
 
         api_ = move_plugin_init_v2(nullptr);   // the engine ignores the host struct
         if (api_) inst_ = api_->create_instance(dataDir().c_str(), nullptr);   // fast: the ROM load runs on the engine's own thread
-        if (std::strcmp(g_pspecs[kRandom].key, "patch_random") || std::strcmp(g_pspecs[kFav1].key, "fav_1")) std::abort();
+        if (std::strcmp(g_pspecs[kRandom].key, "patch_random") || std::strcmp(g_pspecs[kFavText].key, "fav_text")) std::abort();
+        addProgram("Current patch", {});
+        for (int i = 0; i < kFavSlots; ++i) addProgram("--", {});
         loadFavs();
         worker_ = std::thread(&JV880Plugin::workerMain, this);
     }
@@ -281,6 +284,7 @@ public:
     void loadExtraState(const uint8_t* data, size_t size) override
     {
         if (!data || !size) return;
+        ignoreProgUntil_.store(nowMs() + 2000);   // the host re-picks the saved program after a project load: the project's patch wins
         applyState(std::string(reinterpret_cast<const char*>(data), strnlen(reinterpret_cast<const char*>(data), size)));
     }
 
@@ -291,6 +295,7 @@ public:
         std::string s(data, strnlen(data, size));
         size_t b = s.find_first_not_of(" \t\r\n");
         if (b == std::string::npos || s[b] != '{') return false;
+        ignoreProgUntil_.store(nowMs() + 2000);
         applyState(s);
         return true;
     }
@@ -433,12 +438,15 @@ private:
         }
         for (int i = 0; i < kNumParams; ++i)
             if (release_[i].exchange(false)) { held_[i].store(false); pushValue(i, 0.0f); }
-        if (localDirty_.exchange(false))   // STORE / favourite lit states changed by a tap: push them and redraw
-        {
-            pushValue(kFavStore, storeArmed_.load() ? 1.0f : 0.0f);
-            for (int f = 0; f < kFavs; ++f) pushValue(kFav1 + f, favLit(kFav1 + f) ? 1.0f : 0.0f);
-            wantDisplay_ = true;
+        {   // a favourite picked in the MPC's PRESET list (not the re-pick that follows a project load: the project's patch wins)
+            const int prog = currentProgram();
+            if (prog != lastProgram_)
+            {
+                lastProgram_ = prog;
+                if (prog > 0 && now >= ignoreProgUntil_.load()) loadFav(prog - 1);
+            }
         }
+        if (favDirty_.exchange(false)) { saveFavs(); wantDisplay_ = true; }   // new names in the PRESET list and the status text
         if (notifyUi_.exchange(false)) { t_pushing = kUiParam; notifyHostParameterChanged(kUiParam); t_pushing = -1; }
         if (resync_.exchange(false))
         {
@@ -486,11 +494,9 @@ private:
                 if (!(moved || due)) continue;
                 char k2[64];
                 std::snprintf(k2, sizeof k2, "%s_on", s.key);
-                const float on = (s.flags & kLocal) ? (favLit(i) ? 1.0f : 0.0f)
-                                                    : (engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f);
+                const float on = engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f;
                 if (moved || on != told_[i])
                 {
-                    if ((s.flags & kLocal) && on != told_[i]) wantDisplay_ = true;
                     pushValue(i, on);
                     if (!moved) ++changed;
                 }
@@ -534,57 +540,82 @@ private:
     }
 
     // ---- random patch, favourites (kLocal) ---------------------------------------------------------------------------------------
-    static constexpr int kRandom = 506, kFavStore = 507, kFav1 = 508, kFavs = 8;
-    struct Fav { int index = -1; std::string bank, name; };
+    static constexpr int kRandom = 506, kFavSave = 507, kFavDelete = 508, kFavText = 509, kFavSlots = 64;
+    struct Fav { bool used = false; std::string name, state; };
 
-    static std::string favFile() { return mpc::detail::computePluginFolder() + "/jv880-favourites.txt"; }
+    static std::string favFile() { return mpc::detail::computePluginFolder() + "/jv880-favourites.dat"; }
 
+    // "JVF1", slot count, then per slot: used (1 byte), name length + name, state length + state (u32 little endian lengths)
     void loadFavs()
     {
         std::lock_guard<std::mutex> g(favMu_);
-        std::ifstream f(favFile());
-        std::string line;
-        for (int n = 0; n < kFavs && std::getline(f, line); ++n)   // one slot per line: index <TAB> bank <TAB> patch name
-        {
-            const size_t a = line.find('\t'), b = a == std::string::npos ? a : line.find('\t', a + 1);
-            favs_[n] = Fav();
-            if (b == std::string::npos) continue;
-            favs_[n].index = std::atoi(line.substr(0, a).c_str());
-            favs_[n].bank = line.substr(a + 1, b - a - 1);
-            favs_[n].name = line.substr(b + 1);
-        }
+        favs_.assign(kFavSlots, Fav());
+        std::ifstream f(favFile(), std::ios::binary);
+        char magic[4] = {};
+        uint32_t n = 0;
+        if (f.read(magic, 4) && !std::memcmp(magic, "JVF1", 4) && f.read(reinterpret_cast<char*>(&n), 4))
+            for (uint32_t i = 0; i < n && i < (uint32_t)kFavSlots; ++i)
+            {
+                char used = 0;
+                uint32_t ln = 0, ls = 0;
+                if (!f.read(&used, 1) || !f.read(reinterpret_cast<char*>(&ln), 4) || ln > 256) break;
+                std::string name(ln, '\0');
+                if (ln && !f.read(&name[0], ln)) break;
+                if (!f.read(reinterpret_cast<char*>(&ls), 4) || ls > (uint32_t)kStateMax) break;
+                std::string st(ls, '\0');
+                if (ls && !f.read(&st[0], ls)) break;
+                favs_[i].used = used != 0 && ls > 0;
+                favs_[i].name = name;
+                favs_[i].state = st;
+            }
+        for (int i = 0; i < kFavSlots; ++i) nameProgram(i);
     }
 
-    void saveFavs()
+    void saveFavs()   // worker thread: a snapshot under the lock, then the file (.tmp + rename)
     {
-        std::lock_guard<std::mutex> g(favMu_);
+        std::vector<Fav> snap;
+        { std::lock_guard<std::mutex> g(favMu_); snap = favs_; }
         const std::string tmp = favFile() + ".tmp";
         {
-            std::ofstream f(tmp, std::ios::trunc);
+            std::ofstream f(tmp, std::ios::binary | std::ios::trunc);
             if (!f) return;
-            for (const Fav& v : favs_) f << v.index << '\t' << v.bank << '\t' << v.name << '\n';
+            const uint32_t n = (uint32_t)snap.size();
+            f.write("JVF1", 4);
+            f.write(reinterpret_cast<const char*>(&n), 4);
+            for (const Fav& v : snap)
+            {
+                const char used = v.used ? 1 : 0;
+                const uint32_t ln = (uint32_t)v.name.size(), ls = (uint32_t)v.state.size();
+                f.write(&used, 1);
+                f.write(reinterpret_cast<const char*>(&ln), 4);
+                f.write(v.name.data(), ln);
+                f.write(reinterpret_cast<const char*>(&ls), 4);
+                f.write(v.state.data(), ls);
+            }
         }
         std::rename(tmp.c_str(), favFile().c_str());
     }
 
-    std::string localText(int i)
+    void nameProgram(int i)   // favMu_ held
     {
-        if (i < kFav1 || i >= kFav1 + kFavs) return "";
-        std::lock_guard<std::mutex> g(favMu_);
-        const Fav& v = favs_[i - kFav1];
-        char b[96];
-        if (v.index < 0) std::snprintf(b, sizeof b, "%d: ---", i - kFav1 + 1);
-        else std::snprintf(b, sizeof b, "%d: %s", i - kFav1 + 1, v.name.c_str());
-        return b;
+        programs_[(size_t)i + 1].name = std::to_string(i + 1) + " " + (favs_[(size_t)i].used ? favs_[(size_t)i].name : std::string("--"));
     }
 
-    bool favLit(int i)
+    std::string localText(int i)
     {
-        if (i < kFav1 || i >= kFav1 + kFavs) return false;
-        char b[32];
-        const int cur = engineGet("preset", b, sizeof b) ? std::atoi(b) : -1;
-        std::lock_guard<std::mutex> g(favMu_);
-        return favs_[i - kFav1].index >= 0 && favs_[i - kFav1].index == cur;
+        if (i != kFavText) return "";
+        int n = 0;
+        { std::lock_guard<std::mutex> g(favMu_); for (const Fav& v : favs_) n += v.used ? 1 : 0; }
+        return std::to_string(n) + " / " + std::to_string(kFavSlots) + " SAVED";
+    }
+
+    void loadFav(int slot)   // worker thread
+    {
+        std::string st;
+        { std::lock_guard<std::mutex> g(favMu_); if (slot >= 0 && slot < kFavSlots && favs_[(size_t)slot].used) st = favs_[(size_t)slot].state; }
+        if (st.empty()) return;
+        applyState(st);
+        requestResync();   // every value follows the loaded patch
     }
 
     void selectPatch(int index)
@@ -598,17 +629,10 @@ private:
 
     void localChanged(int index, const PSpec& s, float plain)
     {
-        // The MPC's Buttons toggle: a tap on a lit button sends 0, on a dark one 1, so every change is one tap here. The lit state
-        // is the plugin's (pushed back by the worker, with a display update: the MPC redraws a button only then).
-        if (index == kFavStore)
-        {
-            if (std::fabs(plain - (storeArmed_.load() ? 1.0f : 0.0f)) < 0.5f) return;   // our own push echoed
-            storeArmed_.store(!storeArmed_.load());
-            localDirty_.store(true);
-            return;
-        }
-        if (s.flags & kTile) { if (std::fabs(plain - told_[index].load()) < 0.5f) return; }   // not a tap: the state we pushed
-        else if (plain < 0.5f) { held_[index].store(false); return; }
+        (void)s;
+        if (plain < 0.5f) { held_[index].store(false); return; }
+        if (held_[index].exchange(true)) return;
+        release_[index].store(true);   // a momentary: back to 0 on the next worker pass
         char b[128];
         if (index == kRandom)
         {
@@ -620,31 +644,38 @@ private:
                 do r = (int)(rng_() % (uint32_t)n); while (r == cur);
                 selectPatch(r);
             }
-            release_[index].store(true);
             return;
         }
-        const int slot = index - kFav1;
-        if (storeArmed_.load())
+        if (index == kFavSave)
         {
             Fav v;
-            v.index = engineGet("preset", b, sizeof b) ? std::atoi(b) : -1;
-            if (engineGet("bank_name", b, sizeof b)) v.bank = b;
+            v.state = engineState();
             if (engineGet("patch_name", b, sizeof b)) v.name = b;
-            if (v.index >= 0)
+            while (!v.name.empty() && v.name.back() == ' ') v.name.pop_back();
+            if (v.name.empty()) v.name = "Favourite";
+            if (v.state.empty() || v.state[0] != '{') return;
+            v.used = true;
+            int slot = -1;
             {
-                { std::lock_guard<std::mutex> g(favMu_); favs_[slot] = v; }
-                saveFavs();
+                std::lock_guard<std::mutex> g(favMu_);
+                for (int i = 0; i < kFavSlots && slot < 0; ++i) if (!favs_[(size_t)i].used) slot = i;
+                if (slot >= 0) { favs_[(size_t)slot] = v; nameProgram(slot); }
             }
-            storeArmed_.store(false);
+            if (slot >= 0) favDirty_.store(true);
+            return;
         }
-        else
+        if (index == kFavDelete)   // the favourite that is picked now
         {
-            int target;
-            { std::lock_guard<std::mutex> g(favMu_); target = favs_[slot].index; }
-            if (target >= 0) selectPatch(target);
+            const int prog = currentProgram();
+            if (prog < 1) return;
+            bool had;
+            {
+                std::lock_guard<std::mutex> g(favMu_);
+                had = favs_[(size_t)prog - 1].used;
+                if (had) { favs_[(size_t)prog - 1] = Fav(); nameProgram(prog - 1); }
+            }
+            if (had) favDirty_.store(true);
         }
-        hostMoved_[index].store(true);
-        localDirty_.store(true);
     }
 
 public:
@@ -680,9 +711,11 @@ private:
     std::vector<float> lastPos_;               // the host's last position, for settle()
     std::vector<uint32_t> textHash_;
     std::mutex favMu_;
-    Fav favs_[kFavs];
+    std::vector<Fav> favs_;
     std::mt19937 rng_{std::random_device{}()};
-    std::atomic<bool> storeArmed_{false}, localDirty_{false};
+    std::atomic<bool> favDirty_{false};
+    std::atomic<long long> ignoreProgUntil_{0};
+    int lastProgram_ = 0;   // worker thread
     std::string lastState_;
     int16_t block_[kBlock * 2] = {0};
     int pos_ = kBlock;

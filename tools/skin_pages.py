@@ -308,20 +308,15 @@ def banks_page():
                                  asset("tile_262x26_off.png", lambda: art.tile_frame(262, 26, False)), "%d %d 262 26" % (x, y)))
         p.sample[k + "$"] = names[i] if i < len(names) else ""
         p.sample[k + "#"] = 1 if i == 0 else 0
-    # favourites: 8 slots (bank + patch, shared by every project); STORE on, then a slot, stores the current patch there
-    p.header(24, 430, 474, "FAVOURITES")
-    p.toggle("fav_store", 448, 454, 112, 34, "STORE")
-    favs = ["1: Velo Harmnix", "2: Nylon Chord", "3: ---", "4: ---", "5: ---", "6: ---", "7: ---", "8: ---"]
-    for i in range(8):
-        c, r = divmod(i, 4)
-        x, y = 24 + c * 272, 498 + r * 30
-        k = "fav_%d" % (i + 1)
-        p.d.rectangle([x, y, x + 261, y + 25], fill=(12, 12, 13))
-        p.kids.append(tui.label("Value", "%d %d 236 26" % (x + 16, y), remap=tui.P(k), colour="ffe2e4e6", style="Medium", case="Original", h=17.0))
-        p.kids.append(tui.button(k, k, asset("tile_262x26_on.png", lambda: art.tile_frame(262, 26, True)),
-                                 asset("tile_262x26_off.png", lambda: art.tile_frame(262, 26, False)), "%d %d 262 26" % (x, y)))
-        p.sample[k + "$"] = favs[i]
-        p.sample[k + "#"] = 1 if i == 1 else 0
+    # favourites: saved into the MPC's own PRESET list (+FAV: the current patch with its edits; -FAV: the one picked there)
+    p.header(24, 560, 474, "FAVOURITES")
+    p.momentary("fav_save", 24, 494, 160, 48, "+FAV", led=False, size=18)
+    p.momentary("fav_delete", 200, 494, 160, 48, "-FAV", led=False, size=18)
+    p.kids.append(tui.label("Value", "380 494 180 48", remap=tui.P("fav_text"), just="left verticallyCentred",
+                            colour="ffe2e4e6", style="Medium", case="Original", h=19.0))
+    p.sample["fav_text$"] = "3 / 64 SAVED"
+    p.legend(24, 562, "Saved patches appear in the MPC's PRESET list,", 13, art.INK_DIM, 500)
+    p.legend(24, 580, "with your edits. -FAV removes the one picked there.", 13, art.INK_DIM, 500)
     p.header(590, 1262, 104, "PATCHES")
     p.kids.append(tui.label("Value", "690 86 400 24", remap=tui.P("browse_bank_name"), colour="ffec802e", style="Medium", case="Original", h=17.0))
     p.sample["browse_bank_name$"] = "Preset A"

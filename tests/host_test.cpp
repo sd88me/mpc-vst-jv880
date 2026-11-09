@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 516, "516 params: 472 frozen + 44 appended (%d)", a->numParams);
+    CHECK(a->numParams == 510, "510 params: 472 frozen + 38 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2000, "version 2000");
     {
         int bad = 0;
@@ -210,7 +210,7 @@ int main(int argc, char** argv)
     CHECK(a->getParameter(a, BSLOT2) == 1.f && !disp(a, BSLOT2).empty(), "a lit tile stays lit, shows \"%s\"", disp(a, BSLOT2).c_str());
     std::printf("== random patch, favourites\n");
     {
-        const int RND = idx("patch_random"), FST = idx("fav_store"), F1 = idx("fav_1"), F2 = idx("fav_2");
+        const int RND = idx("patch_random"), SAVE = idx("fav_save"), DEL = idx("fav_delete"), FT = idx("fav_text");
         const int pr = engi(a, "preset");
         a->setParameter(a, RND, 1.0f);
         settle(a, 200);
@@ -218,26 +218,36 @@ int main(int argc, char** argv)
         const int pr2 = engi(a, "preset");
         CHECK(pr2 != pr && a->getParameter(a, RND) == 0.f && std::lround(plainOf(a, PRESET)) == pr2,
               "RANDOM: patch %d -> %d, host PATCH follows, button back to 0", pr, pr2);
+        CHECK(a->numPrograms == 65, "65 programs (current + 64 favourites): %d", a->numPrograms);
+        // an edit, then +FAV: slot 1 holds the patch with the edit
+        a->setParameter(a, P_LVL, 55 / 127.0f);
+        settle(a);
         const std::string nm = eng(a, "patch_name");
-        a->setParameter(a, FST, 1.0f);
-        a->setParameter(a, F2, 1.0f);
+        const std::string ft0 = disp(a, FT);
+        a->setParameter(a, SAVE, 1.0f);
         settle(a);
-        a->setParameter(a, F2, 0.0f);
-        settle(a);
-        CHECK(a->getParameter(a, FST) == 0.f && disp(a, F2) == "2: " + nm && a->getParameter(a, F2) == 1.f,
-              "STORE + FAV 2: \"%s\", lit, STORE off again", disp(a, F2).c_str());
-        CHECK(disp(a, F1) == "1: ---", "FAV 1 empty: \"%s\"", disp(a, F1).c_str());
+        char pn[64] = {};
+        a->dispatcher(a, effGetProgramNameIndexed, 1, 0, pn, 0);
+        std::string want = nm;
+        while (!want.empty() && want.back() == ' ') want.pop_back();
+        CHECK(std::string(pn) == "1 " + want && a->getParameter(a, SAVE) == 0.f, "+FAV: program 1 = \"%s\", button back to 0", pn);
+        CHECK(disp(a, FT) != ft0, "status \"%s\" -> \"%s\"", ft0.c_str(), disp(a, FT).c_str());
+        // another patch, then pick program 1: the patch and its edit come back
         a->setParameter(a, NEXT, 1.0f);
         settle(a, 200);
         a->setParameter(a, NEXT, 0.0f);
         settle(a);
-        CHECK(a->getParameter(a, F2) == 0.f, "another patch: FAV 2 goes dark");
-        a->setParameter(a, F2, 1.0f);
+        a->dispatcher(a, effSetProgram, 0, 1, nullptr, 0);
         settle(a, 200);
         jv_dbg_tick(a);
-        CHECK(engi(a, "preset") == pr2 && eng(a, "patch_name") == nm && a->getParameter(a, F2) == 1.f, "FAV 2 recalls patch %d \"%s\"",
-              engi(a, "preset"), eng(a, "patch_name").c_str());
-        a->setParameter(a, F2, 0.0f);
+        CHECK(engi(a, "preset") == pr2 && engi(a, "nvram_patchCommon_patchlevel") == 55, "PRESET 1 recalls patch %d with PATCH LVL %d",
+              engi(a, "preset"), engi(a, "nvram_patchCommon_patchlevel"));
+        a->setParameter(a, DEL, 1.0f);
+        settle(a);
+        a->dispatcher(a, effGetProgramNameIndexed, 1, 0, pn, 0);
+        CHECK(std::string(pn) == "1 --", "-FAV: program 1 = \"%s\"", pn);
+        a->dispatcher(a, effSetProgram, 0, 0, nullptr, 0);
+        settle(a);
     }
     run(a, 2, {{0xB0, 20, 64}});   // CC 20 -> the first mapped control
     settle(a);
