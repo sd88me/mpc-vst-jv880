@@ -8431,8 +8431,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_ROOM1.png",
-                  "offImage": "key_115x36_off_ROOM1.png",
+                  "onImage": "key_115x48_on_ROOM1.png",
+                  "offImage": "key_115x48_off_ROOM1.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8454,7 +8454,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "24 418 127 48"
+                "bounds": "24 422 127 60"
               }
             },
             {
@@ -8465,8 +8465,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_ROOM2.png",
-                  "offImage": "key_115x36_off_ROOM2.png",
+                  "onImage": "key_115x48_on_ROOM2.png",
+                  "offImage": "key_115x48_off_ROOM2.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8488,7 +8488,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "147 418 127 48"
+                "bounds": "147 422 127 60"
               }
             },
             {
@@ -8499,8 +8499,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_STAGE1.png",
-                  "offImage": "key_115x36_off_STAGE1.png",
+                  "onImage": "key_115x48_on_STAGE1.png",
+                  "offImage": "key_115x48_off_STAGE1.png",
                   "buttonId": 2,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8522,7 +8522,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "270 418 127 48"
+                "bounds": "270 422 127 60"
               }
             },
             {
@@ -8533,8 +8533,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_STAGE2.png",
-                  "offImage": "key_115x36_off_STAGE2.png",
+                  "onImage": "key_115x48_on_STAGE2.png",
+                  "offImage": "key_115x48_off_STAGE2.png",
                   "buttonId": 3,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8556,7 +8556,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "393 418 127 48"
+                "bounds": "393 422 127 60"
               }
             },
             {
@@ -8567,8 +8567,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_HALL1.png",
-                  "offImage": "key_115x36_off_HALL1.png",
+                  "onImage": "key_115x48_on_HALL1.png",
+                  "offImage": "key_115x48_off_HALL1.png",
                   "buttonId": 4,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8590,7 +8590,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "516 418 127 48"
+                "bounds": "516 422 127 60"
               }
             },
             {
@@ -8601,8 +8601,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_HALL2.png",
-                  "offImage": "key_115x36_off_HALL2.png",
+                  "onImage": "key_115x48_on_HALL2.png",
+                  "offImage": "key_115x48_off_HALL2.png",
                   "buttonId": 5,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8624,7 +8624,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "639 418 127 48"
+                "bounds": "639 422 127 60"
               }
             },
             {
@@ -8635,8 +8635,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_DELAY.png",
-                  "offImage": "key_115x36_off_DELAY.png",
+                  "onImage": "key_115x48_on_DELAY.png",
+                  "offImage": "key_115x48_off_DELAY.png",
                   "buttonId": 6,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8658,7 +8658,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "762 418 127 48"
+                "bounds": "762 422 127 60"
               }
             },
             {
@@ -8669,8 +8669,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_115x36_on_PANmDLY.png",
-                  "offImage": "key_115x36_off_PANmDLY.png",
+                  "onImage": "key_115x48_on_PANmDLY.png",
+                  "offImage": "key_115x48_off_PANmDLY.png",
                   "buttonId": 7,
                   "numButtonsInGroup": 8,
                   "handleName": "Data",
@@ -8692,7 +8692,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "885 418 127 48"
+                "bounds": "885 422 127 60"
               }
             },
             {
@@ -8703,8 +8703,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_232x36_on_CHORUS1.png",
-                  "offImage": "key_232x36_off_CHORUS1.png",
+                  "onImage": "key_232x48_on_CHORUS1.png",
+                  "offImage": "key_232x48_off_CHORUS1.png",
                   "buttonId": 0,
                   "numButtonsInGroup": 3,
                   "handleName": "Data",
@@ -8726,7 +8726,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "24 498 244 48"
+                "bounds": "24 522 244 60"
               }
             },
             {
@@ -8737,8 +8737,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_232x36_on_CHORUS2.png",
-                  "offImage": "key_232x36_off_CHORUS2.png",
+                  "onImage": "key_232x48_on_CHORUS2.png",
+                  "offImage": "key_232x48_off_CHORUS2.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 3,
                   "handleName": "Data",
@@ -8760,7 +8760,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "272 498 244 48"
+                "bounds": "272 522 244 60"
               }
             },
             {
@@ -8771,8 +8771,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_232x36_on_FLANGER.png",
-                  "offImage": "key_232x36_off_FLANGER.png",
+                  "onImage": "key_232x48_on_FLANGER.png",
+                  "offImage": "key_232x48_off_FLANGER.png",
                   "buttonId": 2,
                   "numButtonsInGroup": 3,
                   "handleName": "Data",
@@ -8794,7 +8794,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "520 498 244 48"
+                "bounds": "520 522 244 60"
               }
             },
             {
@@ -8805,8 +8805,8 @@
                 "type": "Button",
                 "data": {
                   "version": 2,
-                  "onImage": "key_232x36_on_TO_REVERB.png",
-                  "offImage": "key_232x36_off_TO_REVERB.png",
+                  "onImage": "key_232x48_on_TO_REVERB.png",
+                  "offImage": "key_232x48_off_TO_REVERB.png",
                   "buttonId": 1,
                   "numButtonsInGroup": 1,
                   "handleName": "Data",
@@ -8828,7 +8828,7 @@
                 "showWhenDataModelInvalid": "Show",
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
-                "bounds": "768 498 244 48"
+                "bounds": "768 522 244 60"
               }
             },
             {

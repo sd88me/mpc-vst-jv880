@@ -431,11 +431,11 @@ def common_page():
         p.slider(k, col(i), 316, SW, n, s)
     p.qlink_group((X0, 288, X1, 380), [x[0] for x in ctl])
     # effect types: physical keys under the screen, on its column grid (two reverb types per column)
-    p.header(X0 + 8, X1 - 8, 412, "REVERB TYPE")
-    p.segments(c("reverbtype"), col(0), 424, 4 * SW + 48, 36, gap=8, sel=4)
-    p.header(X0 + 8, X1 - 8, 492, "CHORUS TYPE / OUTPUT")
-    p.segments(c("chorustype"), col(0), 504, 3 * SW + 32, 36, gap=16, sel=0)
-    p.toggle(c("chorusoutput"), col(3), 504, SW, 36, "TO REVERB")
+    p.header(X0 + 8, X1 - 8, 414, "REVERB TYPE")
+    p.segments(c("reverbtype"), col(0), 428, 4 * SW + 48, 48, gap=8, sel=4)
+    p.header(X0 + 8, X1 - 8, 514, "CHORUS TYPE / OUTPUT")
+    p.segments(c("chorustype"), col(0), 528, 3 * SW + 32, 48, gap=16, sel=0)
+    p.toggle(c("chorusoutput"), col(3), 528, SW, 48, "TO REVERB")
     # key mode: stacked in the right column
     for title, y in (("KEY ASSIGN", 104), ("PORTAMENTO", 184), ("PORTA MODE", 264), ("PORTA TYPE", 344)):
         p.header(RX, 1262, y, title)
