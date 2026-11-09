@@ -3,3 +3,4 @@ build/
 roms/
 dist/
 tests/data/
+__pycache__/
