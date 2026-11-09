@@ -1,0 +1,599 @@
+// JV-880 for MPC / Force: the MPC Plugin SDK front end (framework/mpc_plugin.h) around the unchanged JV-880 engine
+// (src/dsp/jv880_plugin.cpp, a Schwung plugin_api_v2 module: nukeykt/giulioz core, patch browser, NVRAM parameters, state).
+//
+// Signal flow: host MIDI -> CC 20-35 / NRPN parameter control (as 1.x) or the engine -> the engine's own emulator thread fills a
+// ring at 44.1 kHz -> render_block(128 frames, int16) -> a 128-frame FIFO here -> the host's block (any size).
+//
+// Parameters: the 1.0.9 build's 472 in the same order (params.json -> tools/sdk/gen_sdk_params.py -> params_gen.h).
+//   * value params (kPolled): a host change goes to the engine as its own set_param string. The engine changes most of them by
+//     itself (a patch load rewrites every NVRAM value, macros move, bank steps), so a worker thread reads them back and tells the host.
+//     Whole-number and option params settle toward the direction of a Q-Link / wheel move, so a small turn always moves one step
+//     (the 1.x wrapper's settle(); PATCH also counts any move up to 10 % of its range as one step).
+//   * momentary verbs (kMomentary): 0 -> 1 fires the verb once (the engine fires on any value, so only the rising edge is sent), then
+//     the param drops back to 0. PATCH -/+ (kStep) nudge PATCH. List tiles (kTile) fire on a tap and show the engine's "<key>_on".
+//   * text readouts (kText): the value text is the engine's text; the value is a counter bumped when the text changes, because the
+//     host only re-reads a param's text when its value moves.
+//   * ui_open (kUi): which drawn pick-list the skin shows; never reaches the engine.
+// Parameter 0 is OCTAVE. The host nudges parameter 0 to its far end and back on every prepare: a change applies only after it has
+// held for ~40 ms, and a pair that ends where it started does nothing.
+// State: the engine's own "state" JSON (mode, patch, the edited patch bytes) is the truth; it travels as the SDK chunk's extra state.
+// While the SDK chunk restores parameter values nothing is written to the engine (a stored PATCH would reload the patch over its edits).
+// A project saved by the 1.x wrapper build stored only that JSON as its chunk: it is still read (effSetChunk is wrapped below).
+
+#include "mpc_plugin.h"
+#include "mpc_resources.h"
+
+#include "dsp/plugin_api_v1.h"
+#include "params_gen.h"
+
+#include <pthread.h>
+#include <sys/stat.h>
+
+#include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <thread>
+#include <vector>
+
+extern "C" plugin_api_v2_t* move_plugin_init_v2(const host_api_v1_t* host);
+
+#ifndef JV_NAME
+#define JV_NAME "JV-880"
+#endif
+#ifndef JV_UID
+#define JV_UID 'J', 'V', '8', '8'
+#endif
+#define JV_FOURCC(...) MPC_FOURCC(__VA_ARGS__)   // expands JV_UID before MPC_FOURCC counts its arguments
+#ifndef JV_VERSION
+#define JV_VERSION 2000
+#endif
+
+namespace {
+
+const int kBlock = 128;                 // the engine's block (Schwung contract)
+const int kStateMax = 16384;            // the engine bounds its state to the Schwung host's 16 KB
+const int kMidiSourceExternal = 2;
+
+mpc::PluginInfo makeInfo()
+{
+    mpc::PluginInfo i;
+    i.name = JV_NAME;
+    i.vendor = "sd88me";
+    i.uniqueId = JV_FOURCC(JV_UID);
+    i.version = JV_VERSION;
+    i.isInstrument = true;
+    i.numInputs = 0;
+    i.numOutputs = 2;
+    return i;
+}
+
+long long nowMs()
+{
+    return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+}
+
+bool isFile(const std::string& p)
+{
+    struct stat st;
+    return ::stat(p.c_str(), &st) == 0 && S_ISREG(st.st_mode);
+}
+
+// Where the ROMs are: <plugin folder>/jv880-roms/roms/ (1.x and the installer's ROM step), else Content/jv880-roms/roms/.
+std::string dataDir()
+{
+    const std::string f = mpc::detail::computePluginFolder();   // not pluginFolder(): its static string crashes at dlclose
+    const std::string a = f + "/jv880-roms", b = f + "/Content/jv880-roms";
+    if (!isFile(a + "/roms/jv880_rom1.bin") && isFile(b + "/roms/jv880_rom1.bin")) return b;
+    return a;
+}
+
+uint32_t fnv(const char* s)
+{
+    uint32_t h = 2166136261u;
+    for (; *s; ++s) h = (h ^ (unsigned char)*s) * 16777619u;
+    return h;
+}
+
+thread_local int t_pushing = -1;   // the parameter the worker is telling the host about right now (its echo is ignored)
+
+} // namespace
+
+class JV880Plugin : public mpc::Plugin
+{
+public:
+    JV880Plugin() : mpc::Plugin(makeInfo())
+    {
+        for (int i = 0; i < kNumParams; ++i)
+        {
+            const PSpec& s = g_pspecs[i];
+            mpc::Param p = (s.flags & kChoice)
+                ? mpc::choiceParam(s.key, s.name, std::vector<std::string>(s.choices, s.choices + s.nchoices), (int)s.def)
+                : mpc::intParam(s.key, s.name, (int)s.min, (int)s.max, (int)s.def);
+            p.automatable = !(s.flags & kNoAuto);
+            addParam(p);
+        }
+        const size_t n = (size_t)kNumParams;
+        held_ = new std::atomic<bool>[n];
+        release_ = new std::atomic<bool>[n];
+        hostMoved_ = new std::atomic<bool>[n];
+        for (size_t i = 0; i < n; ++i) { held_[i].store(false); release_[i].store(false); hostMoved_[i].store(false); }
+        told_ = new std::atomic<float>[n];
+        for (size_t i = 0; i < n; ++i) told_[i].store(-1.0e9f);
+        lastPos_.assign(n, -1.0f);
+        textHash_.assign(n, 0u);
+
+        pthread_mutexattr_t ma;   // recursive + priority-inheriting, as the 1.x wrapper: audio waiting on a short worker call lifts it
+        pthread_mutexattr_init(&ma);
+        pthread_mutexattr_settype(&ma, PTHREAD_MUTEX_RECURSIVE);
+        pthread_mutexattr_setprotocol(&ma, PTHREAD_PRIO_INHERIT);
+        pthread_mutex_init(&lock_, &ma);
+        pthread_mutexattr_destroy(&ma);
+
+        api_ = move_plugin_init_v2(nullptr);   // the engine ignores the host struct
+        if (api_) inst_ = api_->create_instance(dataDir().c_str(), nullptr);   // fast: the ROM load runs on the engine's own thread
+        worker_ = std::thread(&JV880Plugin::workerMain, this);
+    }
+
+    ~JV880Plugin() override
+    {
+        quit_.store(true);
+        if (worker_.joinable()) worker_.join();
+        if (inst_) api_->destroy_instance(inst_);
+        pthread_mutex_destroy(&lock_);
+        delete[] held_;
+        delete[] release_;
+        delete[] hostMoved_;
+        delete[] told_;
+    }
+
+    void prepare(double, int) override {}
+
+    void reset() override
+    {
+        store(kUiParam, 0.0f);
+        notifyUi_.store(true);
+    }
+
+    // ---- audio ----------------------------------------------------------------------------------------------------------------
+    void process(mpc::ProcessContext& ctx) override
+    {
+        if (!inst_) return;
+        for (int k = 0; k < ctx.numMidiEvents; ++k)
+        {
+            const mpc::MidiEvent& e = ctx.midi[k];
+            if (midiControl(e)) continue;
+            uint8_t m[3] = {e.data[0], e.data[1], e.data[2]};
+            Lock l(this);
+            api_->on_midi(inst_, m, e.size, kMidiSourceExternal);
+        }
+        float* L = ctx.outputs[0];
+        float* R = ctx.numOutputs > 1 ? ctx.outputs[1] : nullptr;
+        for (int i = 0; i < ctx.numFrames; ++i)
+        {
+            if (pos_ >= kBlock)
+            {
+                Lock l(this);
+                api_->render_block(inst_, block_, kBlock);
+                pos_ = 0;
+            }
+            L[i] = block_[pos_ * 2] * (1.0f / 32768.0f);
+            if (R) R[i] = block_[pos_ * 2 + 1] * (1.0f / 32768.0f);
+            ++pos_;
+        }
+    }
+
+    // ---- parameters -----------------------------------------------------------------------------------------------------------
+    void parameterChanged(int index, float plain) override
+    {
+        if (index < 0 || index >= kNumParams || !inst_) return;
+        if (t_pushing == index) return;          // the host echoing what the worker just told it
+        const PSpec& s = g_pspecs[index];
+        if (s.flags & kUi) return;
+        if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
+        if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
+        {
+            store(kUiParam, 0.0f);
+            notifyUi_.store(true);
+        }
+        if (s.flags & kReadOnly) { hostMoved_[index].store(true); return; }   // the worker puts the engine's value back
+        if ((s.flags & kText) && !(s.flags & kTile)) return;   // a readout's counter: nothing to send
+        if (s.flags & kMomentary)
+        {
+            if (plain < 0.5f) { held_[index].store(false); if (s.flags & kTile) hostMoved_[index].store(true); return; }
+            if (held_[index].exchange(true)) return;
+            if (s.flags & kStep) stepTarget(s);
+            else engineSet(s.key, "1");
+            if (s.flags & kTile) hostMoved_[index].store(true);   // the tile shows "<key>_on", read back by the worker
+            else release_[index].store(true);
+            return;
+        }
+        // whole numbers and options: settle toward the move (see settle()), then send
+        const float span = s.max - s.min;
+        float v = plain;
+        if (span > 0)
+        {
+            const float pos = getNormalised(index) * span;
+            float cur = told_[index] > -1.0e8f ? told_[index] - s.min : pos;
+            const float tick = s.nudgePct > 0 ? std::max(0.5f, span * s.nudgePct / 100.0f) : 0.5f;
+            float steps;
+            if (s.nudgePct > 0 && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
+                steps = std::round(cur) + (pos > cur ? 1.0f : -1.0f);
+            else
+                steps = settle(pos, cur, lastPos_[(size_t)index]);
+            lastPos_[(size_t)index] = pos;
+            steps = std::min(std::max(steps, 0.0f), span);
+            v = s.min + steps;
+            // Where it landed reaches the host from the worker, ~10 ms later (as 1.x reported the engine's value): the host's own
+            // value is left as it set it until then, so a set reads back unchanged (host_sim's sweep checks that).
+            if (std::fabs(getNormalised(index) * span - steps) > 0.001f) hostMoved_[index].store(true);
+        }
+        if (index == 0)   // OCTAVE: debounced (see the header comment)
+        {
+            pend0Value_.store(v);
+            pend0At_.store(nowMs());
+            return;
+        }
+        char buf[24];
+        std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
+        told_[index] = v;
+        engineSet(s.key, buf);
+    }
+
+    bool formatValue(int index, float plain, std::string& out) override
+    {
+        (void)plain;
+        if (index < 0 || index >= kNumParams) return false;
+        const PSpec& s = g_pspecs[index];
+        if (s.flags & kText)   // the engine's text (a tile's name, a bank / patch name, the page text)
+        {
+            char buf[128];
+            out = engineGet(s.key, buf, sizeof buf) ? buf : "";
+            return true;
+        }
+        if (s.flags & kMomentary) { out = ""; return true; }
+        if (s.flags & kUi) { out = ""; return true; }
+        return false;
+    }
+
+    // ---- state ----------------------------------------------------------------------------------------------------------------
+    void saveExtraState(std::vector<uint8_t>& out) override
+    {
+        std::string s = engineState();
+        out.assign(s.begin(), s.end());
+    }
+
+    void loadExtraState(const uint8_t* data, size_t size) override
+    {
+        if (!data || !size) return;
+        applyState(std::string(reinterpret_cast<const char*>(data), strnlen(reinterpret_cast<const char*>(data), size)));
+    }
+
+    // A project saved by the 1.x wrapper build: its chunk is the engine's state JSON, NUL-terminated. Called from the wrapped effSetChunk.
+    bool loadLegacy(const char* data, size_t size)
+    {
+        if (!data || !size) return false;
+        std::string s(data, strnlen(data, size));
+        size_t b = s.find_first_not_of(" \t\r\n");
+        if (b == std::string::npos || s[b] != '{') return false;
+        applyState(s);
+        return true;
+    }
+
+    std::atomic<bool> loading_{false};   // set around an SDK chunk load (wrapped effSetChunk)
+    void requestResync() { resync_.store(true); }
+
+private:
+    struct Lock
+    {
+        explicit Lock(JV880Plugin* p) : p_(p) { pthread_mutex_lock(&p_->lock_); }
+        ~Lock() { pthread_mutex_unlock(&p_->lock_); }
+        JV880Plugin* p_;
+    };
+
+    void engineSet(const char* key, const char* val)
+    {
+        Lock l(this);
+        api_->set_param(inst_, key, val);
+    }
+
+    bool engineGet(const char* key, char* buf, int n)
+    {
+        int r;
+        { Lock l(this); r = api_->get_param(inst_, key, buf, n); }
+        if (r <= 0) { buf[0] = 0; return false; }
+        buf[r < n ? r : n - 1] = 0;
+        return true;
+    }
+
+    // The engine's state, or (while it is still loading, or has no ROMs) the last state it was given, so a save never drops it.
+    std::string engineState()
+    {
+        std::string s;
+        if (inst_)
+        {
+            std::vector<char> buf((size_t)kStateMax + 1);
+            if (engineGet("state", buf.data(), kStateMax)) s = buf.data();
+        }
+        if (s.empty()) { Lock l(this); s = lastState_; }
+        return s;
+    }
+
+    void applyState(const std::string& s)
+    {
+        { Lock l(this); lastState_ = s; }
+        if (inst_) engineSet("state", s.c_str());   // queued by the engine until its ROMs have loaded
+        resync_.store(true);
+    }
+
+    // Set a parameter's value without calling parameterChanged (so it is not written back to the engine).
+    void store(int i, float plain) { values_[(size_t)i]->store(param(i).toNormalised(plain), std::memory_order_relaxed); }
+
+    // Where a whole-number / option param lands, in steps from its minimum (the 1.x wrapper's rule): a value on a step is a click,
+    // a preset or automation; between steps it is a Q-Link / wheel / drag move, rounded toward the way it moves, so a turn smaller
+    // than one step still moves one and a sweep does not flicker between two values.
+    static float settle(float pos, float cur, float last)
+    {
+        if (std::fabs(pos - std::round(pos)) <= 0.001f) return std::round(pos);
+        const float dir = (last >= 0 && std::fabs(pos - last) < 0.5f) ? pos - last : pos - cur;
+        if (dir == 0) return std::round(cur);
+        return dir > 0 ? std::ceil(pos - 0.001f) : std::floor(pos + 0.001f);
+    }
+
+    void stepTarget(const PSpec& s)   // PATCH -/+: nudge the target from the engine's current value
+    {
+        const PSpec& t = g_pspecs[s.stepTarget];
+        char buf[32];
+        if (!engineGet(t.key, buf, sizeof buf)) return;
+        float v = (float)std::atof(buf) + s.stepDelta;
+        v = std::min(std::max(v, t.min), t.max);
+        std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
+        engineSet(t.key, buf);
+        release_[&s - g_pspecs].store(true);
+        hostMoved_[s.stepTarget].store(true);
+    }
+
+    // CC 20-35 -> the first page's controls, NRPN n -> parameter n (1.x). Set as a touch would; the worker tells the host.
+    bool midiControl(const mpc::MidiEvent& e)
+    {
+        if ((e.data[0] & 0xF0) != 0xB0 || e.size < 3) return false;
+        const int cc = e.data[1] & 127, v = e.data[2] & 127;
+        if (cc >= 20 && cc <= 35 && g_ccMap[cc - 20] >= 0) { ccSet(g_ccMap[cc - 20], v / 127.0f); return true; }
+        if (!kHasNrpn) return false;
+        if (cc == 99) { nrpn_ = (v << 7) | (nrpn_ >= 0 ? nrpn_ & 127 : 0); return true; }
+        if (cc == 98) { nrpn_ = (nrpn_ >= 0 ? nrpn_ & ~127 : 0) | v; return true; }
+        if (cc == 101 || cc == 100) { nrpn_ = -1; return false; }   // an RPN (bend range ...): the engine's
+        if (nrpn_ >= 0 && nrpn_ < kNumParams && cc == 6) { nrpnMsb_ = v; ccSet(nrpn_, v / 127.0f); return true; }
+        if (nrpn_ >= 0 && nrpn_ < kNumParams && cc == 38) { ccSet(nrpn_, (nrpnMsb_ * 128 + v) / 16383.0f); return true; }
+        return false;
+    }
+
+    void ccSet(int i, float norm)
+    {
+        if (i < 0 || i >= kNumParams || (g_pspecs[i].flags & kUi)) return;
+        const mpc::Param& p = param(i);
+        const float span = p.max - p.min;
+        if (span > 0) norm = std::round(norm * span) / span;   // onto a step: a direct set, not a nudge
+        setNormalised(i, norm);
+        hostMoved_[i].store(true);
+    }
+
+    // ---- worker: debounced OCTAVE, momentary releases, and everything the engine changes by itself ------------------------------
+    void pushValue(int i, float plain)
+    {
+        told_[i] = plain;
+        store(i, plain);
+        t_pushing = i;
+        notifyHostParameterChanged(i);
+        t_pushing = -1;
+    }
+
+    void workerMain()
+    {
+        while (!quit_.load())
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            tickOnce(false);
+        }
+    }
+
+    // One worker pass. force = the offline test: apply a pending OCTAVE now and read back everything.
+    void tickOnce(bool force)
+    {
+        if (!inst_) return;
+        const long long now = nowMs();
+        ++tick_;
+        const long long p0 = pend0At_.load();
+        if (p0 && (force || now - p0 >= 40))
+        {
+            pend0At_.store(0);
+            const float v = pend0Value_.load();
+            char buf[24];
+            if (engineGet(g_pspecs[0].key, buf, sizeof buf) && std::lround(std::atof(buf)) != std::lround(v))
+            {
+                std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
+                engineSet(g_pspecs[0].key, buf);
+            }
+            told_[0] = -1.0e9f;   // read back below
+        }
+        for (int i = 0; i < kNumParams; ++i)
+            if (release_[i].exchange(false)) { held_[i].store(false); pushValue(i, 0.0f); }
+        if (notifyUi_.exchange(false)) { t_pushing = kUiParam; notifyHostParameterChanged(kUiParam); t_pushing = -1; }
+        if (resync_.exchange(false))
+        {
+            for (int i = 0; i < kNumParams; ++i) told_[i].store(-1.0e9f);
+            std::fill(textHash_.begin(), textHash_.end(), 0u);
+            for (int i = 0; i < kNumParams; ++i) hostMoved_[i].store(true);
+            lastRev_ = 0;
+        }
+
+        // the envelope-view columns follow "display_rev" (which also times the views out); read every 100 ms
+        bool revChanged = false;
+        if (force || tick_ % 10 == 0)
+        {
+            char rb[16];
+            if (engineGet("display_rev", rb, sizeof rb))
+            {
+                const uint32_t r = fnv(rb) | 1u;
+                revChanged = r != lastRev_;
+                lastRev_ = r;
+            }
+        }
+
+        // values: every pass for the ones the host just moved; all of them at once when the patch changed (a load rewrites every
+        // NVRAM value; "patch_sig" = the engine's mode / patch / patch name, read every pass); otherwise kSweep per pass, round-robin
+        // (each value about every 200 ms: macros and edits the engine makes by itself)
+        char buf[128];
+        bool full = force;
+        {
+            std::string sig;
+            for (const char* k : {"mode", "preset", "performance", "patch_name", "loading_complete"})
+                if (engineGet(k, buf, sizeof buf)) { sig += buf; sig += '|'; }
+            const uint32_t h = fnv(sig.c_str()) | 1u;
+            if (h != patchSig_) { patchSig_ = h; full = true; }
+        }
+        const int first = cursor_;
+        cursor_ = (cursor_ + kSweep) % kNumParams;
+        int changed = 0;
+        for (int i = 0; i < kNumParams; ++i)
+        {
+            const PSpec& s = g_pspecs[i];
+            const bool moved = hostMoved_[i].exchange(false);
+            const bool due = full || (i - first + kNumParams) % kNumParams < kSweep;
+            if (s.flags & kTile)
+            {
+                if (!(moved || due)) continue;
+                char k2[64];
+                std::snprintf(k2, sizeof k2, "%s_on", s.key);
+                const float on = engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f;
+                if (moved || on != told_[i]) { pushValue(i, on); if (!moved) ++changed; }
+                continue;
+            }
+            if (!(s.flags & kPolled)) continue;
+            if (i == 0 && pend0At_.load()) continue;   // OCTAVE not applied yet
+            if ((s.flags & kReadOnly) ? !(moved || revChanged || told_[i] < -1.0e8f) : !(moved || due)) continue;
+            if (!engineGet(s.key, buf, sizeof buf)) continue;
+            float v = (float)std::atof(buf);
+            v = std::min(std::max(v, s.min), s.max);
+            if (moved || v != told_[i]) { pushValue(i, v); if (!moved) ++changed; }
+        }
+
+        // text readouts: every 100 ms; a changed text bumps the counter (the host re-reads text when the value moves)
+        bool textChanged = false;
+        if (force || tick_ % 10 == 0)
+            for (int i = 0; i < kNumParams; ++i)
+            {
+                const PSpec& s = g_pspecs[i];
+                if (!(s.flags & kText)) continue;
+                const uint32_t h = engineGet(s.key, buf, sizeof buf) ? fnv(buf) | 1u : 1u;
+                if (h == textHash_[(size_t)i]) continue;
+                textHash_[(size_t)i] = h;
+                textChanged = true;
+                if (s.flags & kTile) continue;   // a tile's value is its lit state
+                counter_ = (counter_ + 1) % 1024;
+                pushValue(i, (float)counter_);
+            }
+        // Many values at once (a patch load) or new text: one display update, at most every 100 ms. Never periodically: it re-lists
+        // programs and closes the PRESET menu.
+        if (textChanged || changed > 8) wantDisplay_ = true;
+        if (wantDisplay_ && (force || now - lastDisplay_ >= 100))
+        {
+            wantDisplay_ = false;
+            lastDisplay_ = now;
+            requestDisplayUpdate();
+        }
+    }
+
+public:
+#ifdef JV_TEST
+    void dbgTick() { tickOnce(true); }
+    bool dbgReady()
+    {
+        char b[16];
+        return engineGet("loading_complete", b, sizeof b) ? std::atoi(b) != 0 : engineState().size() > 0 && engineState()[0] == '{';
+    }
+    std::string dbgEngine(const char* key)
+    {
+        char b[256];
+        return engineGet(key, b, sizeof b) ? std::string(b) : std::string();
+    }
+    void dbgEngineSet(const char* key, const char* v) { engineSet(key, v); }
+    std::string dbgState() { return engineState(); }
+#endif
+
+private:
+    plugin_api_v2_t* api_ = nullptr;
+    void* inst_ = nullptr;
+    pthread_mutex_t lock_;   // one engine call at a time (the engine assumes a single caller); held for microseconds
+    std::thread worker_;
+    std::atomic<bool> quit_{false};
+    std::atomic<bool> resync_{true}, notifyUi_{false};
+    std::atomic<long long> pend0At_{0};
+    std::atomic<float> pend0Value_{0.0f};
+    std::atomic<bool>* held_ = nullptr;
+    std::atomic<bool>* release_ = nullptr;
+    std::atomic<bool>* hostMoved_ = nullptr;   // read this one back and tell the host on the next pass
+    std::atomic<float>* told_ = nullptr;       // the value the host was last told (or sent), per parameter
+    std::vector<float> lastPos_;               // the host's last position, for settle()
+    std::vector<uint32_t> textHash_;
+    std::string lastState_;
+    int16_t block_[kBlock * 2] = {0};
+    int pos_ = kBlock;
+    int nrpn_ = -1, nrpnMsb_ = 0;
+    uint32_t lastRev_ = 0, patchSig_ = 0;
+    int cursor_ = 0;
+    static const int kSweep = 24;
+    int counter_ = 0;
+    long tick_ = 0;
+    bool wantDisplay_ = false;
+    long long lastDisplay_ = 0;
+};
+
+// The same entry as MPC_PLUGIN_ENTRY, plus a wrapped effSetChunk: an "MPCP" chunk loads with engine writes held back (the engine
+// state in its extra part is the truth); a 1.x chunk (the engine's JSON) goes to the engine as before.
+namespace {
+VstIntPtr (*g_origDispatcher)(AEffect*, VstInt32, VstInt32, VstIntPtr, void*, float) = nullptr;
+
+VstIntPtr jvDispatcher(AEffect* e, VstInt32 opcode, VstInt32 index, VstIntPtr value, void* ptr, float opt)
+{
+    if (opcode == effSetChunk && e->object && ptr && value > 0)
+    {
+        JV880Plugin* p = static_cast<JV880Plugin*>(e->object);
+        if (value >= 4 && std::memcmp(ptr, "MPCP", 4) == 0)
+        {
+            p->loading_.store(true);
+            const VstIntPtr r = g_origDispatcher(e, opcode, index, value, ptr, opt);
+            p->loading_.store(false);
+            p->requestResync();
+            return r;
+        }
+        return p->loadLegacy(static_cast<const char*>(ptr), (size_t)value) ? 1 : 0;
+    }
+    return g_origDispatcher(e, opcode, index, value, ptr, opt);
+}
+} // namespace
+
+#ifdef JV_TEST   // offline test hooks (tests/host_test.cpp); absent from the release build
+extern "C" MPC_EXPORT void jv_dbg_tick(AEffect* e) { static_cast<JV880Plugin*>(e->object)->dbgTick(); }
+extern "C" MPC_EXPORT int jv_dbg_ready(AEffect* e) { return static_cast<JV880Plugin*>(e->object)->dbgReady() ? 1 : 0; }
+extern "C" MPC_EXPORT int jv_dbg_engine(AEffect* e, const char* key, char* out, int n)
+{
+    std::string s = static_cast<JV880Plugin*>(e->object)->dbgEngine(key);
+    std::snprintf(out, (size_t)n, "%s", s.c_str());
+    return (int)s.size();
+}
+extern "C" MPC_EXPORT void jv_dbg_engine_set(AEffect* e, const char* key, const char* v) { static_cast<JV880Plugin*>(e->object)->dbgEngineSet(key, v); }
+#endif
+
+extern "C" MPC_EXPORT AEffect* VSTPluginMain(audioMasterCallback host)
+{
+    if (host != nullptr && host(nullptr, audioMasterVersion, 0, 0, nullptr, 0.0f) == 0) return nullptr;   // host is VST1 only
+    AEffect* e = mpc::detail::createEffect(new JV880Plugin(), host);
+    if (e && !g_origDispatcher) g_origDispatcher = e->dispatcher;
+    if (e) e->dispatcher = jvDispatcher;
+    return e;
+}
