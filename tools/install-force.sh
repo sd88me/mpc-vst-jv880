@@ -35,7 +35,12 @@ fi
 
 # Where an installed JV-880 keeps its ROMs and favourites: the folder of the .so MPC.settings lists for this uid
 # (1.x: <folder>/jv880.so; 2.x: <folder>/VST/jv880-arm32.so), and the target folder itself.
-OLD_SO=$(grep -o "file=\"[^\"]*\"[^>]* uid=\"$UID_HEX\"" "$SETTINGS" 2>/dev/null | head -n 1 | sed 's/^file="\([^"]*\)".*/\1/')
+# (MPC writes a <PLUGIN .../> entry over several lines: join each one before matching)
+OLD_SO=$(awk -v uid="$UID_HEX" '
+    /<PLUGIN( |$)/ { buf = $0; inp = 1 }
+    inp && !/<PLUGIN( |$)/ { buf = buf " " $0 }
+    inp && /\/>/ { inp = 0; if (index(buf, " uid=\"" uid "\"") && match(buf, /file="[^"]*"/)) { print substr(buf, RSTART + 6, RLENGTH - 7); exit } }
+' "$SETTINGS" 2>/dev/null)
 OLD_DIR=""
 if [ -n "$OLD_SO" ]; then
     OLD_DIR=$(dirname "$OLD_SO")
