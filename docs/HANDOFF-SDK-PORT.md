@@ -79,8 +79,12 @@ owner says so.
 5. `tools/package.sh` writes `JV-880-<ver>-SHA256SUMS.txt` next to the zips.
 
 **B. Device checks before publishing**
-1. Live III (offline on 2026-11-10, still to do): replace the 1.x "JV-880" with the release (the SDK zip copied into
-   `VST2 Plugins`, `jv880-roms/` carried across), and load an existing 1.x project on it.
+1. (done 2026-11-10) Live III: `/nvme/VST2 Plugins/sd88me - VST - JV-880` replaced with the folder from
+   `JV-880-2.0.0-mpc-sdk.zip`. `jv880-roms/` was moved across and the beta's `jv880-favourites.dat` copied in; the
+   release opens as "JV-880". The owner skipped the test with a project saved by 1.x (no such project on the unit), so
+   that case is covered only by the offline chunk test. All plugin folders in `/nvme/Synths` (the older MPC.settings
+   route, which duplicated `VST2 Plugins` and confused sessions) were moved to `/nvme/Synths-removed-20261110`, and
+   their 23 MPC.settings entries removed (backup `.bak-drop-nvme-synths-*`).
 2. (done on the Force, 2026-11-10) Save and reload a 2.0 project. The Force runs the release installed from
    `JV-880-2.0.0-mpc-armv7.zip` with its own `install.sh`; it swapped the folder to the `jv880.so`-at-root layout and kept
    the ROMs. Test project `Force Documents/Projects/Jvtest.xpj`:
@@ -89,10 +93,9 @@ owner says so.
    - +FAV saved "1 Bodhran Vel" with CUTOFF 127, and the page did not jump. Picking it in PRESET restored CUTOFF 127.
    - Saved again with favourite 1 picked and CUTOFF 50, then reloaded: CUTOFF 50, so the project's own state wins over
      the program re-pick.
-   - Still to do: the same on the Live III.
-3. CPU on the Live III (the Force is done; see above).
-4. (Force done 2026-11-10) "JV-880 2 Beta" removed from the Force: the folder and its MPC.settings entry. Still to do: the
-   Live III beta folder (`/nvme/VST2 Plugins/sd88me - VST - JV-880 2 Beta`).
+3. (done 2026-11-10) CPU on the Live III, the same test as on the Force: `jv880-emu` uses 6.4 % of one core idle and
+   18.3 % with 8-note chords. It runs on the fast cores 4–6 (the fast-cores pinning works).
+4. (Force done 2026-11-10) "JV-880 2 Beta" removed from the Force: the folder and its MPC.settings entry. The Live III beta folder is removed too.
 
 **C. Publishing (owner decides when)**
 1. Push `rev-sdk` and open a PR to `master`. Do not merge yet.
