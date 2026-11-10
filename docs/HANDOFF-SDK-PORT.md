@@ -64,6 +64,38 @@ tools/package.sh           # release zip
    1.x measured about 20 % idle and 47 % playing, but with an unrecorded patch and note count.
 5. Remove the betas from both devices after release testing.
 
+## Release plan (2.0.0)
+The skin and features were approved by the owner on 2026-11-10. Nothing below is pushed, tagged or published until the
+owner says so.
+
+**A. Local preparation (can be done now)**
+1. Catalog compatibility. The catalog reads `*-mpc-armv7.zip` (and `*-mpc-aarch64.zip`) assets that carry an
+   `mpc-plugin.json` manifest, made by `mpc-vst-plugins`' `tools/release.py`. Our single `JV-880-<ver>-VST2-Plugins.zip`
+   matches neither. Choose one:
+   (a) Also emit the catalog-shaped zips: `tools/package.py` writes `JV-880-<ver>-mpc-armv7.zip` and
+       `-mpc-aarch64.zip`, each with the manifest (id `jv-880`, uid, version, licence "MAME license", `user_data`
+       `jv880-roms`, `userfiles.json`).
+   (b) Change the catalog entry's `asset_pattern`. That is a catalog change, so it is the owner's call.
+   Recommended: (a). It keeps the catalog untouched and keeps the installer app's ROM step (`userfiles.json`) working.
+2. `tested.json`: add 2.0.0 on the Force (release build, 2026-11-10) and on the Live III (beta-identical build).
+3. Replace or retire `.github/workflows/vst-release.yml`, which builds the 1.x way.
+4. `build-sdk.sh`: make the SDK location come from `MPC_SDK` (or a neutral default) instead of a private folder name.
+5. Run `tools/package.sh` for the final zips and record their sha256 in the release notes draft.
+
+**B. Device checks before publishing**
+1. Live III: replace the 1.x "JV-880" with the release folder by hand, following INSTALL.txt route A (copy
+   `jv880-roms/` across), and load an existing 1.x project on it.
+2. Save and reload a 2.0 project on both devices, including one with a favourite picked.
+3. CPU on the Live III (the Force is done; see above).
+4. Remove "JV-880 2 Beta" from both devices: the folder, plus the MPC.settings entry on the Force (uid `4a563842`).
+
+**C. Publishing (owner decides when)**
+1. Push `rev-sdk` and open a PR to `master`. Do not merge yet.
+2. Draft the GitHub release `v2.0.0` with the zips and `docs/RELEASE-NOTES-2.0.0.md`.
+3. Merge, tag `v2.0.0` and publish the draft. The catalog picks up published releases only; check its
+   `problems.json` after the next catalog build.
+4. Announce on the Open MPC Discord.
+
 ## Before publishing (owner decides when)
 - Set the version in `plugin.json` if not 2.0.0. Run `tools/package.sh`, then attach the zip and
   `docs/RELEASE-NOTES-2.0.0.md` to a draft release.
