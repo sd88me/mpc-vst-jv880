@@ -2,3 +2,5 @@ build/
 *.o
 roms/
 dist/
+tests/data/
+__pycache__/

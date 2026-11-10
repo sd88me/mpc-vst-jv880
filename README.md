@@ -1,140 +1,110 @@
-# MINI-JV 
-JV-880 Emulator VST Plugin for MPC OS
+# MINI-JV (JV-880)
+Roland JV-880 emulation as a VST2 instrument for Akai MPC and Force
 
 💬 Questions or feedback? Join the [Open MPC Discord](https://discord.gg/sRRysZSgu3).
 
-> **MPC OS.** Tested on a Force (MPC OS 3.x). From v1.0.6 the plugin library and the touchscreen skin are built in the
-> shapes MPC OS 2.15.1 reads, and the [catalog](https://sd88me.github.io/mpc-vst-plugins/) labels that release
-> "MPC OS 2.x + 3.x" from its checks, but **it has not been tried on a 2.x unit yet**: testers on an MPC Live / One /
-> X / Key running 2.x are welcome (Discord link above). Earlier releases (v1.0.5 and before) are 3.x only: on 2.x they
-> load and play from the Q-Links, but the touchscreen page stays empty. The catalog shows which MPC OS each release
-> works on, and the installers warn before putting a 3.x-only plugin on a 2.x device.
-> See [MPC OS 2.x vs 3.x](https://github.com/sd88me/mpc-vst-plugins#mpc-os-2x-vs-3x) in the main repo.
+**JV-880** runs in MPC's built-in plugin host, with its own touchscreen skin and Q-Link support. Version 2.0 is rebuilt on
+Akai's MPC Plugin SDK and runs on 64-bit MPCs (Live III and others) and 32-bit MPCs (Force, Live, Live II, One, X, Key). Projects saved with 1.x still load with their patch and edits.
 
-**MINI-JV** as a native VST2 instrument for Akai MPC OS standalone devices (MPC Live/One/X/Key,
-Force). It loads in MPC's built-in plugin host and has its own touchscreen skin with Q-Link support.
-
-Current release: **v1.0.6** — see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
+Current release: see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
 
 ## Features
 
 - Roland JV-880 sample-based (ROM PCM) sound engine, with the JV-880's own reverb and chorus.
-- **Play page**: eight macros (cutoff, resonance, filter envelope depth, LFO depth, attack, decay,
-  sustain, release), output (octave, patch pan, patch level, tone 1-4 on/off), patch settings (analog
-  feel, bend range, portamento, key assign, velocity switch, solo legato) and reverb and chorus,
-  all on one screen.
-- **Banks page**: a list of every loaded bank and its patches. Tap a bank to browse it, tap a patch to load
-  it; the selected bank and the loaded patch stay highlighted. The top strip has three steppers (bank,
-  patch, patch page) and the page's Q-Links and the data wheel step the bank, the patch and the page.
-  The lists number top to bottom, and stepping the patch across a bank follows it.
-- **Tone 1-4 pages**: wave selection, pitch, pitch/filter/amp envelopes (knobs for every level and time)
-  and both LFOs for each tone. Moving an envelope knob shows that tone's three envelope curves for a few
-  seconds in place of the LFO blocks; the VIEW switch on the Amp panel holds them open.
-- **SR-JV80 expansion cards** load automatically and appear as extra banks (up to 19 in addition to the
-  3 built-in banks; verified with 4133 patches across 22 banks).
-- 16 Q-Links per page, following the page you are on.
-- Hardware-style panel: dark rack, amber highlights, green dot-matrix LCD, black keycap buttons.
-<img width="1280" height="800" alt="2026-09-26T235059722Z" src="https://github.com/user-attachments/assets/81a7a40a-b6d1-4ac9-bbd1-85288823ecee" />
+- A rack-style screen: matte black panel and red-LED keys. Every value sits on a backlit LCD, with its name, a big number
+  and a bar graph. Drag a value, turn its Q-Link, or use the data wheel.
+- **PLAY**:
+  - Filter and envelope macros, output and effect sends.
+  - A live ADSR display.
+  - Tone on/off, velocity switch and key mode.
+- **BANKS**: every bank and its patches as LCD lists. Tap a bank to browse it, tap a patch to load it.
+- **COMMON**: bend and portamento, reverb and chorus in full, with type keys, and key mode.
+- **TONE 1–4**: wave, filter, amp and pitch, plus the tone's pitch, filter and amp envelopes as live, draggable displays.
+  Press the TONE key again for the two LFOs.
+- **RANDOM** loads a random patch from any bank.
+- **Favourites** in MPC's own PRESET list:
+  - **+FAV** saves the current patch with your edits. Pick it from the PRESET list on the track or from a pad.
+  - **−FAV** removes the favourite that is currently picked.
+  - Up to 64, shared by every project, stored in `jv880-favourites.dat` in the plugin folder.
+- **SR-JV80 expansion cards** load automatically and appear as extra banks: up to 19 cards in addition to the 3 built-in
+  banks.
+- MIDI control as in 1.x: CC 20–35 on the main controls, and NRPN for every parameter.
+
+<img src="docs/skin-preview/play.png" width="640" alt="PLAY page"> <img src="docs/skin-preview/banks.png" width="640" alt="BANKS page">
 
 ## ROMs (required, not included)
 
-The plugin makes no sound without your own JV-880 ROM dump, which must be **v1.0.0** (v1.0.1 causes
-CPU traps in the emulated H8/300 core). The ROMs and any SR-JV80 expansion cards are copyrighted Roland
-firmware, so they are not included, bundled or committed anywhere in this repo or its release zip. Stage
-them on the device yourself: see [docs/ROMS.md](docs/ROMS.md) for exact filenames, sizes and locations
-(`jv880-roms/roms/` inside the plugin folder, e.g. `/sdcard/Synths/sd88me - VST - JV-880/jv880-roms/roms/`, expansions under `roms/expansions/`).
+The plugin makes no sound without your own JV-880 ROM dump, which must be **v1.0.0**. A v1.0.1 dump causes CPU traps in
+the emulated H8/300 core. The ROMs and any SR-JV80 expansion cards are copyrighted Roland firmware, so they are not
+included anywhere in this repo or its release zip.
 
-## Requirements
-
-- A first-generation MPC OS standalone device (32-bit ARM: Force, MPC Live / Live II, One, X, Key 61).
-  Tested on a Force.
-- Root SSH access to the device. Installing plugins this way is unofficial: back up first, use at your
-  own risk.
+Put them in `jv880-roms/roms/` inside the plugin folder, and expansion cards in `jv880-roms/roms/expansions/`.
+[docs/ROMS.md](docs/ROMS.md) has the exact file names and sizes.
 
 ## Install
 
-1. Download `JV-880-1.0.7-mpc-armv7.zip` from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest)
-   and unzip it.
-2. Copy the folder to the device and run the installer (it stops MPC, so save your project first):
+Needs MPC OS 3.x. Version 2.0's screen uses skin features MPC OS 2.x doesn't have: on 2.x, stay on 1.0.9.
+Download from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest):
 
-   ```
-   scp -r JV-880-1.0.7 root@<device-ip>:/tmp/
-   ssh root@<device-ip> sh /tmp/JV-880-1.0.7/install.sh
-   ```
+- **`JV-880-<version>-mpc-sdk.zip`**, for MPCs that load plugin folders from `VST2 Plugins`. Unzip it and copy the folder
+  `sd88me - VST - JV-880` into a folder named exactly `VST2 Plugins` at the root of a drive the MPC can see. Put your ROMs in
+  its `jv880-roms/roms/`. Then, in Preferences > Enhancements, turn on Enable Enhancements and VST2 Support, and restart
+  the MPC.
+- **`JV-880-<version>-mpc-armv7.zip`** (Force, MPC Live / Live II, One, X, Key) and **`-mpc-aarch64.zip`** (Live III and
+  other 64-bit MPCs), for MPCs that list plugins in `MPC.settings`. Both need root shell access:
+  ```
+  scp -r JV-880-<version> root@<device-ip>:/tmp/
+  ssh root@<device-ip> sh /tmp/JV-880-<version>/install.sh
+  ```
+  On a 64-bit unit, add `-t /nvme/Synths` to the install command. The installer stops the MPC, so save your project first.
+  A 1.x install is upgraded in place, and your ROMs (`jv880-roms/`) and favourites (`jv880-favourites.dat`) are kept.
+  The zip's `INSTALL.md` has the manual steps and the uninstall command.
 
-3. Stage your ROMs as described in [docs/ROMS.md](docs/ROMS.md).
-4. Add **JV-880** to a track from the plugin browser (Instrument plugins).
+Then add **JV-880** to a track from the plugin browser.
 
-The zip's `INSTALL.md` has the manual steps and the uninstall command. Running the installer again
-upgrades in place. After replacing the plugin file on a running device, remove and re-insert the plugin
-on any track that uses it.
+**Upgrading by hand:** replace the plugin folder, but keep `jv880-roms/` and `jv880-favourites.dat`.
 
 ## Build from source
 
-Needs a sibling checkout of [mpc-vst-plugins](https://github.com/sd88me/mpc-vst-plugins) (the shared
-wrapper, `build_port.sh`, skin tooling) at `../mpc-vst-plugins`, or set `MPC_VST` to point at one.
-Docker (with QEMU for arm32v7) is needed by its build pipeline.
+Needs a checkout of Akai's MPC Plugin SDK (`mpc-plugin-builder-sdk`); set `MPC_SDK` to point at it.
 
 ```
-./build.sh
+./build-sdk.sh            # build/"sd88me - VST - JV-880"/ (arm32 + arm64 .so, skin)
+./build-sdk.sh test       # also the offline ASan/UBSan host test (needs your ROMs: JV_ROMS, default ~/roms/jv880)
+./build-sdk.sh beta       # "JV-880 2 Beta" (own uid), installs next to the release
+tools/package.sh          # test, then dist/JV-880-<version>-mpc-{armv7,aarch64,sdk}.zip + SHA256SUMS
+python3 tools/make_tui.py --preview   # regenerate skins/ and docs/skin-preview/*.png
 ```
 
-Output in `build/`: `jv880.so`, the skin folder, and `pluginlist-entry.xml`. No third-party source is
-fetched at build time. To put a build on a device, package it and use the installer (the plugin is one folder in
-`/sdcard/Synths`, ROMs in its `jv880-roms/roms/`):
+How the source is laid out:
+- `src/JV880Plugin.cpp`: the SDK front end around the unchanged engine (`src/dsp/`).
+- Parameters: `params.json` holds the frozen 1.x order, and `params.lock` keeps it append only.
+  `tools/sdk/gen_sdk_params.py` writes `src/params_gen.h` from them.
+- The skin is generated by `tools/make_tui.py`, with page layouts in `tools/skin_pages.py` and art in
+  `tools/make_jv_skin.py`.
 
-```
-./release.sh <version>      # dist/JV-880-<version>-mpc-armv7.zip; unzip, copy to the device, run install.sh
-```
-
-A skin-only change needs no MPC restart: re-insert the plugin or reload the project. Registering the
-plugin in `MPC.settings` and the rest of the device workflow are in `mpc-vst-plugins`'
-`docs/PORTING.md` and `.claude/skills/mpc-vst-plugin/SKILL.md`.
-
-## Status
-
-v1.0.0. Builds clean for armhf and runs on a real Force with all ROMs and 19 SR-JV80 expansions loaded;
-audio, bank/patch browsing and Q-Link control are checked on that hardware. The release zip was not run
-through its own installer on a device before publishing; the plugin and skin it contains are the ones tested.
-
-**CPU (Force, RK3288 at 1.8 GHz, one instance, 2026-09-27).** The synthesis runs on the plugin's own
-`jv880-emu` thread, so it is measured from that thread's CPU ticks while the plugin is loaded on a track:
-
-| State | `jv880-emu` thread |
-|---|---|
-| Idle, no notes | about 20% of one core |
-| Playing chords and held notes (30 s) | about 47% of one core |
-
-The audio-path bench (`tools/bench.sh`) passes with a p99 of 3.3% of a block, but it does not measure that
-thread and understates this port (see `mpc-vst-plugins`' docs/NOTES.md). Plan for a few instances at most, not
-a full set of tracks. The playing figure is one measurement with an unrecorded patch and note count.
+The 1.x build files (`build.sh`, `release.sh`, `vst.json`, `layout.conf`, `skin.css`, `module.json`) are kept for
+reference only.
 
 ## Background
 
-The sound engine is a vendored copy of [schwung-jv880](https://github.com/charlesvestal/schwung-jv880),
-a `plugin_api_v2` build of the JV-880's H8/300 MCU and PCM wavetable emulator originally written for
-Ableton Move. `src/VENDORED.md` lists exactly what is vendored, from which commit, and our local source
-changes. It is wrapped as an MPC OS VST2 plugin with `mpc-vst-plugins`' shared tooling.
+The sound engine is a vendored copy of [schwung-jv880](https://github.com/charlesvestal/schwung-jv880), a `plugin_api_v2`
+build of the JV-880's H8/300 MCU and PCM wavetable emulator originally written for Ableton Move. `src/VENDORED.md` lists
+what is vendored, from which commit, and the local changes.
 
-The screen layout and colour palette started from [force-jv880](https://github.com/sd88me/force-jv880)'s
-Force Shadow page, then were reworked for this plugin (the Play/Patch merge, the Banks page and the
-palette are specific to this port). This repo is purely the VST port; `force-jv880` remains the separate
-MockbaMod/Force Shadow addon for the Force's own on-device app, a different architecture (a separate host
-process with an audio-injection tap, not a VST).
-
-More detail: [docs/DESIGN-NOTES.md](docs/DESIGN-NOTES.md) (port rationale and every deviation from the
-Force Shadow page), [docs/ROMS.md](docs/ROMS.md) (ROM and expansion staging),
-[src/VENDORED.md](src/VENDORED.md) (what is vendored and why).
+More detail:
+- [docs/ROMS.md](docs/ROMS.md): ROM and expansion staging.
+- [docs/HANDOFF-SDK-PORT.md](docs/HANDOFF-SDK-PORT.md): how the 2.0 port is built and tested.
+- [docs/DESIGN-NOTES.md](docs/DESIGN-NOTES.md): 1.x design notes.
 
 ## Credits
 
-- **Roland**: the original JV-880 hardware and its ROMs (not included; see docs/ROMS.md).
-- **[nukeykt](https://github.com/nukeykt)**: the H8/300 MCU + PCM emulation core this traces back to
+- **Roland**: the original JV-880 hardware and its ROMs (not included).
+- **[nukeykt](https://github.com/nukeykt)**: the H8/300 MCU + PCM emulation core
   (originally written for [Nuked-SC55](https://github.com/nukeykt/Nuked-SC55)).
-- **[giulioz](https://github.com/giulioz)**: [mini-jv880](https://github.com/giulioz/mini-jv880) /
-  juce-jv880, adapting that core specifically into a standalone JV-880 emulator.
-- **[charlesvestal](https://github.com/charlesvestal)**:
-  [schwung-jv880](https://github.com/charlesvestal/schwung-jv880), the `plugin_api_v2` build for
-  Ableton Move this port vendors directly.
-- **[sd88me](https://github.com/sd88me)**: this MPC OS VST2 port, and
-  [force-jv880](https://github.com/sd88me/force-jv880).
+- **[giulioz](https://github.com/giulioz)**: [mini-jv880](https://github.com/giulioz/mini-jv880) / juce-jv880, which
+  adapted that core into a JV-880 emulator.
+- **[charlesvestal](https://github.com/charlesvestal)**: [schwung-jv880](https://github.com/charlesvestal/schwung-jv880),
+  the `plugin_api_v2` build this port vendors.
+- **[sd88me](https://github.com/sd88me)**: this MPC port, and [force-jv880](https://github.com/sd88me/force-jv880).
+- Roboto Condensed (SIL OFL, `tools/fonts/`) for the skin's printed text.
