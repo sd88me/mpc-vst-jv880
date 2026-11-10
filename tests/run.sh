@@ -3,7 +3,7 @@
 # real time. Must print OK. JV_ROMS: a folder with the five ROM files (default ~/roms/jv880). JV_NAME: the build's name (beta tests).
 set -euo pipefail
 cd "$(dirname "$0")/.."
-SDK="${MPC_SDK:-$HOME/mpc-310-private/mpc-plugin-builder-sdk}"
+SDK="${MPC_SDK:-$(cd "$(dirname "$0")/../.." && pwd)/mpc-plugin-builder-sdk}"
 ROMS="${JV_ROMS:-$HOME/roms/jv880}"
 python3 tools/sdk/gen_sdk_params.py >/dev/null
 # A project chunk saved by the released 1.0.9 build, made from that build's own code and your ROMs (not committed: it holds a factory

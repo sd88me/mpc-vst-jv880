@@ -38,5 +38,12 @@
   "firmware": "MPC OS 3.9.1",
   "date": "2026-11-01",
   "note": "Upgrade kept the ROMs; the installer's ROM check accepts the five files and the SR-JV80 cards."
+ },
+ {
+  "version": "2.0.0",
+  "device": "Akai Force",
+  "firmware": "MPC OS 3.9.1",
+  "date": "2026-11-10",
+  "note": "Upgraded a 1.x install in place (ROMs kept); all pages, envelopes, RANDOM and favourites in the PRESET list checked on the device. CPU: jv880-emu 21% of one core idle, 61% with 8-note chords."
  }
 ]

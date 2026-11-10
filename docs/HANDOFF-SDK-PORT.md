@@ -14,7 +14,7 @@ the release notes may describe unreleased MPC OS internals.
 | Favourites | Programs 1–64 = MPC's PRESET list; program 0 is "Current patch". Each slot stores the engine state (bank, patch, edits) in `<plugin folder>/jv880-favourites.dat`. A program re-pick within 2 s of a project load is ignored. |
 | Live III (aarch64, 192.168.2.217) | Beta "JV-880 2 Beta" (uid `JV8B`) in `/nvme/VST2 Plugins/`. Checked by the user 2026-11-10: pages, envelopes, favourites (they survive a restart). |
 | Force (armv7, 192.168.1.187, MPC OS 3.9.1) | Beta in `/sdcard/Synths/sd88me - VST - JV-880 2 Beta/`, registered in MPC.settings (backup `.bak-jv2-<time>`). The user reports all tests passed (2026-11-10). |
-| Package | `tools/package.sh`: test, then `dist/JV-880-<ver>-VST2-Plugins.zip` (one zip, both CPUs, `install-force.sh`). The installer was tested offline (`MPC_INSTALL_TEST=1`): a 1.x upgrade in place, a re-run, and an old install in another folder. It has not been run on a device. |
+| Package | `tools/package.sh`: test, then `tools/package_catalog.sh`. It writes `dist/JV-880-<ver>-mpc-armv7.zip` and `-mpc-aarch64.zip` (mpc-vst-plugins' `tools/release.py`: catalog manifest, canonical `install.sh`, `userfiles.json`, user data `jv880-roms` + `jv880-favourites.dat`, `.so` named `jv880.so` at the folder root as in 1.x), `-mpc-sdk.zip` (`tools/sdk_zip.py`) and `SHA256SUMS`. Needs `MPC_VST` = an mpc-vst-plugins checkout with `tools/sdk_zip.py` (default `~/mpc-vst-plugins-postlaunch`). `catalog_check.py --catalog --require-portable` passes on both zips with 0 warnings. 2.0 is MPC OS 3.x only (the skin uses widgets 2.15.1 lacks). The interim `install-force.sh` / `VST2-Plugins.zip` route was dropped in favour of the canonical installer (it is in git history before this change). |
 
 ## Build, install, test
 ```
@@ -68,19 +68,15 @@ tools/package.sh           # release zip
 The skin and features were approved by the owner on 2026-11-10. Nothing below is pushed, tagged or published until the
 owner says so.
 
-**A. Local preparation (can be done now)**
-1. Catalog compatibility. The catalog reads `*-mpc-armv7.zip` (and `*-mpc-aarch64.zip`) assets that carry an
-   `mpc-plugin.json` manifest, made by `mpc-vst-plugins`' `tools/release.py`. Our single `JV-880-<ver>-VST2-Plugins.zip`
-   matches neither. Choose one:
-   (a) Also emit the catalog-shaped zips: `tools/package.py` writes `JV-880-<ver>-mpc-armv7.zip` and
-       `-mpc-aarch64.zip`, each with the manifest (id `jv-880`, uid, version, licence "MAME license", `user_data`
-       `jv880-roms`, `userfiles.json`).
-   (b) Change the catalog entry's `asset_pattern`. That is a catalog change, so it is the owner's call.
-   Recommended: (a). It keeps the catalog untouched and keeps the installer app's ROM step (`userfiles.json`) working.
-2. `tested.json`: add 2.0.0 on the Force (release build, 2026-11-10) and on the Live III (beta-identical build).
-3. Replace or retire `.github/workflows/vst-release.yml`, which builds the 1.x way.
-4. `build-sdk.sh`: make the SDK location come from `MPC_SDK` (or a neutral default) instead of a private folder name.
-5. Run `tools/package.sh` for the final zips and record their sha256 in the release notes draft.
+**A. Local preparation (done 2026-11-10)**
+1. Catalog-shaped zips: `tools/package_catalog.sh`, which writes the per-build zips and the SDK zip (see the Package row).
+2. `tested.json` has 2.0.0 on the Force. Add the Live III entry after the platform launch: its firmware must not be named
+   before then.
+3. `.github/workflows/vst-release.yml` is removed: it built the 1.x way. Releases are built locally with
+   `tools/package.sh` and uploaded with `gh release create` (as Dexed's are).
+4. `build-sdk.sh` and `tests/run.sh` find the SDK via `MPC_SDK`, else a sibling folder `../mpc-plugin-builder-sdk`
+   (on this machine, a symlink).
+5. `tools/package.sh` writes `JV-880-<ver>-SHA256SUMS.txt` next to the zips.
 
 **B. Device checks before publishing**
 1. Live III: replace the 1.x "JV-880" with the release folder by hand, following INSTALL.txt route A (copy

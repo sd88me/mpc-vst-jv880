@@ -5,10 +5,10 @@
 #   ./build-sdk.sh          build
 #   ./build-sdk.sh test     build, the offline ASan/UBSan host test (tests/run.sh, needs your ROMs: JV_ROMS) and the SDK's host_sim
 #   ./build-sdk.sh beta     a "JV-880 2 Beta" (uid JV8B) build that installs next to the release: build/beta-project/build/...
-# MPC_SDK: the mpc-plugin-builder-sdk checkout.
+# MPC_SDK: the mpc-plugin-builder-sdk checkout (default: a sibling folder ../mpc-plugin-builder-sdk).
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-SDK="${MPC_SDK:-$HOME/mpc-310-private/mpc-plugin-builder-sdk}"
+SDK="${MPC_SDK:-$here/../mpc-plugin-builder-sdk}"
 [ -f "$SDK/tools/build.py" ] || { echo "need the SDK (MPC_SDK)" >&2; exit 1; }
 python3 "$here/tools/sdk/gen_sdk_params.py"
 [ -f "$here/tools/make_tui.py" ] && python3 "$here/tools/make_tui.py"

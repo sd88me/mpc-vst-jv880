@@ -4,8 +4,7 @@ Roland JV-880 emulation as a VST2 instrument for Akai MPC and Force
 💬 Questions or feedback? Join the [Open MPC Discord](https://discord.gg/sRRysZSgu3).
 
 **JV-880** runs in MPC's built-in plugin host, with its own touchscreen skin and Q-Link support. Version 2.0 is rebuilt on
-Akai's MPC Plugin SDK. There is one package for both device families: 64-bit MPCs (Live III and others) and 32-bit MPCs
-(Force, Live, Live II, One, X, Key). Projects saved with 1.x still load with their patch and edits.
+Akai's MPC Plugin SDK and runs on 64-bit MPCs (Live III and others) and 32-bit MPCs (Force, Live, Live II, One, X, Key). Projects saved with 1.x still load with their patch and edits.
 
 Current release: see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases).
 
@@ -44,23 +43,24 @@ Put them in `jv880-roms/roms/` inside the plugin folder, and expansion cards in 
 
 ## Install
 
-Download `JV-880-<version>-VST2-Plugins.zip` from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest)
-and unzip it. Its `INSTALL.txt` has the steps; in short:
+Needs MPC OS 3.x. Version 2.0's screen uses skin features MPC OS 2.x doesn't have: on 2.x, stay on 1.0.9.
+Download from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest):
 
-**MPC Live III and other MPCs that load plugin folders from `VST2 Plugins`**
-1. Copy `VST2 Plugins/sd88me - VST - JV-880` into a folder named exactly `VST2 Plugins` at the root of a drive the MPC can see.
-2. Put your ROMs in its `jv880-roms/roms/`.
-3. Preferences > Enhancements: turn on Enable Enhancements and VST2 Support. Restart the MPC.
-4. Add **JV-880** to a track from the plugin browser (External VST Plugins).
+- **`JV-880-<version>-mpc-sdk.zip`**, for MPCs that load plugin folders from `VST2 Plugins`. Unzip it and copy the folder
+  `sd88me - VST - JV-880` into a folder named exactly `VST2 Plugins` at the root of a drive the MPC can see. Put your ROMs in
+  its `jv880-roms/roms/`. Then, in Preferences > Enhancements, turn on Enable Enhancements and VST2 Support, and restart
+  the MPC.
+- **`JV-880-<version>-mpc-armv7.zip`** (Force, MPC Live / Live II, One, X, Key) and **`-mpc-aarch64.zip`** (Live III and
+  other 64-bit MPCs), for MPCs that list plugins in `MPC.settings`. Both need root shell access:
+  ```
+  scp -r JV-880-<version> root@<device-ip>:/tmp/
+  ssh root@<device-ip> sh /tmp/JV-880-<version>/install.sh
+  ```
+  On a 64-bit unit, add `-t /nvme/Synths` to the install command. The installer stops the MPC, so save your project first.
+  A 1.x install is upgraded in place, and your ROMs (`jv880-roms/`) and favourites (`jv880-favourites.dat`) are kept.
+  The zip's `INSTALL.md` has the manual steps and the uninstall command.
 
-**Force and other MPCs that list plugins in `MPC.settings`** (needs root shell access):
-```
-scp -r JV-880-<version>-VST2-Plugins root@<device-ip>:/tmp/jv880
-ssh root@<device-ip> sh /tmp/jv880/install-force.sh
-```
-The installer stops the MPC, so save your project first. It copies the plugin to `/sdcard/Synths`, backs up and edits
-`MPC.settings`, and restarts the MPC. A 1.x install is upgraded in place, and your ROMs, expansion cards and favourites
-are kept.
+Then add **JV-880** to a track from the plugin browser.
 
 **Upgrading by hand:** replace the plugin folder, but keep `jv880-roms/` and `jv880-favourites.dat`.
 
@@ -72,7 +72,7 @@ Needs a checkout of Akai's MPC Plugin SDK (`mpc-plugin-builder-sdk`); set `MPC_S
 ./build-sdk.sh            # build/"sd88me - VST - JV-880"/ (arm32 + arm64 .so, skin)
 ./build-sdk.sh test       # also the offline ASan/UBSan host test (needs your ROMs: JV_ROMS, default ~/roms/jv880)
 ./build-sdk.sh beta       # "JV-880 2 Beta" (own uid), installs next to the release
-tools/package.sh          # test, then dist/JV-880-<version>-VST2-Plugins.zip
+tools/package.sh          # test, then dist/JV-880-<version>-mpc-{armv7,aarch64,sdk}.zip + SHA256SUMS
 python3 tools/make_tui.py --preview   # regenerate skins/ and docs/skin-preview/*.png
 ```
 
