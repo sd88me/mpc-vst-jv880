@@ -101,7 +101,7 @@ class Page:
         if STYLE == "screen" and self.inside(x, y):
             h = 62
             qx = 30 if any(abs(x - r[0]) < 40 for r in self.screens) else 4   # a screen's first column: clear of the Q tag (~36 px)
-            self.legend(x + qx, y - 1, name, 12, art.LCD_INK, 700)
+            self.legend(x + qx, y - 3, name, 18, art.LCD_INK, 600)   # big enough to read at a glance; titles are inverse bars
             self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 114, y + 12), remap=tui.P(key),
                                        just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
             comp = "cell%d%s" % (w, tag)
@@ -391,7 +391,9 @@ def lfo_block(p, t, n, x0, x1):
     for gi, (title, ctl) in enumerate([("TIME", [("rate", "RATE", .6), ("delay", "DELAY", 0), ("fadetime", "FADE", 0)]),
                                        ("DEPTH", [("pitchdepth", "PITCH", .5), ("tvfdepth", "FILTER", .5), ("tvadepth", "AMP", .5)])]):
         y = 196 + gi * 100
-        p.legend(x0 + 36, y - 6, title, 12, art.AMBER, 650)
+        f_ = art.font(15, 650); tw_ = p.d.textlength(title, font=f_)   # inverse title bar, as the section titles on the LCDs
+        p.d.rectangle([x0 + 30, y - 8, x0 + 42 + tw_, y + 8], fill=art.LCD_INK)
+        p.d.text((x0 + 36, y + 6), title, font=f_, fill=(196, 220, 86), anchor="ls")
         for i, (s, nm, v) in enumerate(ctl):
             p.slider(k(s), c(i), y + 12, w, nm, v)
         p.qlink_group((x0, y - 18, x1, y + 76), [k(s) for s, _, _ in ctl])
@@ -465,7 +467,7 @@ def merge_screens(rects):
 def all_pages():
     if STYLE == "screen" and not SCREENS:   # first pass: find each page's slider blocks, then build again on the LCDs
         for p in _build():
-            SCREENS[p.name] = [(r[0] + 8, r[1] + 4, r[2] - 8, r[3] - 4) for r in merge_screens(p.screen_groups)]
+            SCREENS[p.name] = [(r[0] + 8, r[1] + 2, r[2] - 8, r[3] - 4) for r in merge_screens(p.screen_groups)]
         _made.clear()
         tui.SLIDERS.clear()
     return _build()

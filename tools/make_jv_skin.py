@@ -108,7 +108,11 @@ def group_header(d, x0, x1, y, text, col=BLUE, indent=0, rule=None):
     d.line([tx + tw + 6, ly, x1, ly], fill=lc, width=1)
     d.line([x0, ly, x0, ly + 7], fill=lc, width=1)
     d.line([x1, ly, x1, ly + 7], fill=lc, width=1)
-    d.text((tx, y), text, font=f, fill=col, anchor="ls")
+    if rule:   # inside an LCD: the title in inverse video (light text on an ink bar), like a menu heading on the JV's display
+        d.rectangle([tx - 6, y - 13, tx + tw + 6, y + 3], fill=LCD_INK)
+        d.text((tx, y), text, font=f, fill=(196, 220, 86), anchor="ls")
+    else:
+        d.text((tx, y), text, font=f, fill=col, anchor="ls")
 
 
 # ---- rubber key with LED ----------------------------------------------------------------------------------------------
