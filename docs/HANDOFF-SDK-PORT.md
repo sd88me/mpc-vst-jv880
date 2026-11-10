@@ -79,11 +79,20 @@ owner says so.
 5. `tools/package.sh` writes `JV-880-<ver>-SHA256SUMS.txt` next to the zips.
 
 **B. Device checks before publishing**
-1. Live III: replace the 1.x "JV-880" with the release folder by hand, following INSTALL.txt route A (copy
-   `jv880-roms/` across), and load an existing 1.x project on it.
-2. Save and reload a 2.0 project on both devices, including one with a favourite picked.
+1. Live III (offline on 2026-11-10, still to do): replace the 1.x "JV-880" with the release (the SDK zip copied into
+   `VST2 Plugins`, `jv880-roms/` carried across), and load an existing 1.x project on it.
+2. (done on the Force, 2026-11-10) Save and reload a 2.0 project. The Force runs the release installed from
+   `JV-880-2.0.0-mpc-armv7.zip` with its own `install.sh`; it swapped the folder to the `jv880.so`-at-root layout and kept
+   the ROMs. Test project `Force Documents/Projects/Jvtest.xpj`:
+   - Saved with "Bodhran Vel" and CUTOFF 77, then the patch was changed and the project reloaded: the patch and all
+     values came back.
+   - +FAV saved "1 Bodhran Vel" with CUTOFF 127, and the page did not jump. Picking it in PRESET restored CUTOFF 127.
+   - Saved again with favourite 1 picked and CUTOFF 50, then reloaded: CUTOFF 50, so the project's own state wins over
+     the program re-pick.
+   - Still to do: the same on the Live III.
 3. CPU on the Live III (the Force is done; see above).
-4. Remove "JV-880 2 Beta" from both devices: the folder, plus the MPC.settings entry on the Force (uid `4a563842`).
+4. (Force done 2026-11-10) "JV-880 2 Beta" removed from the Force: the folder and its MPC.settings entry. Still to do: the
+   Live III beta folder (`/nvme/VST2 Plugins/sd88me - VST - JV-880 2 Beta`).
 
 **C. Publishing (owner decides when)**
 1. Push `rev-sdk` and open a PR to `master`. Do not merge yet.
