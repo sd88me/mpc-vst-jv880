@@ -55,9 +55,13 @@ tools/package.sh           # release zip
 ## Not tested yet
 1. Save and reload a project made with 2.0, including one with a favourite picked.
 2. Open, on a device, a project that was really saved by 1.0.9. Only the offline chunk test has covered it.
-3. `install-force.sh` on a device, upgrading a real 1.x install. The Force still has 1.x and the beta side by side.
-4. CPU on both devices for 2.0. It is built with clang -O2 and NEON on arm32, where 1.x used gcc without NEON. It has
-   not been measured.
+3. (done 2026-11-10) `install-force.sh` upgraded the Force's real 1.x install in place: ROMs kept, entry replaced, and
+   the release build loads. That run found that MPC writes each settings entry over several lines; the old-entry lookup
+   now joins them (re-tested on the device's settings file). The beta is still installed next to it.
+4. CPU on the Live III for 2.0. On the Force (2026-11-10, release build, one instance, patch A.Piano 1, sampled
+   with `/proc` thread ticks over 15 s): `jv880-emu` uses 20.7 % of one core when idle and 60.9 % while 8-note chords
+   repeat over MIDI. The whole MPC process uses 45 % idle and 93 % while playing, where 400 % is all four cores.
+   1.x measured about 20 % idle and 47 % playing, but with an unrecorded patch and note count.
 5. Remove the betas from both devices after release testing.
 
 ## Before publishing (owner decides when)
