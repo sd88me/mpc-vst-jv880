@@ -419,6 +419,42 @@ def tone_lfo_page(t):
     return p
 
 
+def tone_waves_page(t):
+    """TONE n, WAVES (third press of the TONE key): every wave of the tone's table as a name tile, 24 a page; tap one to set it.
+    The wave group keys and the wave number knob (Q-Link) stay in step with it."""
+    p = Page("TONE %d WAVES" % (t + 1), "TONE %d" % (t + 1), 3 + t, sub=2, seed=40 + t)
+    tone_head(p, t)
+    k = lambda s_: "nvram_tone_%d_%s" % (t, s_)
+    p.header(24, 1000, 104, "WAVES", q=True)
+    art.lcd_screen(p.bg, 18, 120, 1010, 530)
+    names = ["Syn Saw 1", "Syn Saw 2", "Poly Synth", "FM Lead", "KG800 Lead", "Wagnerian Ld", "CS Lead", "Synkoid"]
+    for i in range(24):
+        c, r = divmod(i, 8)
+        x, y = 24 + c * 330, 124 + r * 50
+        key = "wavetile_%d_%d" % (t, i + 1)
+        p.kids.append(tui.label("Value", "%d %d 290 44" % (x + 18, y), remap=tui.P(key), colour="ff161a08", style="Medium",
+                                case="Original", h=22.0))
+        p.kids.append(tui.button(key, key, asset("lcdtile_320x44_on.png", lambda: art.lcd_tile(320, 44, True)),
+                                 asset("lcdtile_320x44_off.png", lambda: art.lcd_tile(320, 44, False)), "%d %d 320 44" % (x, y)))
+        p.sample[key + "$"] = "%d %s" % (i + 1 + 120, names[i % len(names)])
+        p.sample[key + "#"] = 1 if i == 3 else 0
+    y = 560
+    p.momentary("wavepage_prev_%d" % t, 24, y, 110, 40, "< PAGE", size=15)
+    p.kids.append(tui.label("Value", "150 %d 460 40" % y, remap=tui.P("wavepage_%d" % t), just="horizontallyCentred verticallyCentred",
+                            colour="ffd6d4cc", style="Medium", case="Original", h=19.0))
+    p.sample["wavepage_%d$" % t] = "SR-JV80-04 Vintage Synth  1 / 11"
+    p.momentary("wavepage_next_%d" % t, 626, y, 110, 40, "PAGE >", size=15)
+    p.header(RX, 1262, 104, "TONE %d" % (t + 1))
+    p.toggle(k("toneswitch"), RX, 116, RW, 40, "TONE %d ON" % (t + 1), lit=True)
+    p.header(RX, 1262, 184, "WAVE GROUP")
+    p.segments(k("wavegroup"), RX, 196, RW, 32, cols=2, sel=0)
+    p.kids.append(tui.label("Value", "%d 290 %d 60" % (RX, RW), remap=tui.P("wavename_%d" % t), just="horizontallyCentred verticallyCentred",
+                            colour="ffec802e", style="SemiBold", case="Original", h=24.0))
+    p.sample["wavename_%d$" % t] = "135 FM Lead"
+    p.qlink_group((X0, 92, 1010, 540), [k("wavenumber")])
+    return p
+
+
 def common_page():
     """COMMON (new in 2.0, last key): bend / portamento, reverb and chorus in full, the key-mode switches."""
     p = Page("COMMON", "COMMON", 2, seed=13)
@@ -484,5 +520,5 @@ def all_pages():
 def _build():
     pages = [play_page(), banks_page(), common_page()]
     for t in range(4):
-        pages += [tone_main_page(t), tone_lfo_page(t)]
+        pages += [tone_main_page(t), tone_lfo_page(t), tone_waves_page(t)]
     return pages

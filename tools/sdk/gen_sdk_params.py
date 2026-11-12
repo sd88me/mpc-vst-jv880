@@ -61,6 +61,14 @@ APPENDED.append({"key": "fav_text", "name": "FAVOURITES", "min": 0.0, "max": 0.0
 # 510..513: per tone, the wave's number (1-based) and name as text, read from the ROM's multisample table (engine key wavename_<tone>)
 for t in range(4):
     APPENDED.append({"key": "wavename_%d" % t, "name": "T%d WAVE" % (t + 1), "min": 0.0, "max": 0.0, "default": 0.0, "display": "string"})
+# 514..621: the WAVES picker (third press of a TONE key): per tone 24 name tiles, page -/+ and the page text
+for t in range(4):
+    for i in range(1, 25):
+        APPENDED.append({"key": "wavetile_%d_%d" % (t, i), "name": "T%d WAVE %d" % (t + 1, i), "min": 0.0, "max": 1.0, "default": 0.0,
+                         "momentary": True, "display": "string"})
+    APPENDED.append({"key": "wavepage_prev_%d" % t, "name": "T%d WAVES <" % (t + 1), "min": 0.0, "max": 1.0, "default": 0.0, "momentary": True})
+    APPENDED.append({"key": "wavepage_next_%d" % t, "name": "T%d WAVES >" % (t + 1), "min": 0.0, "max": 1.0, "default": 0.0, "momentary": True})
+    APPENDED.append({"key": "wavepage_%d" % t, "name": "T%d WAVES PAGE" % (t + 1), "min": 0.0, "max": 0.0, "default": 0.0, "display": "string"})
 
 K = dict(kMomentary=1, kText=2, kChoice=8, kUi=16, kReadOnly=64, kStep=128, kTile=256, kNoAuto=512, kPolled=1024, kAnchor=2048, kLocal=4096)
 NOAUTO_RE = re.compile(r"^(env_view_\d|envv_.*|browse_bank_index|patch_page_index|prev_browse_bank|next_browse_bank|patch_page_(next|prev))$")

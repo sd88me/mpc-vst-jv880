@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 514, "514 params: 472 frozen + 42 appended (%d)", a->numParams);
+    CHECK(a->numParams == 622, "622 params: 472 frozen + 150 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2000, "version 2000");
     {
         int bad = 0;
@@ -205,6 +205,23 @@ int main(int argc, char** argv)
         const std::string w0 = eng(a, "wavename_0");
         fprintf(stderr, "wave readouts: [%s] [%s] [%s] [%s]\n", w0.c_str(), eng(a, "wavename_1").c_str(), eng(a, "wavename_2").c_str(), eng(a, "wavename_3").c_str());
         CHECK(!w0.empty() && std::isdigit((unsigned char)w0[0]) && w0.find(' ') != std::string::npos, "wave readout has a number and a name (%s)", w0.c_str());
+    }
+    {   // the WAVES picker: names per slot, a tap sets the wave, the knob's range stops at the table, the page follows
+        const std::string t3 = eng(a, "wavetile_0_3"), pg = eng(a, "wavepage_0");
+        fprintf(stderr, "waves: [%s] page [%s] last slot [%s]\n", t3.c_str(), pg.c_str(), eng(a, "wavetile_0_24").c_str());
+        CHECK(!t3.empty() && std::isdigit((unsigned char)t3[0]), "WAVES tile 3 has a name (%s)", t3.c_str());
+        a->setParameter(a, idx("wavetile_0_3"), 1.0f);
+        settle(a);
+        CHECK(engi(a, "nvram_tone_0_wavenumber") == 2, "tapping tile 3 sets wave number 2 (%d)", engi(a, "nvram_tone_0_wavenumber"));
+        CHECK(eng(a, "wavetile_0_3_on") == "1", "tile 3 is lit for the current wave");
+        a->setParameter(a, idx("wavepage_next_0"), 1.0f);
+        settle(a);
+        CHECK(eng(a, "wavepage_0").find("2 /") != std::string::npos, "next page: %s", eng(a, "wavepage_0").c_str());
+        a->setParameter(a, idx("wavepage_next_0"), 0.0f);
+        settle(a);
+        a->setParameter(a, idx("nvram_tone_0_wavenumber"), 1.0f);   // top of the knob: the internal table's last wave
+        settle(a);
+        CHECK(engi(a, "nvram_tone_0_wavenumber") <= 128, "wave number stops at the table (%d)", engi(a, "nvram_tone_0_wavenumber"));
     }
     a->setParameter(a, BSLOT2, 1.0f);
     settle(a);

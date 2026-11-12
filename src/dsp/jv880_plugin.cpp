@@ -653,6 +653,9 @@ typedef struct {
     int expansion_count;
     int current_expansion;
     int expansion_bank_offset;
+    int wave_page[4];       /* WAVES picker page per tone (0-based) */
+    int wave_seen[4];       /* wave number / group the page last followed */
+    int wave_seen_grp[4];
 
     /* Expansion file tracking */
     char expansion_files[MAX_EXP_FILES][256];
@@ -3091,9 +3094,106 @@ static void v2_envv_update(jv880_instance_t *inst) {
     inst->envv_rev++;
 }
 
+
+/* ---- wave tables: the names a tone's wave number / group point at -------------------------------------------------------------
+ * Group 0 = internal: 60-byte entries from rom2+4 (129). Groups 1-3 = the loaded expansion card: the table starts at the address in
+ * its header (0x84), ends at the one at 0x80; 60-byte entries, the 12-character name first. Returns the entry count (0 = none). */
+#define WAVE_TILES 24
+static int v2_wave_table(jv880_instance_t *inst, int grp, const uint8_t **base) {
+    *base = NULL;
+    if (grp == 0) {
+        if (!inst->rom2) return 0;
+        *base = &inst->rom2[4];
+        return 129;
+    }
+    if (inst->current_expansion < 0 || inst->current_expansion >= inst->expansion_count) return 0;
+    const ExpansionInfo *x = &inst->expansions[inst->current_expansion];
+    if (!x->unscrambled) return 0;
+    const uint8_t *h = x->unscrambled;
+    uint32_t end = ((uint32_t)h[0x80] << 24) | (h[0x81] << 16) | (h[0x82] << 8) | h[0x83];
+    uint32_t beg = ((uint32_t)h[0x84] << 24) | (h[0x85] << 16) | (h[0x86] << 8) | h[0x87];
+    if (beg >= end || end > x->rom_size) return 0;
+    *base = &h[beg];
+    return (int)((end - beg) / 60);
+}
+
+static void v2_wave_label(const uint8_t *e, int num, char *out, int n) {
+    char nm[13];
+    for (int i = 0; i < 12; i++) nm[i] = (e[i] >= 32 && e[i] < 127) ? (char)e[i] : ' ';
+    nm[12] = 0;
+    for (int i = 11; i >= 0 && nm[i] == ' '; i--) nm[i] = 0;
+    snprintf(out, n, "%d %s", num + 1, nm);
+}
+
+/* A tone's current wave group and number (-1 when the engine can't say). */
+static int v2_tone_wave(jv880_instance_t *inst, int t, int *grp, int *num) {
+    char gk[40], nk[40], tmp[16];
+    snprintf(gk, sizeof gk, "nvram_tone_%d_wavegroup", t);
+    snprintf(nk, sizeof nk, "nvram_tone_%d_wavenumber", t);
+    if (v2_get_param(inst, gk, tmp, sizeof tmp) <= 0) return 0;
+    *grp = atoi(tmp);
+    if (v2_get_param(inst, nk, tmp, sizeof tmp) <= 0) return 0;
+    *num = atoi(tmp);
+    return *num >= 0 && *num <= 1023;
+}
+
+/* The picker's page for a tone: follows the tone's wave (a knob move, a patch load, a group change) and is otherwise the user's. */
+static int v2_wave_page(jv880_instance_t *inst, int t, int count) {
+    int grp, num;
+    if (v2_tone_wave(inst, t, &grp, &num) && (num != inst->wave_seen[t] || grp != inst->wave_seen_grp[t])) {
+        inst->wave_seen[t] = num;
+        inst->wave_seen_grp[t] = grp;
+        inst->wave_page[t] = num / WAVE_TILES;
+    }
+    int pages = count > 0 ? (count + WAVE_TILES - 1) / WAVE_TILES : 1;
+    if (inst->wave_page[t] >= pages) inst->wave_page[t] = pages - 1;
+    if (inst->wave_page[t] < 0) inst->wave_page[t] = 0;
+    return inst->wave_page[t];
+}
+
 static void v2_set_param(void *instance, const char *key, const char *val) {
     jv880_instance_t *inst = (jv880_instance_t*)instance;
     if (!inst) return;
+
+    /* WAVES picker: a tile sets its tone's wave, the arrows turn the page. */
+    if (inst->mcu && strncmp(key, "wavetile_", 9) == 0) {
+        int t = key[9] - '0', slot = atoi(key + 11) - 1;
+        int grp, num;
+        const uint8_t *tb;
+        if (t < 0 || t > 3 || key[10] != '_' || slot < 0 || slot >= WAVE_TILES || !v2_tone_wave(inst, t, &grp, &num)) return;
+        int count = v2_wave_table(inst, grp, &tb);
+        int idx = v2_wave_page(inst, t, count) * WAVE_TILES + slot;
+        if (idx < count) {
+            char k[40], v[16];
+            snprintf(k, sizeof k, "nvram_tone_%d_wavenumber", t);
+            snprintf(v, sizeof v, "%d", idx);
+            v2_set_param(inst, k, v);
+        }
+        return;
+    }
+    if (inst->mcu && (strncmp(key, "wavepage_prev_", 14) == 0 || strncmp(key, "wavepage_next_", 14) == 0)) {
+        int t = key[14] - '0', grp, num;
+        const uint8_t *tb;
+        if (t < 0 || t > 3 || !v2_tone_wave(inst, t, &grp, &num)) return;
+        int count = v2_wave_table(inst, grp, &tb);
+        int pages = count > 0 ? (count + WAVE_TILES - 1) / WAVE_TILES : 1;
+        int pg = v2_wave_page(inst, t, count) + (key[9] == 'n' ? 1 : -1);
+        inst->wave_page[t] = (pg + pages) % pages;
+        return;
+    }
+    /* The wave number never runs past its table (internal 129; the loaded card's own count). */
+    char wclamp[16];
+    if (inst->mcu && strncmp(key, "nvram_tone_", 11) == 0 && strlen(key) > 12 && strcmp(key + 12, "_wavenumber") == 0) {
+        int t = key[11] - '0', grp, num;
+        const uint8_t *tb;
+        if (t >= 0 && t < 4 && v2_tone_wave(inst, t, &grp, &num)) {
+            int count = v2_wave_table(inst, grp, &tb), want = atoi(val);
+            if (count > 0 && want >= count) {
+                snprintf(wclamp, sizeof wclamp, "%d", count - 1);
+                val = wclamp;
+            }
+        }
+    }
 
     /* An envelope level/time moved: show that tone's curves for a few seconds (unless the toggle already holds them). */
     if (strncmp(key, "nvram_tone_", 11) == 0 && inst->mcu) {
@@ -4404,38 +4504,41 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     if (strcmp(key, "polyphony") == 0) {
         return snprintf(buf, buf_len, "28");
     }
-    /* Wave name readout for a tone: "<number, 1-based> <name>" from the multisample table of the ROM the tone's group points at.
-     * Group 0 = internal: 60-byte entries from rom2+4 (129 of them). Groups 1-3 = the loaded expansion card: the table starts at the
-     * address in its header (0x84), ends at the one at 0x80, 60-byte entries, the 12-character name first. */
-    if (strncmp(key, "wavename_", 9) == 0 && inst->mcu) {
-        int t = key[9] - '0';
-        if (t < 0 || t > 3) return 0;
-        char gk[40], nk[40], tmp[16];
-        snprintf(gk, sizeof gk, "nvram_tone_%d_wavegroup", t);
-        snprintf(nk, sizeof nk, "nvram_tone_%d_wavenumber", t);
-        if (v2_get_param(inst, gk, tmp, sizeof tmp) <= 0) return 0;
-        int grp = atoi(tmp);
-        if (v2_get_param(inst, nk, tmp, sizeof tmp) <= 0) return 0;
-        int num = atoi(tmp);
-        if (num < 0 || num > 1023) return 0;
-        const uint8_t *e = NULL;
-        if (grp == 0) {
-            if (num < 129 && inst->rom2) e = &inst->rom2[4 + num * 60];
-        } else if (inst->current_expansion >= 0 && inst->current_expansion < inst->expansion_count) {
-            const ExpansionInfo *x = &inst->expansions[inst->current_expansion];
-            if (x->unscrambled) {
-                const uint8_t *h = x->unscrambled;
-                uint32_t end = ((uint32_t)h[0x80] << 24) | (h[0x81] << 16) | (h[0x82] << 8) | h[0x83];
-                uint32_t beg = ((uint32_t)h[0x84] << 24) | (h[0x85] << 16) | (h[0x86] << 8) | h[0x87];
-                if (beg < end && end <= x->rom_size && (uint32_t)num < (end - beg) / 60) e = &h[beg + num * 60];
-            }
+    /* Wave readouts. wavename_<tone>: "<number, 1-based> <name>" for the tone's wave. wavetile_<tone>_<slot> (+ "_on"): the WAVES
+     * picker's names, 24 a page, lit for the tone's current wave. wavepage_<tone>: "<table> <page>/<pages>". */
+    if (strncmp(key, "wave", 4) == 0 && inst->mcu) {
+        int grp, num;
+        const uint8_t *tb;
+        if (strncmp(key, "wavename_", 9) == 0) {
+            int t = key[9] - '0';
+            if (t < 0 || t > 3 || !v2_tone_wave(inst, t, &grp, &num)) return 0;
+            int count = v2_wave_table(inst, grp, &tb);
+            if (num >= count) return snprintf(buf, buf_len, "%d", num + 1);
+            char lab[40];
+            v2_wave_label(&tb[num * 60], num, lab, sizeof lab);
+            return snprintf(buf, buf_len, "%s", lab);
         }
-        if (!e) return snprintf(buf, buf_len, "%d", num + 1);
-        char nm[13];
-        for (int i = 0; i < 12; i++) nm[i] = (e[i] >= 32 && e[i] < 127) ? (char)e[i] : ' ';
-        nm[12] = 0;
-        for (int i = 11; i >= 0 && nm[i] == ' '; i--) nm[i] = 0;
-        return snprintf(buf, buf_len, "%d %s", num + 1, nm);
+        if (strncmp(key, "wavetile_", 9) == 0) {
+            int t = key[9] - '0', slot = atoi(key + 11) - 1;
+            size_t kl = strlen(key);
+            if (t < 0 || t > 3 || key[10] != '_' || slot < 0 || slot >= WAVE_TILES || !v2_tone_wave(inst, t, &grp, &num)) return 0;
+            int count = v2_wave_table(inst, grp, &tb);
+            int idx = v2_wave_page(inst, t, count) * WAVE_TILES + slot;
+            if (kl > 3 && strcmp(key + kl - 3, "_on") == 0) return snprintf(buf, buf_len, "%d", idx == num ? 1 : 0);
+            if (idx >= count) return snprintf(buf, buf_len, "");
+            char lab[40];
+            v2_wave_label(&tb[idx * 60], idx, lab, sizeof lab);
+            return snprintf(buf, buf_len, "%s", lab);
+        }
+        if (strncmp(key, "wavepage_", 9) == 0 && key[9] >= '0' && key[9] <= '3') {
+            int t = key[9] - '0';
+            if (!v2_tone_wave(inst, t, &grp, &num)) return 0;
+            int count = v2_wave_table(inst, grp, &tb);
+            int pages = count > 0 ? (count + WAVE_TILES - 1) / WAVE_TILES : 1;
+            int pg = v2_wave_page(inst, t, count);
+            const char *src = grp == 0 ? "INTERNAL" : (count > 0 ? inst->expansions[inst->current_expansion].name : "NO CARD");
+            return snprintf(buf, buf_len, "%s  %d / %d", src, pg + 1, pages);
+        }
     }
     /* Bank information */
     if (strcmp(key, "bank_count") == 0) {
