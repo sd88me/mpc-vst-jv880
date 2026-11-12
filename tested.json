@@ -45,5 +45,12 @@
   "firmware": "MPC OS 3.9.1",
   "date": "2026-11-10",
   "note": "Upgraded a 1.x install in place (ROMs kept); all pages, envelopes, RANDOM and favourites in the PRESET list checked on the device. CPU: jv880-emu 21% of one core idle, 61% with 8-note chords."
+ },
+ {
+  "version": "2.0.0",
+  "device": "MPC Live III (Gen2)",
+  "firmware": "MPC OS 3.x",
+  "date": "2026-11-12",
+  "note": "Release build installed; pages, envelopes, favourites, wave names and the WAVES pages checked on the device. CPU: jv880-emu 6% of one core idle, 18% with 8-note chords (fast cores)."
  }
 ]
