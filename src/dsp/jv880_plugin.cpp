@@ -5593,6 +5593,9 @@ static void v2_render_block(void *instance, int16_t *out, int frames) {
         inst->underrun_count++;
         jv_debug("[JV880] UNDERRUN #%d: needed %d, had %d (min_level=%d, renders=%d)\n",
                 inst->underrun_count, frames, avail, inst->min_buffer_level, inst->render_count);
+        if (inst->underrun_count <= 20 || inst->underrun_count % 100 == 0)   /* release builds too: a click's cause */
+            fprintf(stderr, "JV880 v2: UNDERRUN #%d: needed %d frames, had %d (of %d renders)\n",
+                    inst->underrun_count, frames, avail, inst->render_count);
         inst->min_buffer_level = 9999;  /* Reset for next period */
     }
     for (int i = to_read; i < frames; i++) {
