@@ -85,7 +85,7 @@ class Page:
         art.legend(self.d, x, y, text, size, art.LCD_INK if self.inside(x, y) else col, wght, anchor)
 
     # ---- widgets ----
-    def slider(self, key, x, y, w, name, sample=0.5):
+    def slider(self, key, x, y, w, name, sample=0.5, vkey=None, vtext=None):
         """One continuous control in a w-wide column, y = its top (about 64 px tall). Style from JV_CTRL:
         fader  name + value + horizontal LED-ladder fader + tick scale
         cells  a backlit LCD cell: name, big value, bar graph (drag sideways anywhere on it)
@@ -102,8 +102,13 @@ class Page:
             h = 62
             qx = 30 if any(abs(x - r[0]) < 40 for r in self.screens) else 4   # a screen's first column: clear of the Q tag (~36 px)
             self.legend(x + qx, y - 3, name, 18, art.LCD_INK, 600)   # big enough to read at a glance; titles are inverse bars
-            self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 114, y + 12), remap=tui.P(key),
-                                       just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
+            if vkey:   # the value cell shows another key's text instead of the number (the wave: "135 FM Lead")
+                self.sample[vkey + "$"] = vtext
+                self.kids.append(tui.label("Value", "%d %d %d 30" % (x + 10, y + 12, w - 24), remap=tui.P(vkey),
+                                           just="right verticallyCentred", colour="ff161a08", style="Bold", h=23.0))
+            else:
+                self.kids.append(tui.label("Value", "%d %d 100 30" % (x + w - 114, y + 12), remap=tui.P(key),
+                                           just="right verticallyCentred", colour="ff161a08", style="Bold", h=28.0))
             comp = "cell%d%s" % (w, tag)
             tui.need_slider(comp, asset("cell_%d%s.png" % (w, tag), lambda: art.film_strip(
                 [art.cell_frame(w, h, i / 127, bip) for i in range(128)])), w, h)
@@ -363,7 +368,10 @@ def tone_main_page(t):
         y = 104 + gi * 100
         p.header(X0 + 8, X1 - 8, y, title, q=True)
         for i, (key, n, s) in enumerate(ctl):
-            p.slider(key, col(i), y + 12, SW, n, s)
+            if key.endswith("_wavenumber"):
+                p.slider(key, col(i), y + 12, SW, n, s, vkey="wavename_%d" % t, vtext="135 FM Lead")
+            else:
+                p.slider(key, col(i), y + 12, SW, n, s)
         keys = [c[0] for c in ctl]
         if title == "FILTER":   # 4th Q-Link: the filter mode (its keys are in the right column)
             keys.append(k("filtermode"))

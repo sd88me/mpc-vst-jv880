@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 510, "510 params: 472 frozen + 38 appended (%d)", a->numParams);
+    CHECK(a->numParams == 514, "514 params: 472 frozen + 42 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2000, "version 2000");
     {
         int bad = 0;
@@ -201,6 +201,11 @@ int main(int argc, char** argv)
     a->setParameter(a, ENVV, ev0 < 0.5f ? 1.f : 0.f);
     settle(a);
     CHECK(std::fabs(a->getParameter(a, ENVV) - ev0) < 1e-4f, "an envelope column ignores a host write");
+    {   // the wave readout: internal table (1-based number + name), every tone answers
+        const std::string w0 = eng(a, "wavename_0");
+        fprintf(stderr, "wave readouts: [%s] [%s] [%s] [%s]\n", w0.c_str(), eng(a, "wavename_1").c_str(), eng(a, "wavename_2").c_str(), eng(a, "wavename_3").c_str());
+        CHECK(!w0.empty() && std::isdigit((unsigned char)w0[0]) && w0.find(' ') != std::string::npos, "wave readout has a number and a name (%s)", w0.c_str());
+    }
     a->setParameter(a, BSLOT2, 1.0f);
     settle(a);
     CHECK(engi(a, "browse_bank_index") == 1 && a->getParameter(a, BSLOT2) == 1.f && std::lround(plainOf(a, BROWSE)) == 1,

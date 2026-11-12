@@ -4404,6 +4404,39 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     if (strcmp(key, "polyphony") == 0) {
         return snprintf(buf, buf_len, "28");
     }
+    /* Wave name readout for a tone: "<number, 1-based> <name>" from the multisample table of the ROM the tone's group points at.
+     * Group 0 = internal: 60-byte entries from rom2+4 (129 of them). Groups 1-3 = the loaded expansion card: the table starts at the
+     * address in its header (0x84), ends at the one at 0x80, 60-byte entries, the 12-character name first. */
+    if (strncmp(key, "wavename_", 9) == 0 && inst->mcu) {
+        int t = key[9] - '0';
+        if (t < 0 || t > 3) return 0;
+        char gk[40], nk[40], tmp[16];
+        snprintf(gk, sizeof gk, "nvram_tone_%d_wavegroup", t);
+        snprintf(nk, sizeof nk, "nvram_tone_%d_wavenumber", t);
+        if (v2_get_param(inst, gk, tmp, sizeof tmp) <= 0) return 0;
+        int grp = atoi(tmp);
+        if (v2_get_param(inst, nk, tmp, sizeof tmp) <= 0) return 0;
+        int num = atoi(tmp);
+        if (num < 0 || num > 1023) return 0;
+        const uint8_t *e = NULL;
+        if (grp == 0) {
+            if (num < 129 && inst->rom2) e = &inst->rom2[4 + num * 60];
+        } else if (inst->current_expansion >= 0 && inst->current_expansion < inst->expansion_count) {
+            const ExpansionInfo *x = &inst->expansions[inst->current_expansion];
+            if (x->unscrambled) {
+                const uint8_t *h = x->unscrambled;
+                uint32_t end = ((uint32_t)h[0x80] << 24) | (h[0x81] << 16) | (h[0x82] << 8) | h[0x83];
+                uint32_t beg = ((uint32_t)h[0x84] << 24) | (h[0x85] << 16) | (h[0x86] << 8) | h[0x87];
+                if (beg < end && end <= x->rom_size && (uint32_t)num < (end - beg) / 60) e = &h[beg + num * 60];
+            }
+        }
+        if (!e) return snprintf(buf, buf_len, "%d", num + 1);
+        char nm[13];
+        for (int i = 0; i < 12; i++) nm[i] = (e[i] >= 32 && e[i] < 127) ? (char)e[i] : ' ';
+        nm[12] = 0;
+        for (int i = 11; i >= 0 && nm[i] == ' '; i--) nm[i] = 0;
+        return snprintf(buf, buf_len, "%d %s", num + 1, nm);
+    }
     /* Bank information */
     if (strcmp(key, "bank_count") == 0) {
         return snprintf(buf, buf_len, "%d", inst->bank_count);

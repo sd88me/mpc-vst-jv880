@@ -2016,7 +2016,8 @@
    "min": 0.0,
    "max": 255.0,
    "default": 0.0,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 2
   },
   {
    "key": "nvram_tone_0_fxmswitch",
@@ -2375,7 +2376,8 @@
    "min": 0.0,
    "max": 255.0,
    "default": 0.0,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 2
   },
   {
    "key": "nvram_tone_1_fxmswitch",
@@ -2734,7 +2736,8 @@
    "min": 0.0,
    "max": 255.0,
    "default": 0.0,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 2
   },
   {
    "key": "nvram_tone_2_fxmswitch",
@@ -3093,7 +3096,8 @@
    "min": 0.0,
    "max": 255.0,
    "default": 0.0,
-   "display": "int"
+   "display": "int",
+   "nudge_pct": 2
   },
   {
    "key": "nvram_tone_3_fxmswitch",

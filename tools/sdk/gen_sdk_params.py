@@ -58,6 +58,9 @@ APPENDED.append({"key": "patch_random", "name": "RANDOM", "min": 0.0, "max": 1.0
 APPENDED.append({"key": "fav_save", "name": "+FAV", "min": 0.0, "max": 1.0, "default": 0.0, "momentary": True, "local": True})
 APPENDED.append({"key": "fav_delete", "name": "-FAV", "min": 0.0, "max": 1.0, "default": 0.0, "momentary": True, "local": True})
 APPENDED.append({"key": "fav_text", "name": "FAVOURITES", "min": 0.0, "max": 0.0, "default": 0.0, "display": "string", "local": True})
+# 510..513: per tone, the wave's number (1-based) and name as text, read from the ROM's multisample table (engine key wavename_<tone>)
+for t in range(4):
+    APPENDED.append({"key": "wavename_%d" % t, "name": "T%d WAVE" % (t + 1), "min": 0.0, "max": 0.0, "default": 0.0, "display": "string"})
 
 K = dict(kMomentary=1, kText=2, kChoice=8, kUi=16, kReadOnly=64, kStep=128, kTile=256, kNoAuto=512, kPolled=1024, kAnchor=2048, kLocal=4096)
 NOAUTO_RE = re.compile(r"^(env_view_\d|envv_.*|browse_bank_index|patch_page_index|prev_browse_bank|next_browse_bank|patch_page_(next|prev))$")

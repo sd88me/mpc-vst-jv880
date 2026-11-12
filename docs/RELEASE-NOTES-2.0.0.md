@@ -16,6 +16,8 @@ A rebuilt plugin with a new screen: JV-880 is now built on Akai's MPC Plugin SDK
 - **New COMMON page**:
   - Bend, portamento, reverb and chorus in full, with type keys.
   - Tabs: PLAY, BANKS, COMMON, TONE 1–4. Press a TONE key again for that tone's LFOs.
+- **Wave names**: each TONE page shows the wave's number (counted from 1) and its name from the ROM's wave table, on the
+  WAVE title line. The wave number steps one wave at a time with +/− and the data wheel.
 - **More per tone**: cutoff, resonance, filter mode, filter envelope depth, level, pan, pitch envelope depth and amp release.
 - **Both device families**: 64-bit MPCs (Live III and others) and 32-bit MPCs (Force, Live, Live II, One, X, Key), plus
   one plugin folder that works on every MPC.
@@ -32,6 +34,8 @@ A rebuilt plugin with a new screen: JV-880 is now built on Akai's MPC Plugin SDK
 Your own JV-880 ROMs (v1.0.0) are required and not included; see `docs/ROMS.md`.
 
 ## Notes
+- One expansion card is active at a time (the one the current patch came from), so a patch cannot mix waves from two cards.
+  The wave name is read from the card that is loaded.
 - Needs MPC OS 3.x. The new screen uses skin features MPC OS 2.x doesn't have; on 2.x, stay on 1.0.9.
 - Tested on an MPC Live III and a Force.
 - Favourites are stored in `jv880-favourites.dat` in the plugin folder. Keep it, along with `jv880-roms/`, when you

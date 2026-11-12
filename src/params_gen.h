@@ -290,7 +290,7 @@ static const PSpec g_pspecs[] = {
     {"nvram_patchCommon_chorusfeedback", "FEEDBACK", 0.0f, 127.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_patchCommon_chorusoutput", "OUT", 0.0f, 1.0f, 0.0f, 1032, ch_242, 2, -1, 0.0f, 0},
     {"nvram_tone_0_wavegroup", "NVRAM_TONE_0_WAVEGROUP", 0.0f, 3.0f, 0.0f, 1032, ch_243, 4, -1, 0.0f, 0},
-    {"nvram_tone_0_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
+    {"nvram_tone_0_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 2},
     {"nvram_tone_0_fxmswitch", "FXM", 0.0f, 1.0f, 0.0f, 1032, ch_245, 2, -1, 0.0f, 0},
     {"nvram_tone_0_fxmdepth", "FXM DEPTH", 1.0f, 16.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_0_pitchcoarse", "COARSE", -48.0f, 48.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
@@ -333,7 +333,7 @@ static const PSpec g_pspecs[] = {
     {"nvram_tone_0_lfo2tvfdepth", "FILTER", -63.0f, 63.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_0_lfo2tvadepth", "AMP", -63.0f, 63.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_1_wavegroup", "NVRAM_TONE_1_WAVEGROUP", 0.0f, 3.0f, 0.0f, 1032, ch_286, 4, -1, 0.0f, 0},
-    {"nvram_tone_1_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
+    {"nvram_tone_1_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 2},
     {"nvram_tone_1_fxmswitch", "FXM", 0.0f, 1.0f, 0.0f, 1032, ch_288, 2, -1, 0.0f, 0},
     {"nvram_tone_1_fxmdepth", "FXM DEPTH", 1.0f, 16.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_1_pitchcoarse", "COARSE", -48.0f, 48.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
@@ -376,7 +376,7 @@ static const PSpec g_pspecs[] = {
     {"nvram_tone_1_lfo2tvfdepth", "FILTER", -63.0f, 63.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_1_lfo2tvadepth", "AMP", -63.0f, 63.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_2_wavegroup", "NVRAM_TONE_2_WAVEGROUP", 0.0f, 3.0f, 0.0f, 1032, ch_329, 4, -1, 0.0f, 0},
-    {"nvram_tone_2_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
+    {"nvram_tone_2_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 2},
     {"nvram_tone_2_fxmswitch", "FXM", 0.0f, 1.0f, 0.0f, 1032, ch_331, 2, -1, 0.0f, 0},
     {"nvram_tone_2_fxmdepth", "FXM DEPTH", 1.0f, 16.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_2_pitchcoarse", "COARSE", -48.0f, 48.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
@@ -419,7 +419,7 @@ static const PSpec g_pspecs[] = {
     {"nvram_tone_2_lfo2tvfdepth", "FILTER", -63.0f, 63.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_2_lfo2tvadepth", "AMP", -63.0f, 63.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_3_wavegroup", "NVRAM_TONE_3_WAVEGROUP", 0.0f, 3.0f, 0.0f, 1032, ch_372, 4, -1, 0.0f, 0},
-    {"nvram_tone_3_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
+    {"nvram_tone_3_wavenumber", "WAVE #", 0.0f, 255.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 2},
     {"nvram_tone_3_fxmswitch", "FXM", 0.0f, 1.0f, 0.0f, 1032, ch_374, 2, -1, 0.0f, 0},
     {"nvram_tone_3_fxmdepth", "FXM DEPTH", 1.0f, 16.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
     {"nvram_tone_3_pitchcoarse", "COARSE", -48.0f, 48.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 0},
@@ -556,8 +556,12 @@ static const PSpec g_pspecs[] = {
     {"fav_save", "+FAV", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
     {"fav_delete", "-FAV", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
     {"fav_text", "FAVOURITES", 0.0f, 1023.0f, 0.0f, 4610, nullptr, 0, -1, 0.0f, 0},
+    {"wavename_0", "T1 WAVE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
+    {"wavename_1", "T2 WAVE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
+    {"wavename_2", "T3 WAVE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
+    {"wavename_3", "T4 WAVE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
 };
-static const int kNumParams = 510;
+static const int kNumParams = 514;
 static const int kUiParam = 470;
 // MIDI control, as the 1.x build: CC 20..35 -> these parameters (-1: none); NRPN n (CC 99/98, data CC 6/38) -> parameter n.
 static const int g_ccMap[16] = {3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 11, 12, 225, 229, 231, 0};
