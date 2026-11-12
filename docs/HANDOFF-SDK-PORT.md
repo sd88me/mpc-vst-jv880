@@ -97,6 +97,20 @@ owner says so.
    18.3 % with 8-note chords. It runs on the fast cores 4–6 (the fast-cores pinning works).
 4. (Force done 2026-11-10) "JV-880 2 Beta" removed from the Force: the folder and its MPC.settings entry. The Live III beta folder is removed too.
 
+**B2. Late additions (2026-11-12, after user feedback; tested by the owner on the Live III beta)**
+- The WAVE NUMBER cell shows the number (from 1) and name from the ROM's wave table: internal = 129 entries from `rom2+4`,
+  an expansion card = the table from its header (0x84, end at 0x80), 60-byte entries, name first.
+- Third press of a TONE key = WAVES page: 24 name tiles a page per tone (`wavetile_<t>_<n>`, `wavepage_*`; params 514-621,
+  622 in all). The wave number steps one wave at a time (`nudge_pct` 2) and stops at its table's end.
+- Wave group: real patch data only uses 0 (internal) and 1 (the card); the keys keep the upstream labels INT-A / INT-B / EXP-A /
+  EXP-B. One card is loaded at a time, so a patch cannot mix cards (noted in the release notes).
+- Release builds log the first 20 audio underruns (then every 100th) to the journal. None on the Live III in a play test.
+  Clicks heard there fit the emulator reset on a card swap (cuts sounding notes); a fade before the reset would fix it
+  (not built). Not tested on the Force: its MPC app was stopped by a Force Link switch during the check.
+- Open from the feedback: patch +/- and jog sometimes not responding (looks like which control the MPC points them at).
+- The betas (JV8B) are installed again on both devices (Force: registered in MPC.settings, backup `.bak-jv2-*`); remove them
+  before release.
+
 **C. Publishing (owner decides when)**
 1. Push `rev-sdk` and open a PR to `master`. Do not merge yet.
 2. Draft the GitHub release `v2.0.0` with the zips and `docs/RELEASE-NOTES-2.0.0.md`.
