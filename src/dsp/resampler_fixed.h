@@ -32,6 +32,15 @@
 
 #ifdef __ARM_NEON
 #include <arm_neon.h>
+/* Horizontal sum of 4 floats: vaddvq_f32 exists on AArch64 only; armv7 NEON (the Force, built by the SDK's zig) pairs the halves. */
+static inline float rf_hsum(float32x4_t v) {
+#if defined(__aarch64__)
+    return vaddvq_f32(v);
+#else
+    float32x2_t s = vadd_f32(vget_low_f32(v), vget_high_f32(v));
+    return vget_lane_f32(vpadd_f32(s, s), 0);
+#endif
+}
 #endif
 
 /* --- Fixed conversion parameters --- */
@@ -248,8 +257,8 @@ static inline int ResamplerFixed_process(ResamplerFixed *r,
                 vaccL = vmlaq_f32(vaccL, vc, vhl);
                 vaccR = vmlaq_f32(vaccR, vc, vhr);
             }
-            accL = vaddvq_f32(vaccL);
-            accR = vaddvq_f32(vaccR);
+            accL = rf_hsum(vaccL);
+            accR = rf_hsum(vaccR);
             for (; k < TP; ++k) { accL += c[k]*winL[k]; accR += c[k]*winR[k]; }
 #else
             /* Portable, auto-vectorizable: simple contiguous MAC. */

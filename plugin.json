@@ -1,0 +1,16 @@
+{
+  "name": "JV-880",
+  "manufacturer": "sd88me",
+  "version": "2.0.0",
+  "kind": "instrument",
+  "uid": "JV88",
+  "numInputs": 0,
+  "numOutputs": 2,
+  "category": "Synth",
+  "file32": "VST/jv880-arm32.so",
+  "file64": "VST/jv880-arm64.so",
+  "description": "Roland JV-880 emulation (nukeykt/giulioz core). Needs your own JV-880 ROMs in jv880-roms/roms/ inside the plugin folder.",
+  "author": "sd88me",
+  "url": "https://github.com/sd88me/mpc-vst-jv880",
+  "license": "Non-commercial (MAME license core)"
+}

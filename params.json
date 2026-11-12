@@ -1,0 +1,3953 @@
+{
+ "meta": {
+  "name": "JV-880",
+  "uid": "JV88",
+  "version": 1000,
+  "release": "1.0.9",
+  "cc_map_20_35": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   1,
+   2,
+   11,
+   12,
+   225,
+   229,
+   231,
+   0
+  ],
+  "nrpn": true,
+  "note": "frozen from the 1.0.9 wrapper build; the VST order is this list. Append only."
+ },
+ "params": [
+  {
+   "key": "octave_transpose",
+   "name": "OCTAVE",
+   "min": -4.0,
+   "max": 4.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_patchlevel",
+   "name": "PATCH LVL",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_patchpan",
+   "name": "PATCH PAN",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_cutoff",
+   "name": "CUTOFF",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_resonance",
+   "name": "RESO",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_tvf_env_depth",
+   "name": "TVF DEPTH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_lfo_depth",
+   "name": "LFO DEPTH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_attack",
+   "name": "ATTACK",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_decay",
+   "name": "DECAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_sustain",
+   "name": "SUSTAIN",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "macro_release",
+   "name": "RELEASE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_reverblevel",
+   "name": "REVERB",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_choruslevel",
+   "name": "CHORUS",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_toneswitch",
+   "name": "TONE 1",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_1_toneswitch",
+   "name": "TONE 2",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_2_toneswitch",
+   "name": "TONE 3",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_3_toneswitch",
+   "name": "TONE 4",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "bank_name",
+   "name": "BANK",
+   "min": 0.0,
+   "max": 0.0,
+   "default": 0.0,
+   "display": "string"
+  },
+  {
+   "key": "patch_name",
+   "name": "PATCH NAME",
+   "min": 0.0,
+   "max": 0.0,
+   "default": 0.0,
+   "display": "string"
+  },
+  {
+   "key": "preset",
+   "name": "PATCH",
+   "min": 0.0,
+   "max": 8191.0,
+   "default": 0.0,
+   "display": "int",
+   "nudge_pct": 10
+  },
+  {
+   "key": "preset_prev",
+   "name": "PATCH -",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "step_of": "preset",
+   "step_delta": -1.0
+  },
+  {
+   "key": "preset_next",
+   "name": "PATCH +",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "step_of": "preset",
+   "step_delta": 1.0
+  },
+  {
+   "key": "browse_bank_index",
+   "name": "BROWSE BANK",
+   "min": 0.0,
+   "max": 21.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "prev_browse_bank",
+   "name": "BROWSE BANK -",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true
+  },
+  {
+   "key": "next_browse_bank",
+   "name": "BROWSE BANK +",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true
+  },
+  {
+   "key": "patch_page_index",
+   "name": "PATCH PAGE",
+   "min": 0.0,
+   "max": 255.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "env_view_0",
+   "name": "ENV VIEW",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "env_view_1",
+   "name": "ENV VIEW",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "env_view_2",
+   "name": "ENV VIEW",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "env_view_3",
+   "name": "ENV VIEW",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "envv_p_h_01",
+   "name": "PITCH ENV TOP 1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_02",
+   "name": "PITCH ENV TOP 2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_03",
+   "name": "PITCH ENV TOP 3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_04",
+   "name": "PITCH ENV TOP 4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_05",
+   "name": "PITCH ENV TOP 5",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_06",
+   "name": "PITCH ENV TOP 6",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_07",
+   "name": "PITCH ENV TOP 7",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_08",
+   "name": "PITCH ENV TOP 8",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_09",
+   "name": "PITCH ENV TOP 9",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_10",
+   "name": "PITCH ENV TOP 10",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_11",
+   "name": "PITCH ENV TOP 11",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_12",
+   "name": "PITCH ENV TOP 12",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_13",
+   "name": "PITCH ENV TOP 13",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_14",
+   "name": "PITCH ENV TOP 14",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_15",
+   "name": "PITCH ENV TOP 15",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_16",
+   "name": "PITCH ENV TOP 16",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_17",
+   "name": "PITCH ENV TOP 17",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_18",
+   "name": "PITCH ENV TOP 18",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_19",
+   "name": "PITCH ENV TOP 19",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_20",
+   "name": "PITCH ENV TOP 20",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_21",
+   "name": "PITCH ENV TOP 21",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_22",
+   "name": "PITCH ENV TOP 22",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_23",
+   "name": "PITCH ENV TOP 23",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_24",
+   "name": "PITCH ENV TOP 24",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_25",
+   "name": "PITCH ENV TOP 25",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_26",
+   "name": "PITCH ENV TOP 26",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_27",
+   "name": "PITCH ENV TOP 27",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_28",
+   "name": "PITCH ENV TOP 28",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_29",
+   "name": "PITCH ENV TOP 29",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_30",
+   "name": "PITCH ENV TOP 30",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_31",
+   "name": "PITCH ENV TOP 31",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_h_32",
+   "name": "PITCH ENV TOP 32",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_01",
+   "name": "PITCH ENV BOT 1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_02",
+   "name": "PITCH ENV BOT 2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_03",
+   "name": "PITCH ENV BOT 3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_04",
+   "name": "PITCH ENV BOT 4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_05",
+   "name": "PITCH ENV BOT 5",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_06",
+   "name": "PITCH ENV BOT 6",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_07",
+   "name": "PITCH ENV BOT 7",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_08",
+   "name": "PITCH ENV BOT 8",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_09",
+   "name": "PITCH ENV BOT 9",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_10",
+   "name": "PITCH ENV BOT 10",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_11",
+   "name": "PITCH ENV BOT 11",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_12",
+   "name": "PITCH ENV BOT 12",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_13",
+   "name": "PITCH ENV BOT 13",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_14",
+   "name": "PITCH ENV BOT 14",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_15",
+   "name": "PITCH ENV BOT 15",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_16",
+   "name": "PITCH ENV BOT 16",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_17",
+   "name": "PITCH ENV BOT 17",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_18",
+   "name": "PITCH ENV BOT 18",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_19",
+   "name": "PITCH ENV BOT 19",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_20",
+   "name": "PITCH ENV BOT 20",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_21",
+   "name": "PITCH ENV BOT 21",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_22",
+   "name": "PITCH ENV BOT 22",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_23",
+   "name": "PITCH ENV BOT 23",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_24",
+   "name": "PITCH ENV BOT 24",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_25",
+   "name": "PITCH ENV BOT 25",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_26",
+   "name": "PITCH ENV BOT 26",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_27",
+   "name": "PITCH ENV BOT 27",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_28",
+   "name": "PITCH ENV BOT 28",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_29",
+   "name": "PITCH ENV BOT 29",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_30",
+   "name": "PITCH ENV BOT 30",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_31",
+   "name": "PITCH ENV BOT 31",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_p_l_32",
+   "name": "PITCH ENV BOT 32",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_01",
+   "name": "FILTER ENV TOP 1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_02",
+   "name": "FILTER ENV TOP 2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_03",
+   "name": "FILTER ENV TOP 3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_04",
+   "name": "FILTER ENV TOP 4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_05",
+   "name": "FILTER ENV TOP 5",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_06",
+   "name": "FILTER ENV TOP 6",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_07",
+   "name": "FILTER ENV TOP 7",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_08",
+   "name": "FILTER ENV TOP 8",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_09",
+   "name": "FILTER ENV TOP 9",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_10",
+   "name": "FILTER ENV TOP 10",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_11",
+   "name": "FILTER ENV TOP 11",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_12",
+   "name": "FILTER ENV TOP 12",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_13",
+   "name": "FILTER ENV TOP 13",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_14",
+   "name": "FILTER ENV TOP 14",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_15",
+   "name": "FILTER ENV TOP 15",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_16",
+   "name": "FILTER ENV TOP 16",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_17",
+   "name": "FILTER ENV TOP 17",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_18",
+   "name": "FILTER ENV TOP 18",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_19",
+   "name": "FILTER ENV TOP 19",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_20",
+   "name": "FILTER ENV TOP 20",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_21",
+   "name": "FILTER ENV TOP 21",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_22",
+   "name": "FILTER ENV TOP 22",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_23",
+   "name": "FILTER ENV TOP 23",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_24",
+   "name": "FILTER ENV TOP 24",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_25",
+   "name": "FILTER ENV TOP 25",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_26",
+   "name": "FILTER ENV TOP 26",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_27",
+   "name": "FILTER ENV TOP 27",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_28",
+   "name": "FILTER ENV TOP 28",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_29",
+   "name": "FILTER ENV TOP 29",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_30",
+   "name": "FILTER ENV TOP 30",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_31",
+   "name": "FILTER ENV TOP 31",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_h_32",
+   "name": "FILTER ENV TOP 32",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_01",
+   "name": "FILTER ENV BOT 1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_02",
+   "name": "FILTER ENV BOT 2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_03",
+   "name": "FILTER ENV BOT 3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_04",
+   "name": "FILTER ENV BOT 4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_05",
+   "name": "FILTER ENV BOT 5",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_06",
+   "name": "FILTER ENV BOT 6",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_07",
+   "name": "FILTER ENV BOT 7",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_08",
+   "name": "FILTER ENV BOT 8",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_09",
+   "name": "FILTER ENV BOT 9",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_10",
+   "name": "FILTER ENV BOT 10",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_11",
+   "name": "FILTER ENV BOT 11",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_12",
+   "name": "FILTER ENV BOT 12",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_13",
+   "name": "FILTER ENV BOT 13",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_14",
+   "name": "FILTER ENV BOT 14",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_15",
+   "name": "FILTER ENV BOT 15",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_16",
+   "name": "FILTER ENV BOT 16",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_17",
+   "name": "FILTER ENV BOT 17",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_18",
+   "name": "FILTER ENV BOT 18",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_19",
+   "name": "FILTER ENV BOT 19",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_20",
+   "name": "FILTER ENV BOT 20",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_21",
+   "name": "FILTER ENV BOT 21",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_22",
+   "name": "FILTER ENV BOT 22",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_23",
+   "name": "FILTER ENV BOT 23",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_24",
+   "name": "FILTER ENV BOT 24",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_25",
+   "name": "FILTER ENV BOT 25",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_26",
+   "name": "FILTER ENV BOT 26",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_27",
+   "name": "FILTER ENV BOT 27",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_28",
+   "name": "FILTER ENV BOT 28",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_29",
+   "name": "FILTER ENV BOT 29",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_30",
+   "name": "FILTER ENV BOT 30",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_31",
+   "name": "FILTER ENV BOT 31",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_f_l_32",
+   "name": "FILTER ENV BOT 32",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_01",
+   "name": "AMP ENV TOP 1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_02",
+   "name": "AMP ENV TOP 2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_03",
+   "name": "AMP ENV TOP 3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_04",
+   "name": "AMP ENV TOP 4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_05",
+   "name": "AMP ENV TOP 5",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_06",
+   "name": "AMP ENV TOP 6",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_07",
+   "name": "AMP ENV TOP 7",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_08",
+   "name": "AMP ENV TOP 8",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_09",
+   "name": "AMP ENV TOP 9",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_10",
+   "name": "AMP ENV TOP 10",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_11",
+   "name": "AMP ENV TOP 11",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_12",
+   "name": "AMP ENV TOP 12",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_13",
+   "name": "AMP ENV TOP 13",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_14",
+   "name": "AMP ENV TOP 14",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_15",
+   "name": "AMP ENV TOP 15",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_16",
+   "name": "AMP ENV TOP 16",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_17",
+   "name": "AMP ENV TOP 17",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_18",
+   "name": "AMP ENV TOP 18",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_19",
+   "name": "AMP ENV TOP 19",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_20",
+   "name": "AMP ENV TOP 20",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_21",
+   "name": "AMP ENV TOP 21",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_22",
+   "name": "AMP ENV TOP 22",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_23",
+   "name": "AMP ENV TOP 23",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_24",
+   "name": "AMP ENV TOP 24",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_25",
+   "name": "AMP ENV TOP 25",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_26",
+   "name": "AMP ENV TOP 26",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_27",
+   "name": "AMP ENV TOP 27",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_28",
+   "name": "AMP ENV TOP 28",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_29",
+   "name": "AMP ENV TOP 29",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_30",
+   "name": "AMP ENV TOP 30",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_31",
+   "name": "AMP ENV TOP 31",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_h_32",
+   "name": "AMP ENV TOP 32",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_01",
+   "name": "AMP ENV BOT 1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_02",
+   "name": "AMP ENV BOT 2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_03",
+   "name": "AMP ENV BOT 3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_04",
+   "name": "AMP ENV BOT 4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_05",
+   "name": "AMP ENV BOT 5",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_06",
+   "name": "AMP ENV BOT 6",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_07",
+   "name": "AMP ENV BOT 7",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_08",
+   "name": "AMP ENV BOT 8",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_09",
+   "name": "AMP ENV BOT 9",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_10",
+   "name": "AMP ENV BOT 10",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_11",
+   "name": "AMP ENV BOT 11",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_12",
+   "name": "AMP ENV BOT 12",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_13",
+   "name": "AMP ENV BOT 13",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_14",
+   "name": "AMP ENV BOT 14",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_15",
+   "name": "AMP ENV BOT 15",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_16",
+   "name": "AMP ENV BOT 16",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_17",
+   "name": "AMP ENV BOT 17",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_18",
+   "name": "AMP ENV BOT 18",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_19",
+   "name": "AMP ENV BOT 19",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_20",
+   "name": "AMP ENV BOT 20",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_21",
+   "name": "AMP ENV BOT 21",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_22",
+   "name": "AMP ENV BOT 22",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_23",
+   "name": "AMP ENV BOT 23",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_24",
+   "name": "AMP ENV BOT 24",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_25",
+   "name": "AMP ENV BOT 25",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_26",
+   "name": "AMP ENV BOT 26",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_27",
+   "name": "AMP ENV BOT 27",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_28",
+   "name": "AMP ENV BOT 28",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_29",
+   "name": "AMP ENV BOT 29",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_30",
+   "name": "AMP ENV BOT 30",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_31",
+   "name": "AMP ENV BOT 31",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "envv_a_l_32",
+   "name": "AMP ENV BOT 32",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "bank_index",
+   "name": "BANK",
+   "min": 0.0,
+   "max": 0.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "prev_bank",
+   "name": "BANK -",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true
+  },
+  {
+   "key": "next_bank",
+   "name": "BANK +",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true
+  },
+  {
+   "key": "nvram_patchCommon_analogfeel",
+   "name": "ANALOG FEEL",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_velocityswitch",
+   "name": "VEL SWITCH",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_sololegato",
+   "name": "SOLO LEGATO",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_keyassign",
+   "name": "KEY ASSIGN",
+   "options": [
+    "POLY",
+    "SOLO"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_bendrangeup",
+   "name": "BEND UP",
+   "min": 0.0,
+   "max": 12.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_bendrangedown",
+   "name": "BEND DOWN",
+   "min": 0.0,
+   "max": 48.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_portamentotime",
+   "name": "PORTA TIME",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_portamentoswitch",
+   "name": "PORTA",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_portamentomode",
+   "name": "MODE",
+   "options": [
+    "NORM",
+    "LEGATO"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_portamentotype",
+   "name": "TYPE",
+   "options": [
+    "TIME",
+    "RATE"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_reverbtype",
+   "name": "TYPE",
+   "options": [
+    "ROOM1",
+    "ROOM2",
+    "STAGE1",
+    "STAGE2",
+    "HALL1",
+    "HALL2",
+    "DELAY",
+    "PAN-DLY"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_reverbtime",
+   "name": "TIME",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_reverbfeedback",
+   "name": "FEEDBACK",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_chorustype",
+   "name": "TYPE",
+   "options": [
+    "CHORUS1",
+    "CHORUS2",
+    "FLANGER"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_patchCommon_chorusdepth",
+   "name": "DEPTH",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_chorusrate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_chorusfeedback",
+   "name": "FEEDBACK",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_patchCommon_chorusoutput",
+   "name": "OUT",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_0_wavegroup",
+   "name": "NVRAM_TONE_0_WAVEGROUP",
+   "options": [
+    "INT-A",
+    "INT-B",
+    "EXP-A",
+    "EXP-B"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_0_wavenumber",
+   "name": "WAVE #",
+   "min": 0.0,
+   "max": 255.0,
+   "default": 0.0,
+   "display": "int",
+   "nudge_pct": 2
+  },
+  {
+   "key": "nvram_tone_0_fxmswitch",
+   "name": "FXM",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_0_fxmdepth",
+   "name": "FXM DEPTH",
+   "min": 1.0,
+   "max": 16.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_pitchcoarse",
+   "name": "COARSE",
+   "min": -48.0,
+   "max": 48.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_pitchfine",
+   "name": "FINE",
+   "min": -50.0,
+   "max": 50.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvlevel1",
+   "name": "L1",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvlevel2",
+   "name": "L2",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvlevel3",
+   "name": "L3",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvlevel4",
+   "name": "L4",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_penvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvlevel4",
+   "name": "L4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvfenvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvaenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvaenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvaenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvaenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvaenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_tvaenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo1form",
+   "name": "NVRAM_TONE_0_LFO1FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_0_lfo1synchro",
+   "name": "SYNC",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_0_lfo1rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo1delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo1fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo1pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo1tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo1tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo2form",
+   "name": "NVRAM_TONE_0_LFO2FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_0_lfo2rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo2delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo2fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo2pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo2tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_0_lfo2tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_wavegroup",
+   "name": "NVRAM_TONE_1_WAVEGROUP",
+   "options": [
+    "INT-A",
+    "INT-B",
+    "EXP-A",
+    "EXP-B"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_1_wavenumber",
+   "name": "WAVE #",
+   "min": 0.0,
+   "max": 255.0,
+   "default": 0.0,
+   "display": "int",
+   "nudge_pct": 2
+  },
+  {
+   "key": "nvram_tone_1_fxmswitch",
+   "name": "FXM",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_1_fxmdepth",
+   "name": "FXM DEPTH",
+   "min": 1.0,
+   "max": 16.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_pitchcoarse",
+   "name": "COARSE",
+   "min": -48.0,
+   "max": 48.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_pitchfine",
+   "name": "FINE",
+   "min": -50.0,
+   "max": 50.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvlevel1",
+   "name": "L1",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvlevel2",
+   "name": "L2",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvlevel3",
+   "name": "L3",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvlevel4",
+   "name": "L4",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_penvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvlevel4",
+   "name": "L4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvfenvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvaenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvaenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvaenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvaenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvaenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_tvaenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo1form",
+   "name": "NVRAM_TONE_1_LFO1FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_1_lfo1synchro",
+   "name": "SYNC",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_1_lfo1rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo1delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo1fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo1pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo1tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo1tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo2form",
+   "name": "NVRAM_TONE_1_LFO2FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_1_lfo2rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo2delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo2fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo2pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo2tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_1_lfo2tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_wavegroup",
+   "name": "NVRAM_TONE_2_WAVEGROUP",
+   "options": [
+    "INT-A",
+    "INT-B",
+    "EXP-A",
+    "EXP-B"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_2_wavenumber",
+   "name": "WAVE #",
+   "min": 0.0,
+   "max": 255.0,
+   "default": 0.0,
+   "display": "int",
+   "nudge_pct": 2
+  },
+  {
+   "key": "nvram_tone_2_fxmswitch",
+   "name": "FXM",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_2_fxmdepth",
+   "name": "FXM DEPTH",
+   "min": 1.0,
+   "max": 16.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_pitchcoarse",
+   "name": "COARSE",
+   "min": -48.0,
+   "max": 48.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_pitchfine",
+   "name": "FINE",
+   "min": -50.0,
+   "max": 50.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvlevel1",
+   "name": "L1",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvlevel2",
+   "name": "L2",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvlevel3",
+   "name": "L3",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvlevel4",
+   "name": "L4",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_penvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvlevel4",
+   "name": "L4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvfenvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvaenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvaenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvaenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvaenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvaenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_tvaenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo1form",
+   "name": "NVRAM_TONE_2_LFO1FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_2_lfo1synchro",
+   "name": "SYNC",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_2_lfo1rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo1delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo1fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo1pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo1tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo1tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo2form",
+   "name": "NVRAM_TONE_2_LFO2FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_2_lfo2rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo2delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo2fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo2pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo2tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_2_lfo2tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_wavegroup",
+   "name": "NVRAM_TONE_3_WAVEGROUP",
+   "options": [
+    "INT-A",
+    "INT-B",
+    "EXP-A",
+    "EXP-B"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_3_wavenumber",
+   "name": "WAVE #",
+   "min": 0.0,
+   "max": 255.0,
+   "default": 0.0,
+   "display": "int",
+   "nudge_pct": 2
+  },
+  {
+   "key": "nvram_tone_3_fxmswitch",
+   "name": "FXM",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_3_fxmdepth",
+   "name": "FXM DEPTH",
+   "min": 1.0,
+   "max": 16.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_pitchcoarse",
+   "name": "COARSE",
+   "min": -48.0,
+   "max": 48.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_pitchfine",
+   "name": "FINE",
+   "min": -50.0,
+   "max": 50.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvlevel1",
+   "name": "L1",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvlevel2",
+   "name": "L2",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvlevel3",
+   "name": "L3",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvlevel4",
+   "name": "L4",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_penvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvlevel4",
+   "name": "L4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvfenvtime4",
+   "name": "T4",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvaenvlevel1",
+   "name": "L1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvaenvlevel2",
+   "name": "L2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvaenvlevel3",
+   "name": "L3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvaenvtime1",
+   "name": "T1",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvaenvtime2",
+   "name": "T2",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_tvaenvtime3",
+   "name": "T3",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo1form",
+   "name": "NVRAM_TONE_3_LFO1FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_3_lfo1synchro",
+   "name": "SYNC",
+   "options": [
+    "OFF",
+    "ON"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_3_lfo1rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo1delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo1fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo1pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo1tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo1tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo2form",
+   "name": "NVRAM_TONE_3_LFO2FORM",
+   "options": [
+    "TRI",
+    "SIN",
+    "SAW",
+    "SQU",
+    "RND1",
+    "RND2"
+   ],
+   "default": 0
+  },
+  {
+   "key": "nvram_tone_3_lfo2rate",
+   "name": "RATE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo2delay",
+   "name": "DELAY",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo2fadetime",
+   "name": "FADE",
+   "min": 0.0,
+   "max": 127.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo2pitchdepth",
+   "name": "PITCH",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo2tvfdepth",
+   "name": "FILTER",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "nvram_tone_3_lfo2tvadepth",
+   "name": "AMP",
+   "min": -63.0,
+   "max": 63.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "bank_slot_1",
+   "name": "BANK 1",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_2",
+   "name": "BANK 2",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_3",
+   "name": "BANK 3",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_4",
+   "name": "BANK 4",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_5",
+   "name": "BANK 5",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_6",
+   "name": "BANK 6",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_7",
+   "name": "BANK 7",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_8",
+   "name": "BANK 8",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_9",
+   "name": "BANK 9",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_10",
+   "name": "BANK 10",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_11",
+   "name": "BANK 11",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_12",
+   "name": "BANK 12",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_13",
+   "name": "BANK 13",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_14",
+   "name": "BANK 14",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_15",
+   "name": "BANK 15",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_16",
+   "name": "BANK 16",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_17",
+   "name": "BANK 17",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_18",
+   "name": "BANK 18",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_19",
+   "name": "BANK 19",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_20",
+   "name": "BANK 20",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_21",
+   "name": "BANK 21",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "bank_slot_22",
+   "name": "BANK 22",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_1",
+   "name": "PATCH 1",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_2",
+   "name": "PATCH 2",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_3",
+   "name": "PATCH 3",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_4",
+   "name": "PATCH 4",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_5",
+   "name": "PATCH 5",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_6",
+   "name": "PATCH 6",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_7",
+   "name": "PATCH 7",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_8",
+   "name": "PATCH 8",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_9",
+   "name": "PATCH 9",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_10",
+   "name": "PATCH 10",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_11",
+   "name": "PATCH 11",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_12",
+   "name": "PATCH 12",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_13",
+   "name": "PATCH 13",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_14",
+   "name": "PATCH 14",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_15",
+   "name": "PATCH 15",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_16",
+   "name": "PATCH 16",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_17",
+   "name": "PATCH 17",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_18",
+   "name": "PATCH 18",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_19",
+   "name": "PATCH 19",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_20",
+   "name": "PATCH 20",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_21",
+   "name": "PATCH 21",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_22",
+   "name": "PATCH 22",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_23",
+   "name": "PATCH 23",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_24",
+   "name": "PATCH 24",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_25",
+   "name": "PATCH 25",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_26",
+   "name": "PATCH 26",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_27",
+   "name": "PATCH 27",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_slot_28",
+   "name": "PATCH 28",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true,
+   "display": "string"
+  },
+  {
+   "key": "patch_page",
+   "name": "Patch Page",
+   "min": 0.0,
+   "max": 0.0,
+   "default": 0.0,
+   "display": "int"
+  },
+  {
+   "key": "patch_page_text",
+   "name": "Patch Page Text",
+   "min": 0.0,
+   "max": 0.0,
+   "default": 0.0,
+   "display": "string"
+  },
+  {
+   "key": "patch_page_next",
+   "name": "Next Page",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true
+  },
+  {
+   "key": "patch_page_prev",
+   "name": "Prev Page",
+   "min": 0.0,
+   "max": 1.0,
+   "default": 0.0,
+   "momentary": true
+  },
+  {
+   "key": "browse_bank_name",
+   "name": "Browsed Bank",
+   "min": 0.0,
+   "max": 0.0,
+   "default": 0.0,
+   "display": "string"
+  },
+  {
+   "key": "nvram_patchCommon_reverbtype__open",
+   "name": "TYPE List",
+   "options": [
+    "Closed",
+    "Open"
+   ],
+   "default": 0,
+   "popup_of": "nvram_patchCommon_reverbtype"
+  },
+  {
+   "key": "nvram_patchCommon_chorustype__open",
+   "name": "TYPE List",
+   "options": [
+    "Closed",
+    "Open"
+   ],
+   "default": 0,
+   "popup_of": "nvram_patchCommon_chorustype"
+  }
+ ]
+}
