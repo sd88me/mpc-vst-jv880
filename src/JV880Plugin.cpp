@@ -57,7 +57,7 @@ extern "C" plugin_api_v2_t* move_plugin_init_v2(const host_api_v1_t* host);
 #endif
 #define JV_FOURCC(...) MPC_FOURCC(__VA_ARGS__)   // expands JV_UID before MPC_FOURCC counts its arguments
 #ifndef JV_VERSION
-#define JV_VERSION 2000
+#define JV_VERSION 2001
 #endif
 
 namespace {
@@ -340,7 +340,10 @@ public:
             if (pinned || turning || relative != 0)
                 steps = std::round(cur) + (float)relative;
             else
+            {
                 steps = settle(pos, cur, last);
+                if (nudged) stale_[index].store(-1.0f);   // a set to a value: a later set near the control's old value is a value too
+            }
             lastPos_[index].store(seen);
             if (s.nudgePct > 0) trace(t_absolute ? 'M' : 'H', index, pos, cur, last, stale, how, relative, std::min(std::max(steps, 0.0f), span));
             steps = std::min(std::max(steps, 0.0f), span);
