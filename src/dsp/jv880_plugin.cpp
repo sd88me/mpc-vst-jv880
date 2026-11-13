@@ -204,8 +204,9 @@ typedef struct {
 /* Audio ring buffer: frames, a power of two. One producer (the emulator thread) and one consumer (render_block), no lock.
  * The producer keeps it filled to ring_target frames, not to the brim: the fill level is latency. The target follows the
  * host's block size ("host_block"), because the host takes a whole block's worth of render_block calls back to back; the
- * old 512-frame ring (511 usable, kept at about 450) ran dry on every block of 512 frames. */
-#define AUDIO_RING_SIZE 4096
+ * old 512-frame ring (511 usable, kept at about 450) ran dry on every block of 512 frames. 1024 holds the largest block
+ * the MPC uses (512) plus the margin; a larger host block is served up to RING_TARGET_MAX. */
+#define AUDIO_RING_SIZE 1024
 #define AUDIO_RING_MASK (AUDIO_RING_SIZE - 1)
 #define RING_TARGET_MIN 448            /* the fill level the 512-frame ring was kept at */
 #define RING_TARGET_MARGIN 192         /* frames kept beyond one host block */
