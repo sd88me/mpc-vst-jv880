@@ -210,7 +210,8 @@ public:
         if (s.flags & kAnchor) { hostMoved_[index].store(true); return; }   // an envelope's fixed start level: put back
         if (s.flags & kUi) return;
         if (s.flags & kLocal) { localChanged(index, s, plain); return; }
-        hostAt_[index].store(nowMs());
+        const long long movedAt = nowMs();
+        const long long prevMovedAt = hostAt_[index].exchange(movedAt);
         if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
         if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
         {
@@ -222,7 +223,11 @@ public:
         if (s.flags & kMomentary)
         {
             if (plain < 0.5f) { held_[index].store(false); if (s.flags & kTile) hostMoved_[index].store(true); return; }
-            if (held_[index].exchange(true)) return;
+            if (held_[index].exchange(true))
+            {
+                if (s.flags & kTile) hostMoved_[index].store(true);   // not fired: the worker puts the tile's real state back
+                return;
+            }
             if (s.flags & kStep) stepTarget(s);
             else engineSet(s.key, "1");
             if (s.flags & kTile) hostMoved_[index].store(true);   // the tile shows "<key>_on", read back by the worker
@@ -236,13 +241,39 @@ public:
         {
             const float pos = getNormalised(index) * span;
             float cur = told_[index] > -1.0e8f ? told_[index] - s.min : pos;
+            if (s.nudgePct > 0)   // a stepped value (PATCH, BANK): step from where the engine is now, which is not always
+            {                     // where it was last sent (a PATCH step on BANKS starts in the bank being browsed)
+                char eb[32];
+                if (engineGet(s.key, eb, sizeof eb)) cur = std::min(std::max((float)std::atof(eb), s.min), s.max) - s.min;
+            }
             const float tick = s.nudgePct > 0 ? std::max(0.5f, span * s.nudgePct / 100.0f) : 0.5f;
             float steps;
-            if (s.nudgePct > 0 && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
+            // A nudged param (PATCH) in the middle of a turn: the worker does not send the engine's value back while the
+            // host keeps moving it (see hostAt_), so the host's own value runs ahead by its own step size on every tick
+            // while the patch moves by one. Its distance from the patch says nothing then, and once it passed the "one
+            // step" window a fast turn became a jump to wherever the host's value had got to (another bank). While the
+            // turn lasts, only the way the host's value moves counts: one patch a tick.
+            const float last = lastPos_[(size_t)index];
+            const bool turning = s.nudgePct > 0 && last >= 0 && movedAt - prevMovedAt < 300;
+            // ... and the host's value reaches an end of the range long before the patch does (PATCH spans 0..8191, the first
+            // banks sit at the bottom): it then cannot move further and the turn would stop. One more step that way, and the
+            // worker sends the patch back at once (no 300 ms hold), so the host's value has room again.
+            const bool pinnedLo = s.nudgePct > 0 && pos <= 0.001f && cur > 0.5f;
+            const bool pinnedHi = s.nudgePct > 0 && pos >= span - 0.001f && cur < span - 0.5f;
+            float seen = pos;
+            if (pinnedLo || pinnedHi)
+            {
+                steps = std::round(cur) + (pinnedLo ? -1.0f : 1.0f);
+                hostAt_[index].store(0);
+                seen = -1.0f;   // the host's value is about to be replaced: the next move is judged against the patch
+            }
+            else if (turning)
+                steps = std::round(cur) + (pos > last ? 1.0f : pos < last ? -1.0f : 0.0f);
+            else if (s.nudgePct > 0 && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
                 steps = std::round(cur) + (pos > cur ? 1.0f : -1.0f);
             else
-                steps = settle(pos, cur, lastPos_[(size_t)index]);
-            lastPos_[(size_t)index] = pos;
+                steps = settle(pos, cur, last);
+            lastPos_[(size_t)index] = seen;
             steps = std::min(std::max(steps, 0.0f), span);
             v = s.min + steps;
             // Where it landed reaches the host from the worker, ~10 ms later (as 1.x reported the engine's value): the host's own
@@ -501,6 +532,10 @@ private:
                 const float on = engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f;
                 if (moved || on != told_[i])
                 {
+                    // A tile the engine turned off (another patch or bank was picked) is no longer held. The host sends no 0
+                    // for it, so it stayed "held": its next tap was not sent to the engine, yet the host lit it, beside the
+                    // tile of the patch that really was loaded.
+                    if (on < 0.5f) held_[i].store(false);
                     pushValue(i, on);
                     if (!moved) ++changed;
                 }

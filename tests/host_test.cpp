@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 622, "622 params: 472 frozen + 150 appended (%d)", a->numParams);
+    CHECK(a->numParams == 623, "623 params: 472 frozen + 151 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2000, "version 2000");
     {
         int bad = 0;
