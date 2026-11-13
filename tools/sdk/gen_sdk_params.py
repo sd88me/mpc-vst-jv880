@@ -71,7 +71,7 @@ for t in range(4):
     APPENDED.append({"key": "wavepage_%d" % t, "name": "T%d WAVES PAGE" % (t + 1), "min": 0.0, "max": 0.0, "default": 0.0, "display": "string"})
 # 622: the current bank as a value (engine key bank_select), for the bank name in the header LCD: the data wheel, a Q-Link or a drag
 # steps through the banks, one bank a tick (nudge_pct, as PATCH), each going to its first patch as BANK -/+ do
-APPENDED.append({"key": "bank_select", "name": "BANK SELECT", "min": 0.0, "max": 21.0, "default": 0.0, "nudge_pct": 10})
+APPENDED.append({"key": "bank_select", "name": "BANK SELECT", "min": 0.0, "max": 63.0, "default": 0.0, "nudge_pct": 3})
 
 K = dict(kMomentary=1, kText=2, kChoice=8, kUi=16, kReadOnly=64, kStep=128, kTile=256, kNoAuto=512, kPolled=1024, kAnchor=2048, kLocal=4096)
 NOAUTO_RE = re.compile(r"^(env_view_\d|envv_.*|bank_select|browse_bank_index|patch_page_index|prev_browse_bank|next_browse_bank|patch_page_(next|prev))$")

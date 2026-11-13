@@ -3366,12 +3366,12 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
                 inst->current_patch = idx;
                 inst->deferred_patch_index = idx;
                 inst->deferred_patch_countdown = 3;  /* ~9ms debounce */
+                v2_browse_follow_patch(inst);        /* the lists follow now; the load comes later */
             } else {
                 /* Same expansion or internal: load immediately */
                 inst->deferred_patch_countdown = 0;  /* Cancel any pending */
-                v2_select_patch(inst, idx);
+                v2_select_patch(inst, idx);   /* the BANKS lists follow inside it */
             }
-            v2_browse_follow_patch(inst);
         }
     } else if (strcmp(key, "octave_transpose") == 0) {
         int v = atoi(val);
