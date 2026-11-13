@@ -342,6 +342,28 @@ int main(int argc, char** argv)
         CHECK(engi(e, "preset") == p1 + 64 && engi(e, "bank_select") == 1, "bank tile 2, then patch tile 1 at once: patch %d", engi(e, "preset"));
     }
 
+    std::printf("== BANKS page: the header's bank box follows the bank being browsed\n");
+    {
+        const int B3 = idx("bank_slot_3"), BB = idx("browse_bank_index"), BANK = idx("bank_select");
+        const int before = engi(e, "preset");
+        tap(e, B3);                      // a bank tile: the lists show the third bank, nothing is loaded
+        sleepMs(400);
+        CHECK(engi(e, "preset") == before && engi(e, "bank_select") == 2 && eng(e, "bank_name") == eng(e, "bank_slot_3"),
+              "bank tile 3: patch still %d, the header shows \"%s\"", engi(e, "preset"), eng(e, "bank_name").c_str());
+        CHECK(std::lround(hostPlain(BANK)) == 2, "the host's BANK value is the browsed bank (%.0f)", hostPlain(BANK));
+        if (cards)
+        {
+            hostSetPlain(e, BB, 6.0f);   // the bank Q-Link: the lists show the seventh bank
+            sleepMs(500);
+            CHECK(engi(e, "preset") == before && engi(e, "bank_select") == 6 && eng(e, "bank_name") == eng(e, "bank_slot_7"),
+                  "bank Q-Link to bank 7: patch still %d, the header shows \"%s\"", engi(e, "preset"), eng(e, "bank_name").c_str());
+            tick(e, BANK, 0.012f * span(BANK));   // one wheel click up on the header's bank box: on from the browsed bank
+            sleepMs(700);
+            CHECK(engi(e, "bank_select") == 7 && eng(e, "bank_name") == eng(e, "bank_slot_8") && engi(e, "browse_bank_index") == 7,
+                  "one click up on the bank box: bank 8 (%d), patch %d", engi(e, "bank_select") + 1, engi(e, "preset"));
+        }
+    }
+
     midi({{0x80, 60, 0}});
     sleepMs(300);
     g_quit = true;
