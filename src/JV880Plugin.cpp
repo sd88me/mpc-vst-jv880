@@ -325,7 +325,10 @@ public:
             if (pinned || turning || relative != 0)
                 steps = std::round(cur) + (float)relative;
             else
+            {
                 steps = settle(pos, cur, last);
+                if (nudged) stale_[index].store(-1.0f);   // a set to a value: a later set near the control's old value is a value too
+            }
             lastPos_[index].store(seen);
             if (s.nudgePct > 0) trace(t_absolute ? 'M' : 'H', index, pos, cur, last, stale, how, relative, std::min(std::max(steps, 0.0f), span));
             steps = std::min(std::max(steps, 0.0f), span);
