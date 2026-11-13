@@ -856,6 +856,7 @@ static void v2_load_expansion_to_emulator(jv880_instance_t *inst, int exp_index)
 static void v2_select_patch(jv880_instance_t *inst, int global_index);
 static void v2_select_performance(jv880_instance_t *inst, int perf_index);
 static void v2_set_mode(jv880_instance_t *inst, int performance_mode);
+static void v2_browse_follow_patch(jv880_instance_t *inst);
 static void v2_send_all_notes_off(jv880_instance_t *inst);
 static void v2_set_param(void *instance, const char *key, const char *val);
 static int v2_get_param(void *instance, const char *key, char *buf, int buf_len);
@@ -1275,12 +1276,16 @@ static void v2_select_patch(jv880_instance_t *inst, int global_index) {
     if (inst->performance_mode) {
         jv_debug("[v2_select_patch] In performance mode, setting current_patch=%d then switching to patch mode\n", global_index);
         inst->current_patch = global_index;  /* Set target patch before mode switch */
+        v2_browse_follow_patch(inst);
         v2_set_mode(inst, 0);  /* This will load inst->current_patch */
         return;
     }
 
     PatchInfo *p = &inst->patches[global_index];
     inst->current_patch = global_index;
+    /* The BANKS lists follow every patch pick (BANK -/+, the bank value, a restored state, not only "preset"): the browsed
+     * bank then differs from the current patch's bank only while the user is browsing, which "preset" relies on. */
+    v2_browse_follow_patch(inst);
 
     jv_debug("[v2_select_patch] Loading patch %d: %s (exp=%d rom_off=0x%x)\n",
             global_index, p->name, p->expansion_index, p->rom_offset);
@@ -2612,6 +2617,14 @@ static int v2_get_bank_for_patch(jv880_instance_t *inst, int patch_index) {
     return 0;
 }
 
+/* The bank the header shows and steps start in: the bank being browsed on the BANKS page (a bank tile, the bank Q-Link, the
+ * browse steppers), which is the current patch's bank again as soon as a patch is picked (v2_browse_follow_patch). A tap on a
+ * bank tile loads nothing, but the header's bank box follows it, and a turn of the wheel on that box goes on from there. */
+static int v2_header_bank(jv880_instance_t *inst) {
+    if (inst->browse_bank >= 0 && inst->browse_bank < inst->bank_count) return inst->browse_bank;
+    return v2_get_bank_for_patch(inst, inst->current_patch);
+}
+
 /* v2: Patch count of one bank (bank_starts[i+1] - bank_starts[i], or up to total_patches for the
  * last bank). Used by the BANKS-page patch list's pagination. */
 static int v2_bank_patch_count(jv880_instance_t *inst, int bank) {
@@ -2636,7 +2649,8 @@ static int v2_browse_page_count(jv880_instance_t *inst) {
 
 /* v2: Jump to next/previous bank */
 static void v2_jump_to_bank(jv880_instance_t *inst, int direction) {
-    int current_bank = v2_get_bank_for_patch(inst, inst->current_patch);
+    if (inst->bank_count <= 0) return;
+    int current_bank = v2_header_bank(inst);   /* from the bank the header shows (the browsed one, if any) */
     int new_bank = current_bank + direction;
 
     /* Wrap around */
@@ -3323,6 +3337,27 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         return;
     }
 
+    if (strcmp(key, "preset_step") == 0) {
+        /* PATCH moved by a step (Q-Link, data wheel, -/+), as opposed to "preset" = go to this patch number.
+         * BANKS page: while the lists show another bank than the current patch's (just browsed with the bank Q-Link, a
+         * bank tile or the browse steppers), the step starts in the bank on screen, at the top of the page shown. It used
+         * to step on in the old bank, which also pulled the lists back to it. The header's bank box shows the browsed bank
+         * on every page (v2_header_bank), so the step goes where the header says. */
+        int d = atoi(val);
+        if (d == 0 || inst->total_patches <= 0) return;
+        int idx = inst->current_patch + (d > 0 ? 1 : -1);
+        int b = inst->browse_bank;
+        if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count &&
+            b != v2_get_bank_for_patch(inst, inst->current_patch)) {
+            int top = inst->bank_starts[b] + inst->browse_page * PATCH_LIST_SLOTS;
+            if (top >= inst->bank_starts[b] && top < inst->bank_starts[b] + v2_bank_patch_count(inst, b)) idx = top;
+        }
+        if (idx < 0 || idx >= inst->total_patches) return;
+        char num[16];
+        snprintf(num, sizeof(num), "%d", idx);
+        v2_set_param(inst, "preset", num);
+        return;
+    }
     if (strcmp(key, "preset") == 0) {
         int idx = atoi(val);
         if (idx >= 0 && idx < inst->total_patches && idx != inst->current_patch) {
@@ -3335,12 +3370,12 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
                 inst->current_patch = idx;
                 inst->deferred_patch_index = idx;
                 inst->deferred_patch_countdown = 3;  /* ~9ms debounce */
+                v2_browse_follow_patch(inst);        /* the lists follow now; the load comes later */
             } else {
                 /* Same expansion or internal: load immediately */
                 inst->deferred_patch_countdown = 0;  /* Cancel any pending */
-                v2_select_patch(inst, idx);
+                v2_select_patch(inst, idx);   /* the BANKS lists follow inside it */
             }
-            v2_browse_follow_patch(inst);
         }
     } else if (strcmp(key, "octave_transpose") == 0) {
         int v = atoi(val);
@@ -3366,6 +3401,21 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
                 inst->deferred_patch_countdown = 0;
                 v2_select_patch(inst, program);
             }
+        }
+    } else if (strcmp(key, "bank_select") == 0) {
+        /* The bank as a value (a data wheel / Q-Link / drag on the bank name): go to that bank's first patch, as BANK -/+ do. */
+        int b = atoi(val);
+        if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count &&
+            b != v2_get_bank_for_patch(inst, inst->current_patch)) {
+            /* Through "preset", for its debounce of a patch on another card: a wheel or knob crossing several banks then
+             * loads only the card it stops on. The lists go to the bank first, so "preset" takes the index as it is. */
+            char first[16];
+            snprintf(first, sizeof(first), "%d", inst->bank_starts[b]);
+            inst->browse_bank = b;
+            inst->browse_page = 0;
+            v2_set_param(inst, "preset", first);
+        } else if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count) {
+            v2_browse_follow_patch(inst);   /* back to the current patch's own bank: the lists and the header return to it */
         }
     } else if (strcmp(key, "next_bank") == 0) {
         v2_jump_to_bank(inst, 1);
@@ -4558,9 +4608,9 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
             }
             return snprintf(buf, buf_len, "Performances");
         }
-        /* Patch mode - return current expansion/bank name */
+        /* Patch mode - the bank the header shows: the current patch's, or the one being browsed on BANKS */
         if (inst->current_patch >= 0 && inst->current_patch < inst->total_patches) {
-            int bank = v2_get_bank_for_patch(inst, inst->current_patch);
+            int bank = v2_header_bank(inst);
             if (bank >= 0 && bank < inst->bank_count) {
                 return snprintf(buf, buf_len, "%s", inst->bank_names[bank]);
             }
@@ -4651,6 +4701,9 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     }
     if (strcmp(key, "current_expansion") == 0) {
         return snprintf(buf, buf_len, "%d", inst->current_expansion);
+    }
+    if (strcmp(key, "bank_select") == 0) {   /* the bank the header shows (v2_header_bank), 0-based */
+        return snprintf(buf, buf_len, "%d", inst->bank_count > 0 ? v2_header_bank(inst) : 0);
     }
     if (strcmp(key, "current_expansion_name") == 0) {
         /* Distinct from bank_name: a dedicated expansion-stepper readout showed the same text as
