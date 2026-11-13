@@ -242,6 +242,7 @@ def header(p, right_title=None):
                                 colour="ff141311", style="Medium", case="Original", h=34.0))
         p.sample[key + "$"] = txt
     p.lcd_field("preset", LX + SPLIT + 44, 10, LW - SPLIT - 88, 60)   # data wheel / Q-Link / drag steps the patch
+    p.lcd_field("bank_select", LX + 44, 10, SPLIT - 88, 60)            # ... and the same on the bank name steps the bank
     for key, x in (("prev_bank", 0), ("next_bank", SPLIT - 44), ("preset_prev", SPLIT), ("preset_next", LW - 44)):
         p.hit(key, LX + x, 10, 44, 60)
     # on every page: RANDOM (a random patch from every bank), +FAV / -FAV (favourites in the MPC's PRESET list) and their count

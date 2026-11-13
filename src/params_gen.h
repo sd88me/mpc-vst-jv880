@@ -668,8 +668,9 @@ static const PSpec g_pspecs[] = {
     {"wavepage_prev_3", "T4 WAVES <", 0.0f, 1.0f, 0.0f, 513, nullptr, 0, -1, 0.0f, 0},
     {"wavepage_next_3", "T4 WAVES >", 0.0f, 1.0f, 0.0f, 513, nullptr, 0, -1, 0.0f, 0},
     {"wavepage_3", "T4 WAVES PAGE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
+    {"bank_select", "BANK SELECT", 0.0f, 21.0f, 0.0f, 1024, nullptr, 0, -1, 0.0f, 10},
 };
-static const int kNumParams = 622;
+static const int kNumParams = 623;
 static const int kUiParam = 470;
 // MIDI control, as the 1.x build: CC 20..35 -> these parameters (-1: none); NRPN n (CC 99/98, data CC 6/38) -> parameter n.
 static const int g_ccMap[16] = {3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 11, 12, 225, 229, 231, 0};

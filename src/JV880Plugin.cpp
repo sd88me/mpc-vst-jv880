@@ -254,6 +254,11 @@ public:
         {
             const float pos = getNormalised(index) * span;
             float cur = told_[index] > -1.0e8f ? told_[index] - s.min : pos;
+            if (s.nudgePct > 0)   // a stepped value (PATCH, BANK): step from where the engine is now, which is not always
+            {                     // where it was last sent (a PATCH step on BANKS starts in the bank being browsed)
+                char eb[32];
+                if (engineGet(s.key, eb, sizeof eb)) cur = std::min(std::max((float)std::atof(eb), s.min), s.max) - s.min;
+            }
             const float tick = s.nudgePct > 0 ? std::max(0.5f, span * s.nudgePct / 100.0f) : 0.5f;
             float steps;
             // A nudged param (PATCH) in the middle of a turn: the worker does not send the engine's value back while the

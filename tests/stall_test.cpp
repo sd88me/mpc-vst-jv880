@@ -149,6 +149,60 @@ int main(int argc, char** argv)
         CHECK(engi(e, "preset") == start + 60 - 25, "25 ticks down: patch %d", engi(e, "preset"));
     }
 
+    std::printf("== the bank as a value (data wheel on the bank name)\n");
+    {
+        const int BANK = idx("bank_select"), banks = engi(e, "bank_count");
+        e->setParameter(e, PRESET, norm(PRESET, 3.0f));   // a patch in the first bank
+        sleepMs(1200);
+        const int b0 = engi(e, "bank_select");
+        float host = e->getParameter(e, BANK);
+        for (int k = 0; k < 3; ++k)   // three wheel clicks up, each a small move of the host's value, 60 ms apart
+        {
+            host += 0.012f;
+            e->setParameter(e, BANK, host);
+            sleepMs(60);
+        }
+        sleepMs(500);
+        CHECK(b0 == 0 && engi(e, "bank_select") == 3 && engi(e, "preset") == 192,   // three 64-patch internal banks come first
+              "3 clicks up: bank %d -> %d, on its first patch (%d)", b0, engi(e, "bank_select"), engi(e, "preset"));
+        CHECK(std::lround(e->getParameter(e, BANK) * 21.0f) == 3, "the host's BANK value follows (%.0f)", e->getParameter(e, BANK) * 21.0f);
+        host = e->getParameter(e, BANK);
+        for (int k = 0; k < 5; ++k)   // five clicks down from bank 3: stops at the first bank
+        {
+            host = std::max(0.0f, host - 0.012f);
+            e->setParameter(e, BANK, host);
+            sleepMs(60);
+        }
+        sleepMs(500);
+        CHECK(engi(e, "bank_select") == 0, "5 clicks down: bank %d (%d banks)", engi(e, "bank_select"), banks);
+        e->setParameter(e, PRESET, norm(PRESET, 700.0f));   // PATCH moved elsewhere: BANK follows
+        sleepMs(1500);
+        CHECK(std::lround(e->getParameter(e, BANK) * 21.0f) == engi(e, "bank_select") && engi(e, "bank_select") > 2,
+              "after a patch pick the host's BANK is the patch's bank (%d)", engi(e, "bank_select"));
+    }
+
+    std::printf("== BANKS page: browse a bank, then turn PATCH\n");
+    {
+        const int BB = idx("browse_bank_index");
+        e->setParameter(e, PRESET, norm(PRESET, 3.0f));
+        sleepMs(1200);
+        e->setParameter(e, BB, norm(BB, 5.0f));   // Q-Link 1: the lists show bank 6; nothing is loaded
+        sleepMs(600);
+        CHECK(engi(e, "preset") == 3 && engi(e, "browse_bank_index") == 5, "browsing bank 6 loads nothing (patch %d)", engi(e, "preset"));
+        float host = e->getParameter(e, PRESET);
+        int first = -1;
+        for (int k = 0; k < 4; ++k)               // Q-Link 2: four ticks up on PATCH
+        {
+            host += 37.3f / 8191.0f;
+            e->setParameter(e, PRESET, host);
+            sleepMs(40);
+            if (k == 0) first = engi(e, "preset");
+        }
+        sleepMs(600);
+        CHECK(engi(e, "bank_select") == 5 && engi(e, "browse_bank_index") == 5 && engi(e, "preset") == first + 3,
+              "PATCH steps in the browsed bank: bank %d, patch %d then %d", engi(e, "bank_select") + 1, first, engi(e, "preset"));
+    }
+
     std::printf("== BANKS page: patch tiles\n");
     {
         const int T1 = idx("patch_slot_1"), T2 = idx("patch_slot_2"), BB = idx("browse_bank_index");

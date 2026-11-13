@@ -476,6 +476,103 @@
           }
         },
         {
+          "key": "lcdfield242x60",
+          "value": {
+            "version": 2,
+            "actions": [
+              {
+                "version": 1,
+                "onAction": "Mouse Down",
+                "handler": "Q-Link",
+                "handleName": "Data",
+                "additionalData": ""
+              }
+            ],
+            "backgroundData": {
+              "version": 1,
+              "focussed": {
+                "version": 1,
+                "colour": "0",
+                "image": ""
+              },
+              "unfocussed": {
+                "version": 1,
+                "colour": "0",
+                "image": ""
+              }
+            },
+            "ignoreMousePresses": false,
+            "disableCoarseDataWheel": false,
+            "componentsData": [
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "focus",
+                  "type": "Focus",
+                  "data": {
+                    "version": 1,
+                    "backgroundColour": "224ea0e2",
+                    "outlineColour": "ff4ea0e2",
+                    "backgroundInset": 0.0,
+                    "outlineThickness": 2.0
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "WhenFocussed",
+                  "boundsType": "Absolute",
+                  "bounds": "0 0 242 60"
+                }
+              },
+              {
+                "version": 2,
+                "componentData": {
+                  "version": 1,
+                  "name": "field",
+                  "type": "Knob",
+                  "data": {
+                    "version": 4,
+                    "knobType": "ValueSlider",
+                    "textStyle": {
+                      "version": 1,
+                      "font": {
+                        "version": 1,
+                        "name": "Roboto",
+                        "style": "Regular",
+                        "height": 20.0
+                      },
+                      "colour": "00000000",
+                      "justification": "horizontallyCentred verticallyCentred",
+                      "case": "Original"
+                    },
+                    "dragOrientation": "Horizontal",
+                    "handleName": "Data"
+                  }
+                },
+                "handle remapping": {
+                  "version": 1,
+                  "map": []
+                },
+                "bounds": {
+                  "version": 1,
+                  "acceptsHWFocus": "No",
+                  "showWhenDataModelInvalid": "Show",
+                  "whenVisible": "Always",
+                  "boundsType": "Absolute",
+                  "bounds": "0 0 242 60"
+                }
+              }
+            ]
+          }
+        },
+        {
           "key": "lcdfield342x60",
           "value": {
             "version": 2,
@@ -1052,6 +1149,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -3001,6 +3127,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -7366,6 +7521,35 @@
               "version": 2,
               "componentData": {
                 "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
                 "name": "prev_bank",
                 "type": "Button",
                 "data": {
@@ -9278,6 +9462,35 @@
               "version": 2,
               "componentData": {
                 "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
                 "name": "prev_bank",
                 "type": "Button",
                 "data": {
@@ -10981,6 +11194,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -12898,6 +13140,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -15499,6 +15770,35 @@
               "version": 2,
               "componentData": {
                 "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
                 "name": "prev_bank",
                 "type": "Button",
                 "data": {
@@ -17202,6 +17502,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -19119,6 +19448,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -21720,6 +22078,35 @@
               "version": 2,
               "componentData": {
                 "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
                 "name": "prev_bank",
                 "type": "Button",
                 "data": {
@@ -23423,6 +23810,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -25340,6 +25756,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -27941,6 +28386,35 @@
               "version": 2,
               "componentData": {
                 "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
                 "name": "prev_bank",
                 "type": "Button",
                 "data": {
@@ -29644,6 +30118,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {
@@ -31561,6 +32064,35 @@
                 "whenVisible": "Always",
                 "boundsType": "Absolute",
                 "bounds": "570 10 342 60"
+              }
+            },
+            {
+              "version": 2,
+              "componentData": {
+                "version": 1,
+                "name": "bank_select field",
+                "type": "lcdfield242x60",
+                "data": {
+                  "version": 1,
+                  "handleName": "Data"
+                }
+              },
+              "handle remapping": {
+                "version": 1,
+                "map": [
+                  {
+                    "key": "Data",
+                    "value": "Parameter 622"
+                  }
+                ]
+              },
+              "bounds": {
+                "version": 1,
+                "acceptsHWFocus": "Yes",
+                "showWhenDataModelInvalid": "Show",
+                "whenVisible": "Always",
+                "boundsType": "Absolute",
+                "bounds": "240 10 242 60"
               }
             },
             {

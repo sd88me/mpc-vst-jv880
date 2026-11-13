@@ -867,6 +867,7 @@ static void v2_load_expansion_to_emulator(jv880_instance_t *inst, int exp_index)
 static void v2_select_patch(jv880_instance_t *inst, int global_index);
 static void v2_select_performance(jv880_instance_t *inst, int perf_index);
 static void v2_set_mode(jv880_instance_t *inst, int performance_mode);
+static void v2_browse_follow_patch(jv880_instance_t *inst);
 static void v2_send_all_notes_off(jv880_instance_t *inst);
 static void v2_set_param(void *instance, const char *key, const char *val);
 static int v2_get_param(void *instance, const char *key, char *buf, int buf_len);
@@ -1419,6 +1420,9 @@ static void v2_select_patch(jv880_instance_t *inst, int global_index) {
 
     PatchInfo *p = &inst->patches[global_index];
     inst->current_patch = global_index;
+    /* The BANKS lists follow every patch pick (BANK -/+, the bank value, a restored state, not only "preset"): the browsed
+     * bank then differs from the current patch's bank only while the user is browsing, which "preset" relies on. */
+    v2_browse_follow_patch(inst);
 
     jv_debug("[v2_select_patch] Loading patch %d: %s (exp=%d rom_off=0x%x)\n",
             global_index, p->name, p->expansion_index, p->rom_offset);
@@ -3476,6 +3480,15 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
 
     if (strcmp(key, "preset") == 0) {
         int idx = atoi(val);
+        /* BANKS page: the lists show another bank than the current patch's (browsed with the bank Q-Link, a bank tile or
+         * the browse steppers). A one-patch step (PATCH Q-Link, wheel, -/+) then starts in the bank on screen, at the top
+         * of the page shown. It used to step on in the old bank, which also pulled the lists back to that bank. */
+        if (inst->bank_count > 0 && inst->browse_bank >= 0 && inst->browse_bank < inst->bank_count &&
+            (idx == inst->current_patch + 1 || idx == inst->current_patch - 1) &&
+            inst->browse_bank != v2_get_bank_for_patch(inst, inst->current_patch)) {
+            int top = inst->bank_starts[inst->browse_bank] + inst->browse_page * PATCH_LIST_SLOTS;
+            if (top >= 0 && top < inst->total_patches) idx = top;
+        }
         if (idx >= 0 && idx < inst->total_patches && idx != inst->current_patch) {
             /* Check if this crosses an expansion boundary */
             int new_exp = inst->patches[idx].expansion_index;
@@ -3504,6 +3517,14 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
                         ? inst->patches[inst->current_patch].expansion_index : -1;
             (void)new_exp; (void)cur_exp;
             v2_select_patch(inst, program);   /* another card: posted to the emulator thread, as "preset" */
+        }
+    } else if (strcmp(key, "bank_select") == 0) {
+        /* The bank as a value (a data wheel / Q-Link / drag on the bank name): go to that bank's first patch, as BANK -/+ do. */
+        int b = atoi(val);
+        if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count &&
+            b != v2_get_bank_for_patch(inst, inst->current_patch)) {
+            v2_select_patch(inst, inst->bank_starts[b]);
+            v2_browse_follow_patch(inst);
         }
     } else if (strcmp(key, "next_bank") == 0) {
         v2_jump_to_bank(inst, 1);
@@ -4790,6 +4811,9 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     }
     if (strcmp(key, "current_expansion") == 0) {
         return snprintf(buf, buf_len, "%d", inst->current_expansion);
+    }
+    if (strcmp(key, "bank_select") == 0) {   /* the current patch's bank, 0-based */
+        return snprintf(buf, buf_len, "%d", inst->bank_count > 0 ? v2_get_bank_for_patch(inst, inst->current_patch) : 0);
     }
     if (strcmp(key, "underruns") == 0) {   /* render_block calls that found the ring short (tests, diagnostics) */
         return snprintf(buf, buf_len, "%d", __atomic_load_n(&inst->underrun_count, __ATOMIC_RELAXED));
