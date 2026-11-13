@@ -3574,8 +3574,7 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
             /* Same card or internal: written at once. Another card: v2_select_patch updates current_patch (the UI) and
              * posts the load to the emulator thread, debounced there (PATCH_REQUEST_DEBOUNCE_MS). */
             (void)new_exp; (void)cur_exp;
-            v2_select_patch(inst, idx);
-            v2_browse_follow_patch(inst);
+            v2_select_patch(inst, idx);   /* the BANKS lists follow inside it */
         }
     } else if (strcmp(key, "octave_transpose") == 0) {
         int v = atoi(val);
@@ -3601,7 +3600,6 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count &&
             b != v2_get_bank_for_patch(inst, inst->current_patch)) {
             v2_select_patch(inst, inst->bank_starts[b]);
-            v2_browse_follow_patch(inst);
         }
     } else if (strcmp(key, "next_bank") == 0) {
         v2_jump_to_bank(inst, 1);

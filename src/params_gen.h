@@ -668,7 +668,7 @@ static const PSpec g_pspecs[] = {
     {"wavepage_prev_3", "T4 WAVES <", 0.0f, 1.0f, 0.0f, 513, nullptr, 0, -1, 0.0f, 0},
     {"wavepage_next_3", "T4 WAVES >", 0.0f, 1.0f, 0.0f, 513, nullptr, 0, -1, 0.0f, 0},
     {"wavepage_3", "T4 WAVES PAGE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
-    {"bank_select", "BANK SELECT", 0.0f, 21.0f, 0.0f, 1536, nullptr, 0, -1, 0.0f, 10},
+    {"bank_select", "BANK SELECT", 0.0f, 63.0f, 0.0f, 1536, nullptr, 0, -1, 0.0f, 3},
 };
 static const int kNumParams = 623;
 static const int kUiParam = 470;

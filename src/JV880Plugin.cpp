@@ -267,6 +267,7 @@ public:
         // whole numbers and options: settle toward the move (see settle()), then send
         const float span = s.max - s.min;
         float v = plain;
+        bool pinned = false;
         int relative = 0;   // a nudged param moved by one step: -1 / +1 (0: an absolute value)
         if (span > 0)
         {
@@ -312,14 +313,13 @@ public:
             // one more step that way, and the worker sends the engine's value back at once (no hold) so the host's value
             // has room again. A set to an end from further away is that value (the first patch, the last wave).
             const bool atLo = pos <= 0.001f, atHi = pos >= span - 0.001f;
-            const bool pinned = nudged && ((atLo && cur > 0.5f) || (atHi && cur < span - 0.5f)) &&
+            pinned = nudged && ((atLo && cur > 0.5f) || (atHi && cur < span - 0.5f)) &&
                                 (turning || std::fabs(pos - cur) < std::max(1.5f, span / 50.0f));
             float seen = pos;
             char how = 'a';   // for the trace: a = absolute, p = pinned, t = turning, n = nudge
             if (pinned)
             {
                 relative = atLo ? -1 : 1;
-                hostAt_[index].store(0);
                 stale_[index].store(pos);
                 seen = -1.0f;   // the host's value is about to be replaced: the next move is judged against the engine's
                 how = 'p';
@@ -352,6 +352,8 @@ public:
                 hostMoved_[index].store(true);
                 if (nudged) ahead_[index].store(true);
             }
+            else if (s.nudgePct > 0)
+                ahead_[index].store(false);   // the host's value is the value sent: in step again without a read-back
         }
         if (index == 0)   // OCTAVE: debounced (see the header comment)
         {
@@ -368,10 +370,15 @@ public:
             // and a patch number that happens to be next to the current one (RANDOM, a recalled value) must not do that.
             std::snprintf(buf, sizeof buf, "%d", relative);
             engineSet("preset_step", buf);
-            return;
         }
-        std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
-        engineSet(s.key, buf);
+        else
+        {
+            std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
+            engineSet(s.key, buf);
+        }
+        // A pinned end: the worker sends the engine's value back at once (no hold). Only now, after told_ and the engine have
+        // the new value: cleared earlier, the worker could read back the old patch in between and leave the host on it.
+        if (pinned) hostAt_[index].store(0);
     }
 
     bool formatValue(int index, float plain, std::string& out) override
