@@ -36,11 +36,12 @@ static int g_fail = 0;
 
 static std::atomic<float> g_host[kNumParams];   // the host's own value of every parameter (normalised)
 static std::atomic<int> g_told[kNumParams];     // how often the plugin told the host about it
+static std::atomic<bool> g_adopt{true};         // false: the control keeps its own running value whatever the plugin tells the host
 
 static VstIntPtr host(AEffect*, VstInt32 op, VstInt32 index, VstIntPtr, void*, float opt)
 {
     if (op == audioMasterVersion) return 2400;
-    if (op == audioMasterAutomate && index >= 0 && index < kNumParams) { g_host[index] = opt; g_told[index]++; }
+    if (op == audioMasterAutomate && index >= 0 && index < kNumParams) { if (g_adopt.load()) g_host[index] = opt; g_told[index]++; }
     return 0;
 }
 
@@ -217,6 +218,32 @@ int main(int argc, char** argv)
         sleepMs(300);
         CHECK(sent >= 22 && engi(e, "preset") == from - sent, "25 ticks down at the bottom of the range: %d reached the plugin, patch %d -> %d",
               sent, from, engi(e, "preset"));
+    }
+
+    std::printf("== PATCH: a control that keeps its own value\n");
+    {
+        // As above, but the host does not take over the value the plugin tells it (a control with a running value of its
+        // own): after a pause the next tick comes from where the control's value had got to, far from the patch.
+        hostSetPlain(e, PRESET, 1000.0f);
+        sleepMs(1200);
+        g_adopt = false;
+        const int start = engi(e, "preset");
+        for (int k = 0; k < 80; ++k) { tick(e, PRESET, 37.3f); sleepMs(8); }     // the control's value is now about 3000 patches ahead
+        for (int rest : {400, 350, 900})
+        {
+            sleepMs(rest);                                                         // the plugin tells the host the patch; the control ignores it
+            for (int k = 0; k < 10; ++k) { tick(e, PRESET, 37.3f); sleepMs(8); }
+        }
+        sleepMs(100);
+        const int up = engi(e, "preset");
+        CHECK(start == 1000 && up == start + 110, "110 ticks up with three pauses: patch %d -> %d", start, up);
+        sleepMs(500);
+        for (int k = 0; k < 30; ++k) { tick(e, PRESET, -37.3f); sleepMs(8); }      // and back, after a pause
+        sleepMs(100);
+        CHECK(engi(e, "preset") == up - 30, "30 ticks down after a pause: patch %d", engi(e, "preset"));
+        sleepMs(600);
+        g_adopt = true;
+        g_host[PRESET] = e->getParameter(e, PRESET);
     }
 
     std::printf("== PATCH: a set to a value\n");

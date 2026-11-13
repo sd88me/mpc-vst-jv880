@@ -59,6 +59,9 @@ static void jv_debug(const char *fmt, ...) {
  * regime this value exists to stay out of.
  */
 #define JV880_EMU_RT_PRIORITY 20
+#ifndef JV880_EMU_RT_PRIORITY_MAX
+#define JV880_EMU_RT_PRIORITY_MAX 15   /* the emulator thread's ceiling once it is running (see v2_emu_thread_setup) */
+#endif
 
 /* Patch data constants */
 #define PATCH_SIZE 0x16a  /* 362 bytes per patch */
@@ -2172,6 +2175,10 @@ static void v2_emu_thread_setup(void) {
      * (SCHED_RR 20 on those cores), so the emulator never preempts MPC's audio engine. */
     struct sched_param sp;
     sp.sched_priority = fastcores::rt_priority(45);
+    /* Same-speed CPUs too (MPC One / Live / X, Force): 45 put this thread above the MPC's own audio threads (SCHED_RR 20
+     * per fast_cores.h), so every refill burst of the emulator could hold up the host's audio callback when both were on
+     * one core: seen as brief spikes on the MPC's CPU meter with nothing playing. Below them, as on the fast cores. */
+    if (sp.sched_priority > JV880_EMU_RT_PRIORITY_MAX) sp.sched_priority = JV880_EMU_RT_PRIORITY_MAX;
     int rc = pthread_setschedparam(pthread_self(), SCHED_FIFO, &sp);
     if (rc != 0) {
         fprintf(stderr, "JV880 v2: Could not set SCHED_FIFO %d (%s) — continuing with default scheduling\n", sp.sched_priority,
