@@ -201,6 +201,9 @@ typedef struct {
 /* Audio ring buffer size */
 #define AUDIO_RING_SIZE 512
 
+/* How long a browsed bank on the BANKS page redirects a one-patch step into it (see "preset_step"). */
+#define BROWSE_STEP_MS 30000
+
 /* MIDI queue sizes */
 #define MIDI_QUEUE_SIZE 256
 #define MIDI_MSG_MAX_LEN 256
@@ -678,6 +681,7 @@ typedef struct {
      * a patch in the right list is what actually calls v2_select_patch. */
     int browse_bank;
     int browse_page;
+    uint64_t browse_time_ms;        /* when another bank was last browsed to (see "preset_step") */
     /* TONE pages' envelope view (layout.conf "when=env_view_N:ON"): which tone's three envelopes are drawn, and
      * the curves as meter columns, [pitch,filter,amp][bright top, dim bottom][column] 0..127. See v2_envv_update. */
     int env_view[4];                /* 1 = that tone's envelope curves are showing */
@@ -1276,6 +1280,7 @@ static void v2_select_patch(jv880_instance_t *inst, int global_index) {
     if (inst->performance_mode) {
         jv_debug("[v2_select_patch] In performance mode, setting current_patch=%d then switching to patch mode\n", global_index);
         inst->current_patch = global_index;  /* Set target patch before mode switch */
+        v2_browse_follow_patch(inst);
         v2_set_mode(inst, 0);  /* This will load inst->current_patch */
         return;
     }
@@ -3327,17 +3332,30 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         return;
     }
 
+    if (strcmp(key, "preset_step") == 0) {
+        /* PATCH moved by a step (Q-Link, data wheel, -/+), as opposed to "preset" = go to this patch number.
+         * BANKS page: while the lists show another bank than the current patch's (just browsed with the bank Q-Link, a
+         * bank tile or the browse steppers), the step starts in the bank on screen, at the top of the page shown. It used
+         * to step on in the old bank, which also pulled the lists back to it. Browsing counts for BROWSE_STEP_MS: after
+         * that (the user has most likely left the BANKS page) a step is a step from the current patch again. */
+        int d = atoi(val);
+        if (d == 0 || inst->total_patches <= 0) return;
+        int idx = inst->current_patch + (d > 0 ? 1 : -1);
+        int b = inst->browse_bank;
+        if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count &&
+            b != v2_get_bank_for_patch(inst, inst->current_patch) &&
+            get_time_ms() - inst->browse_time_ms < BROWSE_STEP_MS) {
+            int top = inst->bank_starts[b] + inst->browse_page * PATCH_LIST_SLOTS;
+            if (top >= inst->bank_starts[b] && top < inst->bank_starts[b] + v2_bank_patch_count(inst, b)) idx = top;
+        }
+        if (idx < 0 || idx >= inst->total_patches) return;
+        char num[16];
+        snprintf(num, sizeof(num), "%d", idx);
+        v2_set_param(inst, "preset", num);
+        return;
+    }
     if (strcmp(key, "preset") == 0) {
         int idx = atoi(val);
-        /* BANKS page: the lists show another bank than the current patch's (browsed with the bank Q-Link, a bank tile or
-         * the browse steppers). A one-patch step (PATCH Q-Link, wheel, -/+) then starts in the bank on screen, at the top
-         * of the page shown. It used to step on in the old bank, which also pulled the lists back to that bank. */
-        if (inst->bank_count > 0 && inst->browse_bank >= 0 && inst->browse_bank < inst->bank_count &&
-            (idx == inst->current_patch + 1 || idx == inst->current_patch - 1) &&
-            inst->browse_bank != v2_get_bank_for_patch(inst, inst->current_patch)) {
-            int top = inst->bank_starts[inst->browse_bank] + inst->browse_page * PATCH_LIST_SLOTS;
-            if (top >= 0 && top < inst->total_patches) idx = top;
-        }
         if (idx >= 0 && idx < inst->total_patches && idx != inst->current_patch) {
             /* Check if this crosses an expansion boundary */
             int new_exp = inst->patches[idx].expansion_index;
@@ -3407,12 +3425,14 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         if (b >= 0 && b < inst->bank_count && b != inst->browse_bank) {
             inst->browse_bank = b;
             inst->browse_page = 0;
+            inst->browse_time_ms = get_time_ms();
         }
     } else if (strcmp(key, "next_browse_bank") == 0 || strcmp(key, "prev_browse_bank") == 0) {
         if (inst->bank_count > 0) {
             int d = key[0] == 'n' ? 1 : -1;
             inst->browse_bank = (inst->browse_bank + d + inst->bank_count) % inst->bank_count;
             inst->browse_page = 0;
+            inst->browse_time_ms = get_time_ms();
         }
     } else if (strncmp(key, "bank_slot_", 10) == 0) {
         /* BANKS page left list: pick which bank the right list (patch_slot_*) browses. Does NOT
@@ -3421,6 +3441,7 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         if (slot >= 0 && slot < BANK_LIST_SLOTS && slot < inst->bank_count) {
             inst->browse_bank = slot;
             inst->browse_page = 0;
+            inst->browse_time_ms = get_time_ms();
         }
     } else if (strncmp(key, "patch_slot_", 11) == 0) {
         /* BANKS page right list: tapping a tile commits that patch (unlike bank_slot_*, this

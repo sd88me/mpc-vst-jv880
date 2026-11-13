@@ -107,6 +107,7 @@ uint32_t fnv(const char* s)
 }
 
 thread_local int t_pushing = -1;   // the parameter the worker is telling the host about right now (its echo is ignored)
+thread_local bool t_absolute = false;   // the value being set is a value to go to (MIDI CC / NRPN), not a control being moved
 
 } // namespace
 
@@ -133,8 +134,16 @@ public:
         for (size_t i = 0; i < n; ++i) hostAt_[i].store(0);
         told_ = new std::atomic<float>[n];
         for (size_t i = 0; i < n; ++i) told_[i].store(-1.0e9f);
-        lastPos_.assign(n, -1.0f);
+        lastPos_ = new std::atomic<float>[n];
+        ahead_ = new std::atomic<bool>[n];
+        for (size_t i = 0; i < n; ++i) { lastPos_[i].store(-1.0f); ahead_[i].store(false); }
         textHash_.assign(n, 0u);
+        for (int i = 0; i < kNumParams; ++i)
+        {
+            if (!std::strcmp(g_pspecs[i].key, "preset")) presetIndex_ = i;
+            if (!std::strcmp(g_pspecs[i].key, "browse_bank_index")) tileDue1_ = i;
+            if (!std::strcmp(g_pspecs[i].key, "patch_page_index")) tileDue2_ = i;
+        }
 
         pthread_mutexattr_t ma;   // recursive + priority-inheriting, as the 1.x wrapper: audio waiting on a short worker call lifts it
         pthread_mutexattr_init(&ma);
@@ -163,6 +172,8 @@ public:
         delete[] hostMoved_;
         delete[] told_;
         delete[] hostAt_;
+        delete[] lastPos_;
+        delete[] ahead_;
     }
 
     void prepare(double, int) override {}
@@ -210,8 +221,7 @@ public:
         if (s.flags & kAnchor) { hostMoved_[index].store(true); return; }   // an envelope's fixed start level: put back
         if (s.flags & kUi) return;
         if (s.flags & kLocal) { localChanged(index, s, plain); return; }
-        const long long movedAt = nowMs();
-        const long long prevMovedAt = hostAt_[index].exchange(movedAt);
+        hostAt_[index].store(nowMs());
         if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
         if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
         {
@@ -232,11 +242,13 @@ public:
             else engineSet(s.key, "1");
             if (s.flags & kTile) hostMoved_[index].store(true);   // the tile shows "<key>_on", read back by the worker
             else release_[index].store(true);
+            tilesDue_.store(true);   // a tile, a page arrow or a bank step: every tile's lit state may have changed
             return;
         }
         // whole numbers and options: settle toward the move (see settle()), then send
         const float span = s.max - s.min;
         float v = plain;
+        int relative = 0;   // a nudged param moved by one step: -1 / +1 (0: an absolute value)
         if (span > 0)
         {
             const float pos = getNormalised(index) * span;
@@ -248,37 +260,48 @@ public:
             }
             const float tick = s.nudgePct > 0 ? std::max(0.5f, span * s.nudgePct / 100.0f) : 0.5f;
             float steps;
-            // A nudged param (PATCH) in the middle of a turn: the worker does not send the engine's value back while the
-            // host keeps moving it (see hostAt_), so the host's own value runs ahead by its own step size on every tick
-            // while the patch moves by one. Its distance from the patch says nothing then, and once it passed the "one
-            // step" window a fast turn became a jump to wherever the host's value had got to (another bank). While the
-            // turn lasts, only the way the host's value moves counts: one patch a tick.
-            const float last = lastPos_[(size_t)index];
-            const bool turning = s.nudgePct > 0 && last >= 0 && movedAt - prevMovedAt < 300;
-            // ... and the host's value reaches an end of the range long before the patch does (PATCH spans 0..8191, the first
-            // banks sit at the bottom): it then cannot move further and the turn would stop. One more step that way, and the
-            // worker sends the patch back at once (no 300 ms hold), so the host's value has room again.
-            const bool pinnedLo = s.nudgePct > 0 && pos <= 0.001f && cur > 0.5f;
-            const bool pinnedHi = s.nudgePct > 0 && pos >= span - 0.001f && cur < span - 0.5f;
+            const float last = lastPos_[index].load();
+            const bool nudged = s.nudgePct > 0 && !t_absolute;   // a MIDI set (CC / NRPN) is a value, never a nudge
+            // A nudged param (PATCH, BANK) moves one step a tick. The worker does not send the engine's value back while the
+            // host keeps moving the param (see hostAt_), so during a turn the host's own value runs ahead by its own step size
+            // on every tick. ahead_ says that this has happened and the host has not been given the engine's value since
+            // (pushValue clears it): the host's value is then no longer a position, and only the way it moves counts. Judging
+            // it by distance made a fast turn jump to wherever the host's value had got to (another bank) once it left the
+            // "one step" window; judging "a turn" by time made two quick sets look like one.
+            const bool turning = nudged && ahead_[index].load() && last >= 0;
+            // The host's value also reaches an end of the range long before the patch does (PATCH spans 0..8191 and the
+            // first banks sit at the bottom): it then cannot move further and the turn would stop. Within a turn, or when the
+            // end is no further from the engine's value than one tick of a control can reach (2 % of the range), an end is
+            // one more step that way, and the worker sends the engine's value back at once (no hold) so the host's value
+            // has room again. A set to an end from further away is that value (the first patch, the last wave).
+            const bool atLo = pos <= 0.001f, atHi = pos >= span - 0.001f;
+            const bool pinned = nudged && ((atLo && cur > 0.5f) || (atHi && cur < span - 0.5f)) &&
+                                (turning || std::fabs(pos - cur) < std::max(1.5f, span / 50.0f));
             float seen = pos;
-            if (pinnedLo || pinnedHi)
+            if (pinned)
             {
-                steps = std::round(cur) + (pinnedLo ? -1.0f : 1.0f);
+                relative = atLo ? -1 : 1;
                 hostAt_[index].store(0);
-                seen = -1.0f;   // the host's value is about to be replaced: the next move is judged against the patch
+                seen = -1.0f;   // the host's value is about to be replaced: the next move is judged against the engine's
             }
             else if (turning)
-                steps = std::round(cur) + (pos > last ? 1.0f : pos < last ? -1.0f : 0.0f);
-            else if (s.nudgePct > 0 && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
-                steps = std::round(cur) + (pos > cur ? 1.0f : -1.0f);
+                relative = pos > last ? 1 : pos < last ? -1 : 0;
+            else if (nudged && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
+                relative = pos > cur ? 1 : -1;
+            if (pinned || turning || relative != 0)
+                steps = std::round(cur) + (float)relative;
             else
                 steps = settle(pos, cur, last);
-            lastPos_[(size_t)index] = seen;
+            lastPos_[index].store(seen);
             steps = std::min(std::max(steps, 0.0f), span);
             v = s.min + steps;
             // Where it landed reaches the host from the worker, ~10 ms later (as 1.x reported the engine's value): the host's own
             // value is left as it set it until then, so a set reads back unchanged (host_sim's sweep checks that).
-            if (std::fabs(getNormalised(index) * span - steps) > 0.001f) hostMoved_[index].store(true);
+            if (std::fabs(getNormalised(index) * span - steps) > 0.001f)
+            {
+                hostMoved_[index].store(true);
+                if (nudged) ahead_[index].store(true);
+            }
         }
         if (index == 0)   // OCTAVE: debounced (see the header comment)
         {
@@ -287,8 +310,17 @@ public:
             return;
         }
         char buf[24];
-        std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
         told_[index] = v;
+        if (index == tileDue1_ || index == tileDue2_) tilesDue_.store(true);   // the lists now show another bank / page
+        if (relative != 0 && index == presetIndex_)
+        {
+            // PATCH by one step is sent as a step, not as a number: on BANKS the engine starts it in the bank being browsed,
+            // and a patch number that happens to be next to the current one (RANDOM, a recalled value) must not do that.
+            std::snprintf(buf, sizeof buf, "%d", relative);
+            engineSet("preset_step", buf);
+            return;
+        }
+        std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
         engineSet(s.key, buf);
     }
 
@@ -399,11 +431,19 @@ private:
     {
         const PSpec& t = g_pspecs[s.stepTarget];
         char buf[32];
-        if (!engineGet(t.key, buf, sizeof buf)) return;
-        float v = (float)std::atof(buf) + s.stepDelta;
-        v = std::min(std::max(v, t.min), t.max);
-        std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
-        engineSet(t.key, buf);
+        if (s.stepTarget == presetIndex_)   // PATCH -/+: a step, which on BANKS starts in the bank being browsed
+        {
+            std::snprintf(buf, sizeof buf, "%d", (int)std::lround(s.stepDelta));
+            engineSet("preset_step", buf);
+        }
+        else
+        {
+            if (!engineGet(t.key, buf, sizeof buf)) return;
+            float v = (float)std::atof(buf) + s.stepDelta;
+            v = std::min(std::max(v, t.min), t.max);
+            std::snprintf(buf, sizeof buf, "%d", (int)std::lround(v));
+            engineSet(t.key, buf);
+        }
         release_[&s - g_pspecs].store(true);
         hostMoved_[s.stepTarget].store(true);
     }
@@ -429,13 +469,17 @@ private:
         const mpc::Param& p = param(i);
         const float span = p.max - p.min;
         if (span > 0) norm = std::round(norm * span) / span;   // onto a step: a direct set, not a nudge
+        t_absolute = true;
         setNormalised(i, norm);
+        t_absolute = false;
         hostMoved_[i].store(true);
     }
 
     // ---- worker: debounced OCTAVE, momentary releases, and everything the engine changes by itself ------------------------------
     void pushValue(int i, float plain)
     {
+        ahead_[i].store(false);     // the host has the engine's value again: its next move is judged against that
+        lastPos_[i].store(-1.0f);
         told_[i] = plain;
         store(i, plain);
         t_pushing = i;
@@ -519,11 +563,14 @@ private:
         const int first = cursor_;
         cursor_ = (cursor_ + kSweep) % kNumParams;
         int changed = 0;
+        // A tap, a page arrow or a browsed bank changes which tiles are lit without changing the patch: read every tile now,
+        // not in its turn (about 260 ms), or a tile the host still shows lit swallows the next tap on it.
+        const bool tiles = tilesDue_.exchange(false);
         for (int i = 0; i < kNumParams; ++i)
         {
             const PSpec& s = g_pspecs[i];
             const bool moved = hostMoved_[i].exchange(false);
-            const bool due = full || (i - first + kNumParams) % kNumParams < kSweep;
+            const bool due = full || (tiles && (s.flags & kTile)) || (i - first + kNumParams) % kNumParams < kSweep;
             if (s.flags & kTile)
             {
                 if (!(moved || due)) continue;
@@ -751,7 +798,10 @@ private:
     std::atomic<bool>* hostMoved_ = nullptr;   // read this one back and tell the host on the next pass
     std::atomic<long long>* hostAt_ = nullptr;   // when the host last moved it (ms), per parameter
     std::atomic<float>* told_ = nullptr;       // the value the host was last told (or sent), per parameter
-    std::vector<float> lastPos_;               // the host's last position, for settle()
+    std::atomic<float>* lastPos_ = nullptr;    // the host's last position (-1: none), for settle() and the direction of a turn
+    std::atomic<bool>* ahead_ = nullptr;       // a nudged param: the host's own value has run ahead of the engine's (see parameterChanged)
+    std::atomic<bool> tilesDue_{false};        // read every tile's lit state on the next worker pass
+    int presetIndex_ = -1, tileDue1_ = -1, tileDue2_ = -1;   // PATCH; the params that change what the BANKS lists show
     std::vector<uint32_t> textHash_;
     std::mutex favMu_;
     std::vector<Fav> favs_;
@@ -802,6 +852,12 @@ extern "C" MPC_EXPORT int jv_dbg_ready(AEffect* e) { return static_cast<JV880Plu
 extern "C" MPC_EXPORT int jv_dbg_engine(AEffect* e, const char* key, char* out, int n)
 {
     std::string s = static_cast<JV880Plugin*>(e->object)->dbgEngine(key);
+    std::snprintf(out, (size_t)n, "%s", s.c_str());
+    return (int)s.size();
+}
+extern "C" MPC_EXPORT int jv_dbg_state(AEffect* e, char* out, int n)   // the engine's whole state (jv_dbg_engine stops at 255 characters)
+{
+    std::string s = static_cast<JV880Plugin*>(e->object)->dbgState();
     std::snprintf(out, (size_t)n, "%s", s.c_str());
     return (int)s.size();
 }
