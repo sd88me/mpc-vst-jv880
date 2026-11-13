@@ -136,7 +136,9 @@ public:
         for (size_t i = 0; i < n; ++i) told_[i].store(-1.0e9f);
         lastPos_ = new std::atomic<float>[n];
         ahead_ = new std::atomic<bool>[n];
-        for (size_t i = 0; i < n; ++i) { lastPos_[i].store(-1.0f); ahead_[i].store(false); }
+        stale_ = new std::atomic<float>[n];
+        stepMag_ = new std::atomic<float>[n];
+        for (size_t i = 0; i < n; ++i) { lastPos_[i].store(-1.0f); ahead_[i].store(false); stale_[i].store(-1.0f); stepMag_[i].store(-1.0f); }
         textHash_.assign(n, 0u);
         for (int i = 0; i < kNumParams; ++i)
         {
@@ -174,6 +176,8 @@ public:
         delete[] hostAt_;
         delete[] lastPos_;
         delete[] ahead_;
+        delete[] stale_;
+        delete[] stepMag_;
     }
 
     void prepare(double, int) override {}
@@ -269,7 +273,25 @@ public:
             // (pushValue clears it): the host's value is then no longer a position, and only the way it moves counts. Judging
             // it by distance made a fast turn jump to wherever the host's value had got to (another bank) once it left the
             // "one step" window; judging "a turn" by time made two quick sets look like one.
-            const bool turning = nudged && ahead_[index].load() && last >= 0;
+            bool turning = nudged && ahead_[index].load() && last >= 0;
+            float base = last;   // what the host's value is compared with for the direction of a turn
+            // After the worker has given the host the engine's value, the host's next move starts from that value, or, if
+            // the control keeps a running value of its own (a Q-Link seems to), from where its own value was (stale_). The
+            // move is a small one from one of the two: whichever is nearer is the one the control is moving from. Without
+            // this a control that kept its own value looked, after any pause in a long turn, like a set to a far-away
+            // number: the bank jump again.
+            // "Nearer" is measured against the size of the control's last tick when that is known (a move of 37 from the
+            // engine's value fits a 37-a-tick control better than a move of 35 from its old value).
+            const float stale = stale_[index].load();
+            if (nudged && !turning && stale >= 0 && std::fabs(pos - stale) < std::max(1.5f, span / 50.0f))   // within a tick's reach
+            {
+                const float dH = std::fabs(pos - stale), dV = std::fabs(pos - cur), mag = stepMag_[index].load();
+                if (mag > 0 ? std::fabs(dH - mag) < std::fabs(dV - mag) : dH < dV)
+                {
+                    turning = true;
+                    base = stale;
+                }
+            }
             // The host's value also reaches an end of the range long before the patch does (PATCH spans 0..8191 and the
             // first banks sit at the bottom): it then cannot move further and the turn would stop. Within a turn, or when the
             // end is no further from the engine's value than one tick of a control can reach (2 % of the range), an end is
@@ -279,20 +301,33 @@ public:
             pinned = nudged && ((atLo && cur > 0.5f) || (atHi && cur < span - 0.5f)) &&
                                 (turning || std::fabs(pos - cur) < std::max(1.5f, span / 50.0f));
             float seen = pos;
+            char how = 'a';   // for the trace: a = absolute, p = pinned, t = turning, n = nudge
             if (pinned)
             {
                 relative = atLo ? -1 : 1;
+                stale_[index].store(pos);
                 seen = -1.0f;   // the host's value is about to be replaced: the next move is judged against the engine's
+                how = 'p';
             }
             else if (turning)
-                relative = pos > last ? 1 : pos < last ? -1 : 0;
+            {
+                relative = pos > base ? 1 : pos < base ? -1 : 0;
+                if (!atLo && !atHi && std::fabs(pos - base) > 0.0005f) stepMag_[index].store(std::fabs(pos - base));
+                how = base == last ? 't' : 's';
+            }
             else if (nudged && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
+            {
                 relative = pos > cur ? 1 : -1;
+                if (!atLo && !atHi) stepMag_[index].store(std::fabs(pos - cur));
+                stale_[index].store(-1.0f);   // the host moved on from the engine's value: it does take it over
+                how = 'n';
+            }
             if (pinned || turning || relative != 0)
                 steps = std::round(cur) + (float)relative;
             else
                 steps = settle(pos, cur, last);
             lastPos_[index].store(seen);
+            if (s.nudgePct > 0) trace(t_absolute ? 'M' : 'H', index, pos, cur, last, stale, how, relative, std::min(std::max(steps, 0.0f), span));
             steps = std::min(std::max(steps, 0.0f), span);
             v = s.min + steps;
             // Where it landed reaches the host from the worker, ~10 ms later (as 1.x reported the engine's value): the host's own
@@ -302,6 +337,8 @@ public:
                 hostMoved_[index].store(true);
                 if (nudged) ahead_[index].store(true);
             }
+            else if (s.nudgePct > 0)
+                ahead_[index].store(false);   // the host's value is the value sent: in step again without a read-back
         }
         if (index == 0)   // OCTAVE: debounced (see the header comment)
         {
@@ -483,8 +520,12 @@ private:
     // ---- worker: debounced OCTAVE, momentary releases, and everything the engine changes by itself ------------------------------
     void pushValue(int i, float plain)
     {
-        ahead_[i].store(false);     // the host has the engine's value again: its next move is judged against that
-        lastPos_[i].store(-1.0f);
+        // The host has the engine's value again: its next move is judged against that, or, if the control keeps a running
+        // value of its own, against where that had got to (only kept when it had run ahead; see parameterChanged).
+        const bool wasAhead = ahead_[i].exchange(false);
+        const float was = lastPos_[i].exchange(-1.0f);
+        if (was >= 0) stale_[i].store(wasAhead ? was : -1.0f);
+        if (g_pspecs[i].nudgePct > 0) trace('P', i, was, plain - g_pspecs[i].min, -1.0f, stale_[i].load(), '-', 0, plain - g_pspecs[i].min);
         told_[i] = plain;
         store(i, plain);
         t_pushing = i;
@@ -507,6 +548,7 @@ private:
         if (!inst_) return;
         const long long now = nowMs();
         ++tick_;
+        if (tick_ % 50 == 0) flushTrace();
         const long long p0 = pend0At_.load();
         if (p0 && (force || now - p0 >= 40))
         {
@@ -805,7 +847,45 @@ private:
     std::atomic<float>* told_ = nullptr;       // the value the host was last told (or sent), per parameter
     std::atomic<float>* lastPos_ = nullptr;    // the host's last position (-1: none), for settle() and the direction of a turn
     std::atomic<bool>* ahead_ = nullptr;       // a nudged param: the host's own value has run ahead of the engine's (see parameterChanged)
+    std::atomic<float>* stale_ = nullptr;      // a nudged param: the host's own value when it was last given the engine's (-1: none)
+    std::atomic<float>* stepMag_ = nullptr;    // a nudged param: how far the host's value moved on its last tick (-1: not known)
     std::atomic<bool> tilesDue_{false};        // read every tile's lit state on the next worker pass
+
+    // JV_TRACE builds: every move of a stepped param (PATCH, BANK, wave number) and every value sent back to the host, written
+    // by the worker to <plugin folder>/jv880-trace.txt. For finding out what a real host sends; not in release builds.
+#ifdef JV_TRACE
+    struct Tr { long long t; float pos, cur, last, stale, sent; short idx; signed char rel; char kind, how; };
+    static const unsigned kTr = 8192;
+    Tr tr_[kTr];
+    std::atomic<unsigned> trN_{0};
+    unsigned trDone_ = 0;
+    void trace(char kind, int idx, float pos, float cur, float last, float stale, char how, int rel, float sent)
+    {
+        Tr& r = tr_[trN_.fetch_add(1) % kTr];
+        r.t = nowMs(); r.pos = pos; r.cur = cur; r.last = last; r.stale = stale; r.sent = sent;
+        r.idx = (short)idx; r.rel = (signed char)rel; r.kind = kind; r.how = how;
+    }
+    void flushTrace()   // worker thread
+    {
+        const unsigned n = trN_.load();
+        if (n == trDone_) return;
+        if (n - trDone_ > kTr) trDone_ = n - kTr;
+        if (std::FILE* f = std::fopen((mpc::detail::computePluginFolder() + "/jv880-trace.txt").c_str(), "a"))
+        {
+            for (; trDone_ != n; ++trDone_)
+            {
+                const Tr& r = tr_[trDone_ % kTr];
+                std::fprintf(f, "%lld %c %s host=%.3f engine=%.0f last=%.3f stale=%.3f %c rel=%d sent=%.0f\n", r.t, r.kind,
+                             g_pspecs[r.idx].key, r.pos, r.cur, r.last, r.stale, r.how, (int)r.rel, r.sent);
+            }
+            std::fclose(f);
+        }
+        trDone_ = n;
+    }
+#else
+    void trace(char, int, float, float, float, float, char, int, float) {}
+    void flushTrace() {}
+#endif
     int presetIndex_ = -1, tileDue1_ = -1, tileDue2_ = -1;   // PATCH; the params that change what the BANKS lists show
     std::vector<uint32_t> textHash_;
     std::mutex favMu_;
