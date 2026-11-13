@@ -52,5 +52,12 @@
   "firmware": "MPC OS 3.x",
   "date": "2026-11-12",
   "note": "Release build installed; pages, envelopes, favourites, wave names and the WAVES pages checked on the device. CPU: jv880-emu 6% of one core idle, 18% with 8-note chords (fast cores)."
+ },
+ {
+  "version": "2.0.1",
+  "device": "MPC Live III (Gen2)",
+  "firmware": "MPC OS 3.10.1",
+  "date": "2026-11-13",
+  "note": "Tested as the beta build of the same code (JV-880 2 Beta, own uid) from VST2 Plugins: loads with the ROMs, fast Q-Link turns on PATCH with pauses, direct sets of PATCH after a turn, BANKS header following a browsed bank with the data wheel and PATCH +/- going on from it, patch tiles. The release zips were not installed."
  }
 ]
