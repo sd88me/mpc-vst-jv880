@@ -165,7 +165,18 @@ public:
         delete[] hostAt_;
     }
 
-    void prepare(double, int) override {}
+    void prepare(double, int maxBlockSize) override { setHostBlock(maxBlockSize); }
+
+    // The engine keeps one host block (plus a margin) of audio ready: process() takes a whole block's worth of 128-frame
+    // engine blocks back to back.
+    void setHostBlock(int frames)
+    {
+        if (frames <= hostBlock_ || !inst_) return;
+        hostBlock_ = frames;
+        char b[16];
+        std::snprintf(b, sizeof b, "%d", frames);
+        engineSet("host_block", b);
+    }
 
     void reset() override
     {
@@ -177,13 +188,15 @@ public:
     void process(mpc::ProcessContext& ctx) override
     {
         if (!inst_) return;
+        if (ctx.numFrames > hostBlock_) setHostBlock(ctx.numFrames);   // a larger block than prepare() was told (rare, once)
         for (int k = 0; k < ctx.numMidiEvents; ++k)
         {
             const mpc::MidiEvent& e = ctx.midi[k];
             if (midiControl(e)) continue;
+            if (e.size < 1) continue;
             uint8_t m[3] = {e.data[0], e.data[1], e.data[2]};
             Lock l(this);
-            api_->on_midi(inst_, m, e.size, kMidiSourceExternal);
+            api_->on_midi(inst_, m, e.size > 3 ? 3 : e.size, kMidiSourceExternal);
         }
         float* L = ctx.outputs[0];
         float* R = ctx.numOutputs > 1 ? ctx.outputs[1] : nullptr;
@@ -210,7 +223,8 @@ public:
         if (s.flags & kAnchor) { hostMoved_[index].store(true); return; }   // an envelope's fixed start level: put back
         if (s.flags & kUi) return;
         if (s.flags & kLocal) { localChanged(index, s, plain); return; }
-        hostAt_[index].store(nowMs());
+        const long long movedAt = nowMs();
+        const long long prevMovedAt = hostAt_[index].exchange(movedAt);
         if (loading_.load()) return;             // an SDK chunk is restoring values: the engine state follows as extra state
         if ((s.flags & kChoice) && get(kUiParam) > 0.5f)   // a pick from the open drawn list closes it
         {
@@ -222,7 +236,11 @@ public:
         if (s.flags & kMomentary)
         {
             if (plain < 0.5f) { held_[index].store(false); if (s.flags & kTile) hostMoved_[index].store(true); return; }
-            if (held_[index].exchange(true)) return;
+            if (held_[index].exchange(true))
+            {
+                if (s.flags & kTile) hostMoved_[index].store(true);   // not fired: the worker puts the tile's real state back
+                return;
+            }
             if (s.flags & kStep) stepTarget(s);
             else engineSet(s.key, "1");
             if (s.flags & kTile) hostMoved_[index].store(true);   // the tile shows "<key>_on", read back by the worker
@@ -238,11 +256,32 @@ public:
             float cur = told_[index] > -1.0e8f ? told_[index] - s.min : pos;
             const float tick = s.nudgePct > 0 ? std::max(0.5f, span * s.nudgePct / 100.0f) : 0.5f;
             float steps;
-            if (s.nudgePct > 0 && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
+            // A nudged param (PATCH) in the middle of a turn: the worker does not send the engine's value back while the
+            // host keeps moving it (see hostAt_), so the host's own value runs ahead by its own step size on every tick
+            // while the patch moves by one. Its distance from the patch says nothing then, and once it passed the "one
+            // step" window a fast turn became a jump to wherever the host's value had got to (another bank). While the
+            // turn lasts, only the way the host's value moves counts: one patch a tick.
+            const float last = lastPos_[(size_t)index];
+            const bool turning = s.nudgePct > 0 && last >= 0 && movedAt - prevMovedAt < 300;
+            // ... and the host's value reaches an end of the range long before the patch does (PATCH spans 0..8191, the first
+            // banks sit at the bottom): it then cannot move further and the turn would stop. One more step that way, and the
+            // worker sends the patch back at once (no 300 ms hold), so the host's value has room again.
+            const bool pinnedLo = s.nudgePct > 0 && pos <= 0.001f && cur > 0.5f;
+            const bool pinnedHi = s.nudgePct > 0 && pos >= span - 0.001f && cur < span - 0.5f;
+            float seen = pos;
+            if (pinnedLo || pinnedHi)
+            {
+                steps = std::round(cur) + (pinnedLo ? -1.0f : 1.0f);
+                hostAt_[index].store(0);
+                seen = -1.0f;   // the host's value is about to be replaced: the next move is judged against the patch
+            }
+            else if (turning)
+                steps = std::round(cur) + (pos > last ? 1.0f : pos < last ? -1.0f : 0.0f);
+            else if (s.nudgePct > 0 && std::fabs(pos - std::round(pos)) > 0.001f && std::fabs(pos - cur) < tick)
                 steps = std::round(cur) + (pos > cur ? 1.0f : -1.0f);
             else
-                steps = settle(pos, cur, lastPos_[(size_t)index]);
-            lastPos_[(size_t)index] = pos;
+                steps = settle(pos, cur, last);
+            lastPos_[(size_t)index] = seen;
             steps = std::min(std::max(steps, 0.0f), span);
             v = s.min + steps;
             // Where it landed reaches the host from the worker, ~10 ms later (as 1.x reported the engine's value): the host's own
@@ -480,7 +519,8 @@ private:
         bool full = force;
         {
             std::string sig;
-            for (const char* k : {"mode", "preset", "performance", "patch_name", "loading_complete"})
+            // "patch_serial": a patch on another card reaches the engine's memory after "preset" changed (the card loads first)
+            for (const char* k : {"mode", "preset", "performance", "patch_name", "loading_complete", "patch_serial"})
                 if (engineGet(k, buf, sizeof buf)) { sig += buf; sig += '|'; }
             const uint32_t h = fnv(sig.c_str()) | 1u;
             if (h != patchSig_) { patchSig_ = h; full = true; }
@@ -501,6 +541,10 @@ private:
                 const float on = engineGet(k2, buf, sizeof buf) && std::atoi(buf) ? 1.0f : 0.0f;
                 if (moved || on != told_[i])
                 {
+                    // A tile the engine turned off (another patch or bank was picked) is no longer held. The host sends no 0
+                    // for it, so it stayed "held": its next tap was not sent to the engine, yet the host lit it, beside the
+                    // tile of the patch that really was loaded.
+                    if (on < 0.5f) held_[i].store(false);
                     pushValue(i, on);
                     if (!moved) ++changed;
                 }
@@ -727,6 +771,7 @@ private:
     std::string lastState_;
     int16_t block_[kBlock * 2] = {0};
     int pos_ = kBlock;
+    int hostBlock_ = 0;   // the largest host block seen (frames), as told to the engine
     int nrpn_ = -1, nrpnMsb_ = 0;
     uint32_t lastRev_ = 0, patchSig_ = 0;
     int cursor_ = 0;
