@@ -180,15 +180,16 @@ public:
         delete[] stepMag_;
     }
 
-    void prepare(double, int maxBlockSize) override { setHostBlock(maxBlockSize); }
+    void prepare(double, int maxBlockSize) override { setHostBlock(maxBlockSize, true); }
 
     // The engine keeps one host block (plus a margin) of audio ready: process() takes a whole block's worth of 128-frame
-    // engine blocks back to back.
-    void setHostBlock(int frames)
+    // engine blocks back to back. The size prepare() announces is taken as it is, so a smaller buffer chosen later brings
+    // the cushion (latency) back down; process() only ever raises it.
+    void setHostBlock(int frames, bool announced = false)
     {
         if (!inst_) return;
         Lock l(this);   // prepare() and process() can both come here: compare, store and send as one
-        if (frames <= hostBlock_) return;
+        if (announced ? frames == hostBlock_ : frames <= hostBlock_) return;
         hostBlock_ = frames;
         char b[16];
         std::snprintf(b, sizeof b, "%d", frames);

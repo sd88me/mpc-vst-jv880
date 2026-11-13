@@ -694,8 +694,6 @@ typedef struct {
     int pending_perf_select;   /* Countdown to select performance after mode switch */
     int pending_patch_select;  /* Countdown to select patch after mode switch */
     volatile int warmup_remaining;  /* Warmup cycles remaining after reset */
-    int deferred_patch_index;      /* Patch index waiting for debounce to complete */
-    int deferred_patch_countdown;  /* Render blocks remaining before executing deferred patch */
 
     /* Part patch bank selection: 0=User, 1=Internal, 2=PresetA, 3=PresetB */
     int part_patchbank[8];
@@ -3572,12 +3570,8 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         int idx = atoi(val);
         if (idx >= 0 && idx < inst->total_patches && idx != inst->current_patch) {
             /* Check if this crosses an expansion boundary */
-            int new_exp = inst->patches[idx].expansion_index;
-            int cur_exp = (inst->current_patch >= 0 && inst->current_patch < inst->total_patches)
-                        ? inst->patches[inst->current_patch].expansion_index : -1;
             /* Same card or internal: written at once. Another card: v2_select_patch updates current_patch (the UI) and
              * posts the load to the emulator thread, debounced there (PATCH_REQUEST_DEBOUNCE_MS). */
-            (void)new_exp; (void)cur_exp;
             v2_select_patch(inst, idx);   /* the BANKS lists follow inside it */
         }
     } else if (strcmp(key, "octave_transpose") == 0) {
@@ -3592,10 +3586,6 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         int program = atoi(val);
         if (program >= 0 && program < inst->total_patches && program != inst->current_patch) {
             /* Check if this crosses an expansion boundary */
-            int new_exp = inst->patches[program].expansion_index;
-            int cur_exp = (inst->current_patch >= 0 && inst->current_patch < inst->total_patches)
-                        ? inst->patches[inst->current_patch].expansion_index : -1;
-            (void)new_exp; (void)cur_exp;
             v2_select_patch(inst, program);   /* another card: posted to the emulator thread, as "preset" */
         }
     } else if (strcmp(key, "bank_select") == 0) {
