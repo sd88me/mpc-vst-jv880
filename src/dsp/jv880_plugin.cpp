@@ -59,6 +59,9 @@ static void jv_debug(const char *fmt, ...) {
  * regime this value exists to stay out of.
  */
 #define JV880_EMU_RT_PRIORITY 20
+#ifndef JV880_EMU_RT_PRIORITY_MAX
+#define JV880_EMU_RT_PRIORITY_MAX 15   /* the emulator thread's ceiling once it is running (see v2_emu_thread_setup) */
+#endif
 
 /* Patch data constants */
 #define PATCH_SIZE 0x16a  /* 362 bytes per patch */
@@ -198,8 +201,20 @@ typedef struct {
 /* Parameter mapping constants */
 #define MAP_SRAM_SCAN_SIZE 512  /* Bytes to scan around temp perf */
 
-/* Audio ring buffer size */
-#define AUDIO_RING_SIZE 512
+/* Audio ring buffer: frames, a power of two. One producer (the emulator thread) and one consumer (render_block), no lock.
+ * The producer keeps it filled to ring_target frames, not to the brim: the fill level is latency. The target follows the
+ * host's block size ("host_block"), because the host takes a whole block's worth of render_block calls back to back; the
+ * old 512-frame ring (511 usable, kept at about 450) ran dry on every block of 512 frames. 1024 holds the largest block
+ * the MPC uses (512) plus the margin; a larger host block is served up to RING_TARGET_MAX. */
+#define AUDIO_RING_SIZE 1024
+#define AUDIO_RING_MASK (AUDIO_RING_SIZE - 1)
+#define RING_TARGET_MIN 448            /* the fill level the 512-frame ring was kept at */
+#define RING_TARGET_MARGIN 192         /* frames kept beyond one host block */
+#define RING_TARGET_MAX (AUDIO_RING_SIZE - 256)
+
+/* A patch that needs another expansion card is loaded by the emulator thread (see v2_request_patch). A request must have
+ * rested this long first, so a knob or wheel sweeping across cards loads only the card it stops on. */
+#define PATCH_REQUEST_DEBOUNCE_MS 10
 
 /* MIDI queue sizes */
 #define MIDI_QUEUE_SIZE 256
@@ -573,24 +588,9 @@ static int has_bin_extension(const char *filename) {
 }
 
 /* Unscramble SR-JV expansion ROM (from jv880_juce) */
+void unscramble(const uint8_t *src, uint8_t *dst, const int len);   /* mcu.cpp: the same scramble as the wave ROMs, table-driven */
 static void unscramble_rom(const uint8_t *src, uint8_t *dst, int len) {
-    for (int i = 0; i < len; i++) {
-        int address = i & ~0xfffff;
-        static const int aa[] = {2, 0, 3, 4, 1, 9, 13, 10, 18, 17,
-                                 6, 15, 11, 16, 8, 5, 12, 7, 14, 19};
-        for (int j = 0; j < 20; j++) {
-            if (i & (1 << j))
-                address |= 1 << aa[j];
-        }
-        uint8_t srcdata = src[address];
-        uint8_t data = 0;
-        static const int dd[] = {2, 0, 4, 5, 7, 6, 3, 1};
-        for (int j = 0; j < 8; j++) {
-            if (srcdata & (1 << dd[j]))
-                data |= 1 << j;
-        }
-        dst[i] = data;
-    }
+    unscramble(src, dst, len);
 }
 
 /* Extract short name from filename like "SR-JV80-01_Pop.bin" -> "01 Pop" */
@@ -695,8 +695,6 @@ typedef struct {
     int pending_perf_select;   /* Countdown to select performance after mode switch */
     int pending_patch_select;  /* Countdown to select patch after mode switch */
     volatile int warmup_remaining;  /* Warmup cycles remaining after reset */
-    int deferred_patch_index;      /* Patch index waiting for debounce to complete */
-    int deferred_patch_countdown;  /* Render blocks remaining before executing deferred patch */
 
     /* Part patch bank selection: 0=User, 1=Internal, 2=PresetA, 3=PresetB */
     int part_patchbank[8];
@@ -749,11 +747,26 @@ typedef struct {
     pthread_t load_thread;
     volatile int load_thread_running;
 
-    /* Audio ring buffer */
+    /* Audio ring buffer (lock-free, see AUDIO_RING_SIZE): ring_write is stored only by the emulator thread, ring_read only by
+     * render_block; each side reads the other's index with v2_ring_load(). */
     int16_t audio_ring[AUDIO_RING_SIZE * 2];
-    volatile int ring_write;
-    volatile int ring_read;
-    pthread_mutex_t ring_mutex;
+    int ring_write;
+    int ring_read;
+    int ring_target;             /* frames the emulator thread keeps ready (set from "host_block") */
+    int underrun_logged;         /* emulator thread: the underrun count it last reported */
+    pthread_mutex_t ring_mutex;  /* the MIDI queue's producers only (priority-inheriting: on_midi runs on the audio thread) */
+
+    /* Patch request for the emulator thread (v2_request_patch / v2_emu_take_patch_request). */
+    pthread_mutex_t req_mutex;
+    int req_pending;             /* a request is waiting */
+    int req_busy;                /* the emulator thread is applying one */
+    int req_busy_patch;          /* ... this patch */
+    int req_busy_has_bytes;      /* ... with req_bytes (still valid unless a new request is waiting) */
+    int req_patch;               /* global patch index */
+    int req_has_bytes;           /* req_bytes replaces the ROM's patch (a restored state's edited patch) */
+    uint8_t req_bytes[PATCH_SIZE];
+    uint64_t req_time_ms;        /* when it was last (re)posted, for the debounce */
+    uint32_t patch_serial;       /* bumped whenever the working patch in NVRAM was replaced ("patch_serial") */
 
     /* MIDI queue */
     uint8_t midi_queue[MIDI_QUEUE_SIZE][MIDI_MSG_MAX_LEN];
@@ -1202,8 +1215,9 @@ static void v2_load_expansion_to_emulator(jv880_instance_t *inst, int exp_index)
     v2_send_all_notes_off(inst);
 
     /* Load waveform data to expansion waverom */
-    memset(inst->mcu->pcm.waverom_exp, 0, EXPANSION_SIZE_8MB);
     memcpy(inst->mcu->pcm.waverom_exp, exp->unscrambled, exp->rom_size);
+    if (exp->rom_size < EXPANSION_SIZE_8MB)   /* a 2 MB card: clear what the last card left behind it */
+        memset(inst->mcu->pcm.waverom_exp + exp->rom_size, 0, EXPANSION_SIZE_8MB - exp->rom_size);
 
     /* Load patch definitions to cardram for Card patches (64-127 in Performance mode)
      * The JV-880 looks for Card patch data in cardram when a part uses patchnumber 64-127.
@@ -1258,8 +1272,162 @@ static void v2_load_expansion_to_emulator(jv880_instance_t *inst, int exp_index)
     }
 }
 
+/* Queue Program Change 0: the firmware reloads the working patch from NVRAM. */
+static void v2_queue_patch_reload(jv880_instance_t *inst) {
+    uint8_t pc_msg[2] = { 0xC0, 0x00 };
+    pthread_mutex_lock(&inst->ring_mutex);
+    int next = (inst->midi_write + 1) % MIDI_QUEUE_SIZE;
+    if (next != inst->midi_read) {
+        memcpy(inst->midi_queue[inst->midi_write], pc_msg, 2);
+        inst->midi_queue_len[inst->midi_write] = 2;
+        inst->midi_write = next;
+    } else {
+        jv_debug("[v2_queue_patch_reload] ERROR: MIDI queue full!\n");
+    }
+    pthread_mutex_unlock(&inst->ring_mutex);
+}
+
+/* Put a patch in the NVRAM working area and have the firmware load it. `bytes` (PATCH_SIZE) replaces the ROM's patch when
+ * given (a restored state's edited patch). The patch's card, if it has one, must already be in the emulator. */
+static void v2_write_patch(jv880_instance_t *inst, int global_index, const uint8_t *bytes) {
+    PatchInfo *p = &inst->patches[global_index];
+    if (bytes) {
+        memcpy(&inst->mcu->nvram[NVRAM_PATCH_OFFSET], bytes, PATCH_SIZE);
+    } else if (p->expansion_index >= 0) {
+        ExpansionInfo *exp = &inst->expansions[p->expansion_index];
+        if (exp->unscrambled) {
+            memcpy(&inst->mcu->nvram[NVRAM_PATCH_OFFSET],
+                   &exp->unscrambled[p->rom_offset], PATCH_SIZE);
+        }
+    } else {
+        memcpy(&inst->mcu->nvram[NVRAM_PATCH_OFFSET], &inst->rom2[p->rom_offset], PATCH_SIZE);
+    }
+
+    /* Ensure patch mode in NVRAM */
+    inst->mcu->nvram[NVRAM_MODE_OFFSET] = 1;
+
+    v2_queue_patch_reload(inst);
+    inst->tone_cache_valid = 0;
+    __atomic_add_fetch(&inst->patch_serial, 1, __ATOMIC_RELAXED);
+}
+
+/* Hand a patch pick to the emulator thread when it cannot be written from here: its card is not the one in the emulator,
+ * or an earlier request is still waiting or being applied. Returns 0 when the caller may write the patch itself.
+ * The newest request replaces a waiting one. `bytes` (PATCH_SIZE, or NULL) is a restored state's edited patch: it is posted
+ * in the same step as the pick, so the emulator thread can never take the pick without it. */
+static int v2_request_patch(jv880_instance_t *inst, int global_index, const PatchInfo *p, const uint8_t *bytes) {
+    int queued = 0;
+    pthread_mutex_lock(&inst->req_mutex);
+    int needs_card = p->expansion_index >= 0 &&
+                     (p->expansion_index != inst->current_expansion || !inst->expansions[p->expansion_index].unscrambled);
+    if (needs_card || inst->req_pending || inst->req_busy) {   /* (before the emulator thread exists it waits for it) */
+        inst->req_patch = global_index;
+        inst->req_has_bytes = bytes != NULL;
+        if (bytes) memcpy(inst->req_bytes, bytes, PATCH_SIZE);
+        inst->req_time_ms = get_time_ms();
+        __atomic_store_n(&inst->req_pending, 1, __ATOMIC_RELEASE);
+        queued = 1;
+    }
+    pthread_mutex_unlock(&inst->req_mutex);
+    return queued;
+}
+
+/* Patch bytes that arrive without a pick (a state with no usable "preset") while a request is on its way: they belong
+ * on top of whatever that request loads. Returns 0 when nothing is waiting or being applied: the caller writes NVRAM. */
+static int v2_request_attach_bytes(jv880_instance_t *inst, const uint8_t *bytes) {
+    int attached = 0;
+    pthread_mutex_lock(&inst->req_mutex);
+    if (inst->req_pending || inst->req_busy) {
+        if (!inst->req_pending) {   /* being applied without them: apply it once more, with them */
+            inst->req_patch = inst->req_busy_patch;
+            inst->req_time_ms = get_time_ms();
+        }
+        memcpy(inst->req_bytes, bytes, PATCH_SIZE);
+        inst->req_has_bytes = 1;
+        __atomic_store_n(&inst->req_pending, 1, __ATOMIC_RELEASE);
+        attached = 1;
+    }
+    pthread_mutex_unlock(&inst->req_mutex);
+    return attached;
+}
+
+/* 1 while a picked patch has not reached NVRAM yet (its request is waiting or being applied): NVRAM still holds the patch
+ * before it, so parameter edits would change that one and be overwritten. */
+static int v2_patch_load_pending(jv880_instance_t *inst) {
+    return __atomic_load_n(&inst->req_pending, __ATOMIC_ACQUIRE) || __atomic_load_n(&inst->req_busy, __ATOMIC_ACQUIRE);
+}
+
+/* The patch bytes a saved state must carry: the working patch in NVRAM, or, while a request has not reached NVRAM yet,
+ * what that request will put there. Returns 0 when those are not known yet (the request's card is still being read): the
+ * state is then saved without patch bytes and restores the ROM's patch, rather than the old patch under the new number. */
+static int v2_state_patch_bytes(jv880_instance_t *inst, uint8_t *out) {
+    const uint8_t *src = &inst->mcu->nvram[NVRAM_PATCH_OFFSET];
+    pthread_mutex_lock(&inst->req_mutex);
+    if (inst->req_pending || inst->req_busy) {
+        int idx = inst->req_pending ? inst->req_patch : inst->req_busy_patch;
+        int has = inst->req_pending ? inst->req_has_bytes : inst->req_busy_has_bytes;
+        src = NULL;
+        if (has) {
+            src = inst->req_bytes;
+        } else if (idx >= 0 && idx < inst->total_patches && inst->patches) {
+            const PatchInfo *p = &inst->patches[idx];
+            if (p->expansion_index < 0) src = &inst->rom2[p->rom_offset];
+            else if (inst->expansions[p->expansion_index].unscrambled)
+                src = &inst->expansions[p->expansion_index].unscrambled[p->rom_offset];
+        }
+    }
+    if (src) memcpy(out, src, PATCH_SIZE);
+    pthread_mutex_unlock(&inst->req_mutex);
+    return src != NULL;
+}
+
+/* Emulator thread, between two emulator steps: apply a waiting patch request once it has rested (see
+ * PATCH_REQUEST_DEBOUNCE_MS). The card load can take a second the first time a card is used; the audio thread is not
+ * held up by it (render_block returns silence once the ring is empty). */
+static void v2_emu_take_patch_request(jv880_instance_t *inst) {
+    if (!__atomic_load_n(&inst->req_pending, __ATOMIC_ACQUIRE)) return;
+
+    uint8_t bytes[PATCH_SIZE];
+    pthread_mutex_lock(&inst->req_mutex);
+    if (!inst->req_pending || get_time_ms() - inst->req_time_ms < PATCH_REQUEST_DEBOUNCE_MS) {
+        pthread_mutex_unlock(&inst->req_mutex);
+        return;
+    }
+    int idx = inst->req_patch;
+    int has = inst->req_has_bytes;
+    if (has) memcpy(bytes, inst->req_bytes, PATCH_SIZE);
+    inst->req_busy_patch = idx;
+    inst->req_busy_has_bytes = has;
+    __atomic_store_n(&inst->req_busy, 1, __ATOMIC_RELEASE);
+    __atomic_store_n(&inst->req_pending, 0, __ATOMIC_RELEASE);
+    pthread_mutex_unlock(&inst->req_mutex);
+
+    if (inst->patches && idx >= 0 && idx < inst->total_patches && !inst->performance_mode) {
+        const PatchInfo *p = &inst->patches[idx];
+        if (p->expansion_index >= 0)
+            v2_load_expansion_to_emulator(inst, p->expansion_index);   /* no-op when that card is already in */
+        if (!inst->performance_mode) {   /* (a switch to performance mode during the load keeps its own NVRAM mode) */
+            v2_write_patch(inst, idx, has ? bytes : NULL);
+            /* the patch only now replaces the one before it: a link overlay switched on meanwhile belonged to that one */
+            inst->link_tones = 0;
+            inst->link_backup_valid = 0;
+        }
+    }
+
+    pthread_mutex_lock(&inst->req_mutex);
+    __atomic_store_n(&inst->req_busy, 0, __ATOMIC_RELEASE);
+    pthread_mutex_unlock(&inst->req_mutex);
+}
+
+static void v2_select_patch_bytes(jv880_instance_t *inst, int global_index, const uint8_t *bytes);
+
 /* v2: Select a patch */
 static void v2_select_patch(jv880_instance_t *inst, int global_index) {
+    v2_select_patch_bytes(inst, global_index, NULL);
+}
+
+/* Select a patch; `bytes` (PATCH_SIZE, or NULL) replaces the ROM's patch data (a restored state's edited patch). */
+static void v2_select_patch_bytes(jv880_instance_t *inst, int global_index, const uint8_t *bytes) {
     jv_debug("[v2_select_patch] Called: global_index=%d\n", global_index);
 
     if (!inst || !inst->mcu) {
@@ -1290,37 +1458,12 @@ static void v2_select_patch(jv880_instance_t *inst, int global_index) {
     jv_debug("[v2_select_patch] Loading patch %d: %s (exp=%d rom_off=0x%x)\n",
             global_index, p->name, p->expansion_index, p->rom_offset);
 
-    /* Load patch data to NVRAM */
-    if (p->expansion_index >= 0) {
-        v2_load_expansion_to_emulator(inst, p->expansion_index);
-        ExpansionInfo *exp = &inst->expansions[p->expansion_index];
-        if (exp->unscrambled) {
-            memcpy(&inst->mcu->nvram[NVRAM_PATCH_OFFSET],
-                   &exp->unscrambled[p->rom_offset], PATCH_SIZE);
-            jv_debug("[v2_select_patch] Copied expansion patch to NVRAM\n");
-        }
-    } else {
-        memcpy(&inst->mcu->nvram[NVRAM_PATCH_OFFSET], &inst->rom2[p->rom_offset], PATCH_SIZE);
-        jv_debug("[v2_select_patch] Copied internal patch to NVRAM\n");
-    }
-
-    /* Ensure patch mode in NVRAM */
-    inst->mcu->nvram[NVRAM_MODE_OFFSET] = 1;
-    jv_debug("[v2_select_patch] Set NVRAM mode=1 (patch)\n");
-
-    /* Send PC 0 to trigger emulator to reload from NVRAM */
-    uint8_t pc_msg[2] = { 0xC0, 0x00 };
-    pthread_mutex_lock(&inst->ring_mutex);
-    int next = (inst->midi_write + 1) % MIDI_QUEUE_SIZE;
-    if (next != inst->midi_read) {
-        memcpy(inst->midi_queue[inst->midi_write], pc_msg, 2);
-        inst->midi_queue_len[inst->midi_write] = 2;
-        inst->midi_write = next;
-        jv_debug("[v2_select_patch] Queued PC: [0x%02x 0x%02x]\n", pc_msg[0], pc_msg[1]);
-    } else {
-        jv_debug("[v2_select_patch] ERROR: MIDI queue full!\n");
-    }
-    pthread_mutex_unlock(&inst->ring_mutex);
+    /* A patch on a card that is not in the emulator goes to the emulator thread: loading the card reads and unscrambles
+     * 8 MB, rewrites the wave ROM and resets the emulator, which must neither run on (or block) the host's audio thread
+     * nor happen while the emulator thread is in the middle of a step. So does any pick made while such a request is still
+     * waiting or being applied, to keep the order. Everything else is written here, as before. */
+    if (!v2_request_patch(inst, global_index, p, bytes))
+        v2_write_patch(inst, global_index, bytes);
 
     /* Reset macro offsets on patch change */
     inst->macro_cutoff = 0;
@@ -1675,7 +1818,7 @@ static void* v2_load_thread_func(void *arg) {
 
     fprintf(stderr, "JV880 v2: Pre-filling buffer...\n");
     snprintf(inst->loading_status, sizeof(inst->loading_status), "Preparing audio...");
-    for (int i = 0; i < 256 && inst->ring_write < AUDIO_RING_SIZE / 2; i++) {
+    for (int i = 0; i < 256 && inst->ring_write < 256; i++) {   /* 256 = half the old 512-frame ring, as before */
         inst->mcu->updateSC55(8);
         int avail = inst->mcu->sample_write_ptr;
         int in_samples = avail / 2;
@@ -1693,7 +1836,7 @@ static void* v2_load_thread_func(void *arg) {
                                   inst->resample_out_l, inst->resample_out_r);
 
             /* Copy to ring buffer */
-            for (int j = 0; j < out_samples && inst->ring_write < AUDIO_RING_SIZE / 2; j++) {
+            for (int j = 0; j < out_samples && inst->ring_write < 256; j++) {
                 int32_t l = (int32_t)(inst->resample_out_l[j] * 32768.0f);
                 int32_t r = (int32_t)(inst->resample_out_r[j] * 32768.0f);
                 if (l > 32767) l = 32767; if (l < -32768) l = -32768;
@@ -1825,8 +1968,17 @@ static void* v2_create_instance(const char *module_dir, const char *json_default
         fprintf(stderr, "JV880 v2: SysEx debug enabled\n");
     }
 
-    /* Initialize mutex */
-    pthread_mutex_init(&inst->ring_mutex, NULL);
+    /* Initialize mutexes. The MIDI queue's is priority-inheriting: on_midi takes it on the host's audio thread, and a
+     * lower-priority producer (a parameter edit, the load thread) holding it must not be left preempted meanwhile. */
+    {
+        pthread_mutexattr_t ma;
+        pthread_mutexattr_init(&ma);
+        pthread_mutexattr_setprotocol(&ma, PTHREAD_PRIO_INHERIT);
+        pthread_mutex_init(&inst->ring_mutex, &ma);
+        pthread_mutex_init(&inst->req_mutex, &ma);   /* also reached from render_block (a pick after a mode switch) */
+        pthread_mutexattr_destroy(&ma);
+    }
+    inst->ring_target = RING_TARGET_MIN;
 
     /* Initialize loading status */
     snprintf(inst->loading_status, sizeof(inst->loading_status), "Initializing...");
@@ -1947,6 +2099,7 @@ static void v2_destroy_instance(void *instance) {
     }
 
     pthread_mutex_destroy(&inst->ring_mutex);
+    pthread_mutex_destroy(&inst->req_mutex);
     free(inst);
     fprintf(stderr, "JV880 v2: Instance destroyed\n");
 }
@@ -1975,14 +2128,20 @@ static int v2_load_rom(jv880_instance_t *inst, const char *filename, uint8_t *de
 }
 
 /* v2: Ring buffer helpers (instance-based) */
+static inline int v2_ring_load(const int *p) { return __atomic_load_n(p, __ATOMIC_ACQUIRE); }
+static inline void v2_ring_store(int *p, int v) { __atomic_store_n(p, v, __ATOMIC_RELEASE); }
+
 static int v2_ring_available(jv880_instance_t *inst) {
-    int avail = inst->ring_write - inst->ring_read;
-    if (avail < 0) avail += AUDIO_RING_SIZE;
-    return avail;
+    return (v2_ring_load(&inst->ring_write) - v2_ring_load(&inst->ring_read)) & AUDIO_RING_MASK;
 }
 
 static int v2_ring_free(jv880_instance_t *inst) {
     return AUDIO_RING_SIZE - 1 - v2_ring_available(inst);
+}
+
+static int v2_ring_target(jv880_instance_t *inst) {
+    int t = __atomic_load_n(&inst->ring_target, __ATOMIC_RELAXED);
+    return t < RING_TARGET_MIN ? RING_TARGET_MIN : (t > RING_TARGET_MAX ? RING_TARGET_MAX : t);
 }
 
 /* v2: Per-thread performance setup for the emulator thread.
@@ -2011,6 +2170,10 @@ static void v2_emu_thread_setup(void) {
      * (SCHED_RR 20 on those cores), so the emulator never preempts MPC's audio engine. */
     struct sched_param sp;
     sp.sched_priority = fastcores::rt_priority(45);
+    /* Same-speed CPUs too (MPC One / Live / X, Force): 45 put this thread above the MPC's own audio threads (SCHED_RR 20
+     * per fast_cores.h), so every refill burst of the emulator could hold up the host's audio callback when both were on
+     * one core: seen as brief spikes on the MPC's CPU meter with nothing playing. Below them, as on the fast cores. */
+    if (sp.sched_priority > JV880_EMU_RT_PRIORITY_MAX) sp.sched_priority = JV880_EMU_RT_PRIORITY_MAX;
     int rc = pthread_setschedparam(pthread_self(), SCHED_FIFO, &sp);
     if (rc != 0) {
         fprintf(stderr, "JV880 v2: Could not set SCHED_FIFO %d (%s) — continuing with default scheduling\n", sp.sched_priority,
@@ -2060,6 +2223,20 @@ static void* v2_emu_thread_func(void *arg) {
 #endif /* JV880_PERF_STATS */
 
     while (inst->thread_running) {
+        /* A patch that needs another card (or that was picked while such a load was on its way): load the card, reset and
+         * write the patch here, between two emulator steps. See v2_request_patch. */
+        v2_emu_take_patch_request(inst);
+
+        /* Underruns are only counted by render_block (the host's audio thread must not write to the log); report them here. */
+        {
+            int u = __atomic_load_n(&inst->underrun_count, __ATOMIC_RELAXED);
+            if (u != inst->underrun_logged) {
+                if (u <= 20 || u / 100 != inst->underrun_logged / 100)   /* the first 20, then about every 100th */
+                    fprintf(stderr, "JV880 v2: UNDERRUN #%d (ring target %d frames)\n", u, v2_ring_target(inst));
+                inst->underrun_logged = u;
+            }
+        }
+
         /* Handle warmup after SC55_Reset */
         if (inst->warmup_remaining > 0) {
             int batch = (inst->warmup_remaining > 1000) ? 1000 : inst->warmup_remaining;
@@ -2096,8 +2273,7 @@ static void* v2_emu_thread_func(void *arg) {
          * Latency is unaffected: the ring is already at max fill when we
          * sleep, and 1ms of drain (~44 frames) is refilled in well under
          * a millisecond of emulation. */
-        int free_space = v2_ring_free(inst);
-        if (free_space < 64) {
+        if (v2_ring_available(inst) >= v2_ring_target(inst)) {   /* filled to the target (see AUDIO_RING_SIZE) */
 #if JV880_PERF_STATS
             inst->perf_sleep_iters++;
 #endif
@@ -2135,13 +2311,12 @@ static void* v2_emu_thread_func(void *arg) {
                                   inst->resample_in_l, inst->resample_in_r, in_samples,
                                   inst->resample_out_l, inst->resample_out_r);
 
-            /* Batch copy to ring buffer with single lock */
+            /* Copy to the ring (this thread is its only producer), then publish the new write index once. */
             if (out_samples > 0) {
-                pthread_mutex_lock(&inst->ring_mutex);
                 int free_now = v2_ring_free(inst);
                 int to_write = (out_samples < free_now) ? out_samples : free_now;
+                int wr = inst->ring_write;
                 for (int i = 0; i < to_write; i++) {
-                    int wr = inst->ring_write;
                     /* Convert float back to int16 */
                     int32_t l = (int32_t)(inst->resample_out_l[i] * 32768.0f);
                     int32_t r = (int32_t)(inst->resample_out_r[i] * 32768.0f);
@@ -2149,9 +2324,9 @@ static void* v2_emu_thread_func(void *arg) {
                     if (r > 32767) r = 32767; if (r < -32768) r = -32768;
                     inst->audio_ring[wr * 2 + 0] = (int16_t)l;
                     inst->audio_ring[wr * 2 + 1] = (int16_t)r;
-                    inst->ring_write = (wr + 1) % AUDIO_RING_SIZE;
+                    wr = (wr + 1) & AUDIO_RING_MASK;
                 }
-                pthread_mutex_unlock(&inst->ring_mutex);
+                v2_ring_store(&inst->ring_write, wr);
             }
         }
 
@@ -2567,6 +2742,7 @@ static void v2_on_midi(void *instance, const uint8_t *msg, int len, int source) 
     jv880_instance_t *inst = (jv880_instance_t*)instance;
     if (!inst || !inst->initialized) return;
     (void)source;
+    if (!msg || len < 1 || len > MIDI_MSG_MAX_LEN) return;   /* a queue row holds MIDI_MSG_MAX_LEN bytes */
 
     /* Copy to MIDI queue with octave transpose. Lock the ring producer so this
      * audio-thread enqueue doesn't race control-thread fan-outs on midi_write. */
@@ -2681,12 +2857,15 @@ static void v2_browse_follow_patch(jv880_instance_t *inst) {
  * which is almost certainly the MPC "hanging on Loading..." symptom -- a stepper (one arrow tap =
  * one call) can't flood it the same way. */
 static void v2_jump_to_expansion_step(jv880_instance_t *inst, int direction) {
-    int next = inst->current_expansion + direction;
+    /* Step from the card of the patch that is picked: current_expansion (the card in the emulator) only follows once the
+     * emulator thread has loaded it, so a second tap soon after the first used to land on the same card again. */
+    int here = (inst->patches && inst->current_patch >= 0 && inst->current_patch < inst->total_patches)
+             ? inst->patches[inst->current_patch].expansion_index : -1;
+    int next = here + direction;
     if (next < -1) next = inst->expansion_count - 1;
     if (next >= inst->expansion_count) next = -1;
     if (next == -1) {
         v2_select_patch(inst, 0);
-        inst->current_expansion = -1;   /* v2_select_patch doesn't touch this for a factory patch */
     } else {
         int first_patch = inst->expansions[next].first_global_index;
         if (first_patch >= 0 && first_patch < inst->total_patches) v2_select_patch(inst, first_patch);
@@ -2731,6 +2910,11 @@ static void v2_set_mode(jv880_instance_t *inst, int performance_mode) {
     }
     pthread_mutex_unlock(&inst->ring_mutex);
     jv_debug("[v2_set_mode] Sent All Notes Off on all 16 channels\n");
+
+    /* A patch pick still waiting for the emulator thread belongs to the mode being left */
+    pthread_mutex_lock(&inst->req_mutex);
+    __atomic_store_n(&inst->req_pending, 0, __ATOMIC_RELEASE);
+    pthread_mutex_unlock(&inst->req_mutex);
 
     /* Update mode state */
     inst->performance_mode = new_mode;
@@ -3169,6 +3353,26 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
     jv880_instance_t *inst = (jv880_instance_t*)instance;
     if (!inst) return;
 
+    /* The host's audio block size in frames: the emulator thread keeps one block plus a margin ready (see AUDIO_RING_SIZE). */
+    if (strcmp(key, "host_block") == 0) {
+        int t = atoi(val);
+        if (t < 0) t = 0;
+        if (t > RING_TARGET_MAX) t = RING_TARGET_MAX;
+        t += RING_TARGET_MARGIN;
+        if (t < RING_TARGET_MIN) t = RING_TARGET_MIN;
+        if (t > RING_TARGET_MAX) t = RING_TARGET_MAX;
+        __atomic_store_n(&inst->ring_target, t, __ATOMIC_RELAXED);
+        return;
+    }
+
+    /* A picked patch that is still on its way to the emulator (its card is loading): NVRAM holds the patch before it, so
+     * an edit now would change that patch, be heard on it, and then be overwritten. Edits wait until the patch is there;
+     * the front end reads the values back and shows them unchanged. */
+    if ((strncmp(key, "nvram_", 6) == 0 || strncmp(key, "wavetile_", 9) == 0 || strcmp(key, "link_tones") == 0 ||
+         (strncmp(key, "macro_", 6) == 0 && strcmp(key, "macro_mode") != 0)) && v2_patch_load_pending(inst)) {
+        return;
+    }
+
     /* WAVES picker: a tile sets its tone's wave, the arrows turn the page. */
     if (inst->mcu && strncmp(key, "wavetile_", 9) == 0) {
         int t = key[9] - '0', slot = atoi(key + 11) - 1;
@@ -3260,6 +3464,27 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         }
 
         float f;
+        /* The working patch (the edited patch as hex), decoded before anything is picked: it has to go with the patch
+         * pick in one step (see v2_request_patch). A string of the wrong length or with a byte that does not parse is
+         * not used at all, and the ROM's patch loads. */
+        uint8_t decoded[PATCH_SIZE];
+        int have_patch = 0;
+        if (inst->mcu) {
+            const char *patch_start = strstr(val, "\"patch\":\"");
+            if (patch_start) {
+                patch_start += 9;  /* Skip past "patch":" */
+                const char *patch_end = strchr(patch_start, '"');
+                if (patch_end && (patch_end - patch_start) == PATCH_SIZE * 2) {
+                    have_patch = 1;
+                    for (int i = 0; i < PATCH_SIZE; i++) {
+                        unsigned int byte;
+                        if (sscanf(patch_start + i * 2, "%2X", &byte) == 1) decoded[i] = (uint8_t)byte;
+                        else { have_patch = 0; break; }
+                    }
+                }
+            }
+        }
+        int picked = 0;
         /* Restore mode first */
         if (json_get_number(val, "mode", &f) == 0) {
             v2_set_mode(inst, (int)f);
@@ -3294,7 +3519,8 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
             if (json_get_number(val, "preset", &f) == 0) {
                 int preset = (int)f;
                 if (preset >= 0 && preset < inst->total_patches) {
-                    v2_select_patch(inst, preset);
+                    v2_select_patch_bytes(inst, preset, have_patch ? decoded : NULL);
+                    picked = 1;
                 }
             }
         }
@@ -3306,34 +3532,17 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
             inst->octave_transpose = oct;
         }
 
-        /* Restore working patch data from hex string */
-        if (inst->mcu) {
-            const char *patch_start = strstr(val, "\"patch\":\"");
-            if (patch_start) {
-                patch_start += 9;  /* Skip past "patch":" */
-                const char *patch_end = strchr(patch_start, '"');
-                if (patch_end && (patch_end - patch_start) == PATCH_SIZE * 2) {
-                    /* Decode hex to NVRAM */
-                    for (int i = 0; i < PATCH_SIZE; i++) {
-                        unsigned int byte;
-                        if (sscanf(patch_start + i * 2, "%2X", &byte) == 1) {
-                            inst->mcu->nvram[NVRAM_PATCH_OFFSET + i] = (uint8_t)byte;
-                        }
-                    }
-                    /* Send PC 0 to trigger emulator to reload from NVRAM */
-                    uint8_t pc_msg[2] = { 0xC0, 0x00 };
-                    pthread_mutex_lock(&inst->ring_mutex);
-                    int next = (inst->midi_write + 1) % MIDI_QUEUE_SIZE;
-                    if (next != inst->midi_read) {
-                        memcpy(inst->midi_queue[inst->midi_write], pc_msg, 2);
-                        inst->midi_queue_len[inst->midi_write] = 2;
-                        inst->midi_write = next;
-                    }
-                    pthread_mutex_unlock(&inst->ring_mutex);
-                    fprintf(stderr, "JV880 v2: Restored working patch from state\n");
-                }
+        /* The working patch without a patch pick (performance mode, or no usable "preset"): into the working area as
+         * before, or onto a request that is still on its way. */
+        if (have_patch && !picked) {
+            if (!v2_request_attach_bytes(inst, decoded)) {
+                memcpy(&inst->mcu->nvram[NVRAM_PATCH_OFFSET], decoded, PATCH_SIZE);
+                v2_queue_patch_reload(inst);   /* PC 0: the firmware reloads the working patch from NVRAM */
+                inst->tone_cache_valid = 0;
+                __atomic_add_fetch(&inst->patch_serial, 1, __ATOMIC_RELAXED);
             }
         }
+        if (have_patch) fprintf(stderr, "JV880 v2: Restored working patch from state\n");
         return;
     }
 
@@ -3362,20 +3571,9 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         int idx = atoi(val);
         if (idx >= 0 && idx < inst->total_patches && idx != inst->current_patch) {
             /* Check if this crosses an expansion boundary */
-            int new_exp = inst->patches[idx].expansion_index;
-            int cur_exp = (inst->current_patch >= 0 && inst->current_patch < inst->total_patches)
-                        ? inst->patches[inst->current_patch].expansion_index : -1;
-            if (new_exp >= 0 && new_exp != cur_exp) {
-                /* Cross-expansion: update UI immediately but defer ROM swap */
-                inst->current_patch = idx;
-                inst->deferred_patch_index = idx;
-                inst->deferred_patch_countdown = 3;  /* ~9ms debounce */
-                v2_browse_follow_patch(inst);        /* the lists follow now; the load comes later */
-            } else {
-                /* Same expansion or internal: load immediately */
-                inst->deferred_patch_countdown = 0;  /* Cancel any pending */
-                v2_select_patch(inst, idx);   /* the BANKS lists follow inside it */
-            }
+            /* Same card or internal: written at once. Another card: v2_select_patch updates current_patch (the UI) and
+             * posts the load to the emulator thread, debounced there (PATCH_REQUEST_DEBOUNCE_MS). */
+            v2_select_patch(inst, idx);   /* the BANKS lists follow inside it */
         }
     } else if (strcmp(key, "octave_transpose") == 0) {
         int v = atoi(val);
@@ -3389,33 +3587,14 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         int program = atoi(val);
         if (program >= 0 && program < inst->total_patches && program != inst->current_patch) {
             /* Check if this crosses an expansion boundary */
-            int new_exp = inst->patches[program].expansion_index;
-            int cur_exp = (inst->current_patch >= 0 && inst->current_patch < inst->total_patches)
-                        ? inst->patches[inst->current_patch].expansion_index : -1;
-            if (new_exp >= 0 && new_exp != cur_exp) {
-                /* Cross-expansion: update UI immediately but defer ROM swap */
-                inst->current_patch = program;
-                inst->deferred_patch_index = program;
-                inst->deferred_patch_countdown = 3;
-            } else {
-                inst->deferred_patch_countdown = 0;
-                v2_select_patch(inst, program);
-            }
+            v2_select_patch(inst, program);   /* another card: posted to the emulator thread, as "preset" */
         }
     } else if (strcmp(key, "bank_select") == 0) {
         /* The bank as a value (a data wheel / Q-Link / drag on the bank name): go to that bank's first patch, as BANK -/+ do. */
         int b = atoi(val);
-        if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count &&
-            b != v2_get_bank_for_patch(inst, inst->current_patch)) {
-            /* Through "preset", for its debounce of a patch on another card: a wheel or knob crossing several banks then
-             * loads only the card it stops on. The lists go to the bank first, so "preset" takes the index as it is. */
-            char first[16];
-            snprintf(first, sizeof(first), "%d", inst->bank_starts[b]);
-            inst->browse_bank = b;
-            inst->browse_page = 0;
-            v2_set_param(inst, "preset", first);
-        } else if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count) {
-            v2_browse_follow_patch(inst);   /* back to the current patch's own bank: the lists and the header return to it */
+        if (inst->bank_count > 0 && b >= 0 && b < inst->bank_count) {
+            if (b != v2_get_bank_for_patch(inst, inst->current_patch)) v2_select_patch(inst, inst->bank_starts[b]);
+            else v2_browse_follow_patch(inst);   /* back to the current patch's own bank: the lists and the header return to it */
         }
     } else if (strcmp(key, "next_bank") == 0) {
         v2_jump_to_bank(inst, 1);
@@ -4429,12 +4608,15 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
 
         /* Include working patch data as hex if MCU is ready */
         if (inst->mcu && written < buf_len - 800) {
-            written += snprintf(buf + written, buf_len - written, ",\"patch\":\"");
-            for (int i = 0; i < PATCH_SIZE && written < buf_len - 10; i++) {
-                written += snprintf(buf + written, buf_len - written, "%02X",
-                    inst->mcu->nvram[NVRAM_PATCH_OFFSET + i]);
+            uint8_t patch_bytes[PATCH_SIZE];
+            /* NVRAM, or what a patch request still on its way will put there; left out while that is not known yet */
+            if (v2_state_patch_bytes(inst, patch_bytes)) {
+                written += snprintf(buf + written, buf_len - written, ",\"patch\":\"");
+                for (int i = 0; i < PATCH_SIZE && written < buf_len - 10; i++) {
+                    written += snprintf(buf + written, buf_len - written, "%02X", patch_bytes[i]);
+                }
+                written += snprintf(buf + written, buf_len - written, "\"");
             }
-            written += snprintf(buf + written, buf_len - written, "\"");
         }
 
         /* Flat native-int param values so schwung-manager's bulk init path
@@ -4704,6 +4886,15 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     }
     if (strcmp(key, "bank_select") == 0) {   /* the bank the header shows (v2_header_bank), 0-based */
         return snprintf(buf, buf_len, "%d", inst->bank_count > 0 ? v2_header_bank(inst) : 0);
+    }
+    if (strcmp(key, "underruns") == 0) {   /* render_block calls that found the ring short (tests, diagnostics) */
+        return snprintf(buf, buf_len, "%d", __atomic_load_n(&inst->underrun_count, __ATOMIC_RELAXED));
+    }
+    if (strcmp(key, "patch_serial") == 0) {
+        /* Changes whenever the working patch in NVRAM was replaced. A patch on another card reaches NVRAM later than the
+         * patch number changes (the emulator thread loads the card first), so a front end that re-reads every value on a
+         * patch change should watch this too. */
+        return snprintf(buf, buf_len, "%u", (unsigned)__atomic_load_n(&inst->patch_serial, __ATOMIC_RELAXED));
     }
     if (strcmp(key, "current_expansion_name") == 0) {
         /* Distinct from bank_name: a dedicated expansion-stepper readout showed the same text as
@@ -5624,7 +5815,7 @@ static void v2_render_block(void *instance, int16_t *out, int frames) {
         return;
     }
 
-    pthread_mutex_lock(&inst->ring_mutex);
+    /* The ring's only consumer: no lock, nothing that can block (this is the host's audio thread). */
     int avail = v2_ring_available(inst);
     int to_read = (avail < frames) ? avail : frames;
 
@@ -5634,21 +5825,19 @@ static void v2_render_block(void *instance, int16_t *out, int frames) {
         inst->min_buffer_level = avail;
     }
 
+    int rd = inst->ring_read;
     for (int i = 0; i < to_read; i++) {
-        out[i * 2 + 0] = inst->audio_ring[inst->ring_read * 2 + 0] >> OUTPUT_GAIN_SHIFT;
-        out[i * 2 + 1] = inst->audio_ring[inst->ring_read * 2 + 1] >> OUTPUT_GAIN_SHIFT;
-        inst->ring_read = (inst->ring_read + 1) % AUDIO_RING_SIZE;
+        out[i * 2 + 0] = inst->audio_ring[rd * 2 + 0] >> OUTPUT_GAIN_SHIFT;
+        out[i * 2 + 1] = inst->audio_ring[rd * 2 + 1] >> OUTPUT_GAIN_SHIFT;
+        rd = (rd + 1) & AUDIO_RING_MASK;
     }
-    pthread_mutex_unlock(&inst->ring_mutex);
+    v2_ring_store(&inst->ring_read, rd);
 
-    /* Pad with silence if underrun */
-    if (to_read < frames) {
-        inst->underrun_count++;
-        jv_debug("[JV880] UNDERRUN #%d: needed %d, had %d (min_level=%d, renders=%d)\n",
-                inst->underrun_count, frames, avail, inst->min_buffer_level, inst->render_count);
-        if (inst->underrun_count <= 20 || inst->underrun_count % 100 == 0)   /* release builds too: a click's cause */
-            fprintf(stderr, "JV880 v2: UNDERRUN #%d: needed %d frames, had %d (of %d renders)\n",
-                    inst->underrun_count, frames, avail, inst->render_count);
+    /* Pad with silence if underrun. Only counted here: the emulator thread writes the log line. Not counted while a card
+     * is being loaded or the emulator warms up after a reset: the silence is expected then, and counting every block of it
+     * would bury the underruns that matter. */
+    if (to_read < frames && !(inst->warmup_remaining > 0 || __atomic_load_n(&inst->req_busy, __ATOMIC_RELAXED))) {
+        __atomic_store_n(&inst->underrun_count, inst->underrun_count + 1, __ATOMIC_RELAXED);
         inst->min_buffer_level = 9999;  /* Reset for next period */
     }
     for (int i = to_read; i < frames; i++) {
@@ -5680,15 +5869,8 @@ static void v2_render_block(void *instance, int16_t *out, int frames) {
             }
         }
 
-        /* Handle deferred cross-expansion patch load (debounce) */
-        if (inst->deferred_patch_countdown > 0) {
-            inst->deferred_patch_countdown--;
-            if (inst->deferred_patch_countdown == 0) {
-                jv_debug("[v2_render_block] Executing deferred expansion patch: %d\n",
-                        inst->deferred_patch_index);
-                v2_select_patch(inst, inst->deferred_patch_index);
-            }
-        }
+        /* A patch on another expansion card is no longer loaded from here (file read, unscramble, 16 MB of copying and an
+         * emulator reset on the audio thread): v2_select_patch posts it to the emulator thread. See v2_request_patch. */
     }
 }
 

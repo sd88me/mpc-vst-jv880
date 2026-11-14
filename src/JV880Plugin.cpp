@@ -180,7 +180,21 @@ public:
         delete[] stepMag_;
     }
 
-    void prepare(double, int) override {}
+    void prepare(double, int maxBlockSize) override { setHostBlock(maxBlockSize, true); }
+
+    // The engine keeps one host block (plus a margin) of audio ready: process() takes a whole block's worth of 128-frame
+    // engine blocks back to back. The size prepare() announces is taken as it is, so a smaller buffer chosen later brings
+    // the cushion (latency) back down; process() only ever raises it.
+    void setHostBlock(int frames, bool announced = false)
+    {
+        if (!inst_) return;
+        Lock l(this);   // prepare() and process() can both come here: compare, store and send as one
+        if (announced ? frames == hostBlock_ : frames <= hostBlock_) return;
+        hostBlock_ = frames;
+        char b[16];
+        std::snprintf(b, sizeof b, "%d", frames);
+        api_->set_param(inst_, "host_block", b);
+    }
 
     void reset() override
     {
@@ -192,13 +206,15 @@ public:
     void process(mpc::ProcessContext& ctx) override
     {
         if (!inst_) return;
+        if (ctx.numFrames > hostBlock_) setHostBlock(ctx.numFrames);   // a larger block than prepare() was told (rare, once)
         for (int k = 0; k < ctx.numMidiEvents; ++k)
         {
             const mpc::MidiEvent& e = ctx.midi[k];
             if (midiControl(e)) continue;
+            if (e.size < 1) continue;
             uint8_t m[3] = {e.data[0], e.data[1], e.data[2]};
             Lock l(this);
-            api_->on_midi(inst_, m, e.size, kMidiSourceExternal);
+            api_->on_midi(inst_, m, e.size > 3 ? 3 : e.size, kMidiSourceExternal);
         }
         float* L = ctx.outputs[0];
         float* R = ctx.numOutputs > 1 ? ctx.outputs[1] : nullptr;
@@ -605,7 +621,8 @@ private:
         bool full = force;
         {
             std::string sig;
-            for (const char* k : {"mode", "preset", "performance", "patch_name", "loading_complete"})
+            // "patch_serial": a patch on another card reaches the engine's memory after "preset" changed (the card loads first)
+            for (const char* k : {"mode", "preset", "performance", "patch_name", "loading_complete", "patch_serial"})
                 if (engineGet(k, buf, sizeof buf)) { sig += buf; sig += '|'; }
             const uint32_t h = fnv(sig.c_str()) | 1u;
             if (h != patchSig_) { patchSig_ = h; full = true; }
@@ -900,6 +917,7 @@ private:
     std::string lastState_;
     int16_t block_[kBlock * 2] = {0};
     int pos_ = kBlock;
+    int hostBlock_ = 0;   // the largest host block seen (frames), as told to the engine
     int nrpn_ = -1, nrpnMsb_ = 0;
     uint32_t lastRev_ = 0, patchSig_ = 0;
     int cursor_ = 0;

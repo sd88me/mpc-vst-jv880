@@ -451,23 +451,37 @@ void MCU::MCU_PatchROM() {
   rom2[0x318f7] = 0x19;
 }
 
+// Unscramble a wave ROM or an SR-JV80 card: within each 1 MB block the 20 address bits are permuted, and so are the 8 data
+// bits. Both permutations move single bits, so the address splits into two 10-bit halves looked up in two tables and the
+// data into one 256-entry table: three lookups a byte instead of 28 tests (an 8 MB card took over a second on an MPC).
 void unscramble(const uint8_t *src, uint8_t *dst, const int len) {
-  for (int i = 0; i < len; i++) {
-    int address = i & ~0xfffff;
-    static const int aa[] = {2, 0,  3,  4,  1, 9, 13, 10, 18, 17,
-                             6, 15, 11, 16, 8, 5, 12, 7,  14, 19};
-    for (int j = 0; j < 20; j++) {
-      if (i & (1 << j))
-        address |= 1 << aa[j];
+  static const int aa[] = {2, 0,  3,  4,  1, 9, 13, 10, 18, 17,
+                           6, 15, 11, 16, 8, 5, 12, 7,  14, 19};
+  static const int dd[] = {2, 0, 4, 5, 7, 6, 3, 1};
+  uint32_t addr_lo[1024], addr_hi[1024];
+  uint8_t data_lut[256];
+  for (int v = 0; v < 1024; v++) {
+    uint32_t lo = 0, hi = 0;
+    for (int j = 0; j < 10; j++) {
+      if (v & (1 << j)) {
+        lo |= 1u << aa[j];
+        hi |= 1u << aa[j + 10];
+      }
     }
-    uint8_t srcdata = src[address];
+    addr_lo[v] = lo;
+    addr_hi[v] = hi;
+  }
+  for (int v = 0; v < 256; v++) {
     uint8_t data = 0;
-    static const int dd[] = {2, 0, 4, 5, 7, 6, 3, 1};
     for (int j = 0; j < 8; j++) {
-      if (srcdata & (1 << dd[j]))
+      if (v & (1 << dd[j]))
         data |= 1 << j;
     }
-    dst[i] = data;
+    data_lut[v] = data;
+  }
+  for (int i = 0; i < len; i++) {
+    const uint32_t address = ((uint32_t)i & ~0xfffffu) | addr_lo[i & 0x3ff] | addr_hi[(i >> 10) & 0x3ff];
+    dst[i] = data_lut[src[address]];
   }
 }
 
