@@ -57,7 +57,7 @@ extern "C" plugin_api_v2_t* move_plugin_init_v2(const host_api_v1_t* host);
 #endif
 #define JV_FOURCC(...) MPC_FOURCC(__VA_ARGS__)   // expands JV_UID before MPC_FOURCC counts its arguments
 #ifndef JV_VERSION
-#define JV_VERSION 2001
+#define JV_VERSION 2002
 #endif
 
 namespace {

@@ -59,5 +59,12 @@
   "firmware": "MPC OS 3.10.1",
   "date": "2026-11-13",
   "note": "Tested as the beta build of the same code (JV-880 2 Beta, own uid) from VST2 Plugins"
+ },
+ {
+  "version": "2.0.2",
+  "device": "MPC Live III (Gen2)",
+  "firmware": "MPC OS 3.10.1",
+  "date": "2026-11-14",
+  "note": "The aarch64 .so of this code installed over the release in VST2 Plugins (the release zips were not installed): loads with the ROMs; 17 expansion-card loads and a rapid bank-arrow sweep with a chord held, no underruns, no crash. Q-Link held through a card change and sound quality were not checked."
  }
 ]
