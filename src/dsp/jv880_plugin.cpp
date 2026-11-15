@@ -2756,6 +2756,11 @@ static void v2_on_midi(void *instance, const uint8_t *msg, int len, int source) 
 
     uint8_t status = inst->midi_queue[write_idx][0] & 0xF0;
 
+    /* Omni in patch mode: the JV-880 hears one channel (1) there, so a track on any other MIDI channel was silent. Fold every
+     * channel-voice message onto it. Performance mode keeps the channels: its parts each have their own. */
+    if (!inst->performance_mode && status >= 0x80 && status <= 0xE0)
+        inst->midi_queue[write_idx][0] = (uint8_t)status;
+
     /* Poly -> channel aftertouch translation.
      * The Move's pads emit polyphonic (per-note) aftertouch (0xA0 note pressure),
      * but the JV-880 only responds to channel aftertouch (0xD0 pressure) for its
@@ -5817,6 +5822,15 @@ static void v2_render_block(void *instance, int16_t *out, int frames) {
 
     /* The ring's only consumer: no lock, nothing that can block (this is the host's audio thread). */
     int avail = v2_ring_available(inst);
+    /* A host that renders faster than real time (bounce, export, project preview) drains the ring faster than the emulator
+     * thread refills it, and the padded silence is heard as static. Give the emulator thread a moment to catch up (bounded:
+     * 200 ms, then pad as before). Not while a card loads or after a reset: the silence is expected then. */
+    if (avail < frames && !(inst->warmup_remaining > 0 || __atomic_load_n(&inst->req_busy, __ATOMIC_RELAXED))) {
+        for (int w = 0; w < 2000 && avail < frames; w++) {
+            usleep(100);
+            avail = v2_ring_available(inst);
+        }
+    }
     int to_read = (avail < frames) ? avail : frames;
 
     /* Track buffer levels for diagnostics */
