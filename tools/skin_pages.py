@@ -46,7 +46,7 @@ def slider_strip(w, bipolar):
 
 
 def key_img(w, h, lit, caption, led=True, size=None):
-    slug = re.sub(r"[^A-Za-z0-9]", "_", (caption or "blank").replace("+", "p").replace("-", "m").replace("#", "n"))
+    slug = "dash" if caption == "-" else re.sub(r"[^A-Za-z0-9]", "_", (caption or "blank").replace("+", "p").replace("-", "m").replace("#", "n"))
     return asset("key_%dx%d_%s_%s%s.png" % (w, h, "on" if lit else "off", slug, "" if led else "_nl"),
                  lambda: art.key(w, h, lit, caption, led=led, size=size))
 
