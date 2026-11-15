@@ -114,7 +114,7 @@ int main(int argc, char** argv)
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
     CHECK(a->numParams == 667, "667 params: 472 frozen + 195 appended (%d)", a->numParams);
-    CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2002, "version 2002");
+    CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2003, "version 2003");
     {
         int bad = 0;
         FILE* f = std::fopen("params.lock", "r");
