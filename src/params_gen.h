@@ -669,9 +669,56 @@ static const PSpec g_pspecs[] = {
     {"wavepage_next_3", "T4 WAVES >", 0.0f, 1.0f, 0.0f, 513, nullptr, 0, -1, 0.0f, 0},
     {"wavepage_3", "T4 WAVES PAGE", 0.0f, 1023.0f, 0.0f, 514, nullptr, 0, -1, 0.0f, 0},
     {"bank_select", "BANK SELECT", 0.0f, 63.0f, 0.0f, 1536, nullptr, 0, -1, 0.0f, 3},
+    {"fav_name", "FAVOURITE NAME", 0.0f, 1023.0f, 0.0f, 4610, nullptr, 0, -1, 0.0f, 0},
+    {"kb_open", "KEYBOARD", 0.0f, 1.0f, 0.0f, 528, nullptr, 0, -1, 0.0f, 0},
+    {"kb_1", "KEY 1", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_2", "KEY 2", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_3", "KEY 3", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_4", "KEY 4", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_5", "KEY 5", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_6", "KEY 6", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_7", "KEY 7", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_8", "KEY 8", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_9", "KEY 9", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_0", "KEY 0", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_q", "KEY Q", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_w", "KEY W", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_e", "KEY E", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_r", "KEY R", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_t", "KEY T", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_y", "KEY Y", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_u", "KEY U", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_i", "KEY I", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_o", "KEY O", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_p", "KEY P", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_a", "KEY A", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_s", "KEY S", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_d", "KEY D", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_f", "KEY F", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_g", "KEY G", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_h", "KEY H", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_j", "KEY J", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_k", "KEY K", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_l", "KEY L", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_z", "KEY Z", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_x", "KEY X", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_c", "KEY C", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_v", "KEY V", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_b", "KEY B", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_n", "KEY N", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_m", "KEY M", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_dash", "KEY -", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_space", "KEY SPACE", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_bksp", "KEY DELETE", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_shift", "KEY SHIFT", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_cancel", "KEY CANCEL", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
+    {"kb_save", "KEY SAVE", 0.0f, 1.0f, 0.0f, 4609, nullptr, 0, -1, 0.0f, 0},
 };
-static const int kNumParams = 623;
+static const int kNumParams = 667;
 static const int kUiParam = 470;
+static const int kFavName = 623, kKbOpen = 624, kKbFirst = 625, kKbCount = 42;   // the naming keyboard (see KB_CHARS in the generator)
+static const char kKbChars[] = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-";   // the character keys from kKbFirst, then space, delete, shift, cancel, save
+static const int kFavNameMax = 20;
 // MIDI control, as the 1.x build: CC 20..35 -> these parameters (-1: none); NRPN n (CC 99/98, data CC 6/38) -> parameter n.
 static const int g_ccMap[16] = {3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 11, 12, 225, 229, 231, 0};
 static const bool kHasNrpn = true;

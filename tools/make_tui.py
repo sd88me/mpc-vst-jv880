@@ -41,15 +41,18 @@ def dump(v, ind=0):
 
 
 # ---- building blocks -----------------------------------------------------------------------------------------------------
-def bounds(b, focus="No", visible="Always"):
-    return {"version": 1, "acceptsHWFocus": focus, "showWhenDataModelInvalid": "Show", "whenVisible": visible,
-            "boundsType": "Absolute", "bounds": b}
+def bounds(b, focus="No", visible="Always", ind=None):
+    d = {"version": 2 if ind else 1, "acceptsHWFocus": focus, "showWhenDataModelInvalid": "Show", "whenVisible": visible,
+         "boundsType": "Absolute", "bounds": b}
+    if ind:   # shown only while the parameter is in this state (IndexedEnabling/<state>/<states>/<parameter>)
+        d["additionalInvalidatingHandles"] = ind
+    return d
 
 
-def entry(name, typ, data, b, remap=None, focus="No", visible="Always"):
+def entry(name, typ, data, b, remap=None, focus="No", visible="Always", ind=None):
     return {"version": 2, "componentData": {"version": 1, "name": name, "type": typ, "data": data},
             "handle remapping": {"version": 1, "map": [{"key": "Data", "value": remap}] if remap else []},
-            "bounds": bounds(b, focus, visible)}
+            "bounds": bounds(b, focus, visible, ind)}
 
 
 def bg(colour="0", image=""):
@@ -177,7 +180,7 @@ def qlinks_for(pages):
 
 
 # ---- preview: the page as the MPC should draw it (sample values), for mock-up review ------------------------------------
-def render_preview(page, tab_names, active, qlink_group=0):
+def render_preview(page, tab_names, active, qlink_group=0, keyboard=False):
     from PIL import Image, ImageDraw
     import make_jv_skin as art
     W, H, TOP = 1280, 800, 110
@@ -188,10 +191,12 @@ def render_preview(page, tab_names, active, qlink_group=0):
         x = 18 + i * 352
         d.text((x, 30), t, font=art.font(16, 500), fill=(120, 120, 120))
         d.text((x, 54), v, font=art.font(30, 400), fill=(235, 235, 235))
-    content = Image.open(os.path.join(OUT, page.bgname)).convert("RGB")
+    content = Image.open(os.path.join(OUT, "kb_panel.png" if keyboard else page.bgname)).convert("RGB")
     img.paste(content, (0, TOP))
     S = page.sample
-    for k in page.kids:
+    for k in page.kids + (page.keyboard() if keyboard else []):
+        if ("additionalInvalidatingHandles" in k["bounds"]) != keyboard:
+            continue   # the naming keyboard's entries show only while it is open
         cd, b = k["componentData"], [int(float(x)) for x in k["bounds"]["bounds"].split()]
         x, y, w, h = b[0], b[1] + TOP, b[2], b[3]
         typ, data = cd["type"], cd["data"]
@@ -274,6 +279,11 @@ def main():
             out = os.path.join(PREVIEW, "%s.png" % re.sub(r"[^a-z0-9]+", "_", p.name.lower()).strip("_"))
             render_preview(p, names, p.fn).save(out)
             print("preview", out)
+        kb = os.path.join(PREVIEW, "keyboard.png")
+        pk = pages[0]
+        pk.sample["fav_name$"] = "Velo Harmnix_"
+        render_preview(pk, names, pk.fn, qlink_group=None, keyboard=True).save(kb)
+        print("preview", kb)
 
 
 if __name__ == "__main__":

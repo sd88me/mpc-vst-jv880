@@ -216,10 +216,44 @@ class Page:
         self.groups.append("%d %d %d %d" % (x0, y0, x1 - x0, y1 - y0))
         self.qlink_rows.append(keys)
 
+    def keyboard(self):
+        """The naming keyboard for +FAV (as Vavra / Profit-5): a full-page panel with the name being typed and 42 keys, shown over
+        the page while kb_open = 1 (the last entries of the tab, so they take the touches)."""
+        ind = ["IndexedEnabling/1/2/Parameter %d" % tui.KEYS.index("kb_open")]
+        panel = art.panel(1280, 628, seed=77)
+        d = ImageDraw.Draw(panel)
+        d.text((52, 54), "FAVOURITE NAME", font=art.font(24, 650), fill=art.ORANGE, anchor="lm")
+        lcd = art.lcd(940, 64, cols=30)
+        panel.paste(lcd, (290, 24), lcd)
+        name = asset("kb_panel.png", lambda: panel)
+        out = [tui.entry("kb panel", "Image", {"version": 2, "imageType": "Regular", "colour": "0", "image": name}, "0 0 1280 628", ind=ind),
+               tui.entry("kb name", "Label", {"version": 1, "textStyle": tui.text_style(h=36.0, colour="ff141311", style="Medium",
+                                                                                     case="Original"),
+                                             "type": "Value", "handleName": "Data"}, "316 28 880 56", tui.P("fav_name"), ind=ind)]
+        kw, kh, gap, x0, y0 = 98, 84, 8, 64, 104
+
+        def kbkey(k, cap, x, y, w):
+            on, off = key_img(w, kh, True, cap, False, 26), key_img(w, kh, False, cap, False, 26)
+            out.append(tui.entry(k, "Button", {"version": 2, "onImage": on, "offImage": off, "buttonId": 1, "numButtonsInGroup": 1,
+                                               "handleName": "Data", "gestureBehaviour": "Instant"},
+                                 "%d %d %d %d" % (x - 6, y - 6, w + 12, kh + 12), remap=tui.P(k), ind=ind))
+        for r, (chars, extra) in enumerate((("1234567890", ["kb_bksp"]), ("QWERTYUIOP", []), ("ASDFGHJKL-", []), ("ZXCVBNM", ["kb_space"]))):
+            y, x = y0 + r * (kh + gap), x0 + r * 30
+            for c in chars:
+                kbkey("kb_" + ("dash" if c == "-" else c.lower()), c, x, y, kw)
+                x += kw + gap
+            for k in extra:
+                kbkey(k, {"kb_bksp": "DELETE", "kb_space": "SPACE"}[k], x, y, 1216 - x)
+        y = y0 + 4 * (kh + gap)
+        kbkey("kb_shift", "SHIFT", x0, y, 220)
+        kbkey("kb_cancel", "CANCEL", 640 - 130, y, 260)
+        kbkey("kb_save", "SAVE", 1216 - 260, y, 260)
+        return out
+
     def tab(self):
         self.bgname = "bg_%s.png" % re.sub(r"[^a-z0-9]+", "_", self.name.lower()).strip("_")
         self.bg.save(os.path.join(SKINS, self.bgname))
-        kids = [tui.entry("bg", "Image", {"version": 2, "imageType": "Regular", "colour": "0", "image": self.bgname}, "0 0 1280 628")] + self.kids
+        kids = [tui.entry("bg", "Image", {"version": 2, "imageType": "Regular", "colour": "0", "image": self.bgname}, "0 0 1280 628")] + self.kids + self.keyboard()
         return {"version": 1, "tabName": self.key_name, "fnKeyIndex": self.fn, "fnKeySubIndex": self.sub,
                 "componentDefinition": tui.component(kids, background=tui.bg("ff1a1a1b")), "qlinkBoundsData": self.groups}
 

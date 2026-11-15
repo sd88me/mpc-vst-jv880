@@ -14,8 +14,8 @@
 //   * text readouts (kText): the value text is the engine's text; the value is a counter bumped when the text changes, because the
 //     host only re-reads a param's text when its value moves.
 //   * front-end functions (kLocal, no engine key): RANDOM loads a random patch from every bank. Favourites live in the MPC's own
-//     PRESET list (the VST programs): +FAV saves the current patch with its edits (the engine's state: bank, patch, edited bytes) in
-//     the first free slot, -FAV deletes the favourite that is picked. Program 0 is "Current patch" (picking it does nothing). The
+//     PRESET list (the VST programs): +FAV opens the naming keyboard on the patch's name; SAVE stores the patch with its edits (the engine's state: bank, patch,
+//     edited bytes) under the typed name in the first free slot, -FAV deletes the favourite that is picked. Program 0 is "Current patch" (picking it does nothing). The
 //     slots are kept in <plugin folder>/jv880-favourites.dat, shared by every project.
 //   * ui_open (kUi): which drawn pick-list the skin shows; never reaches the engine.
 // Parameter 0 is OCTAVE. The host nudges parameter 0 to its far end and back on every prepare: a change applies only after it has
@@ -413,6 +413,8 @@ public:
     {
         if (!data || !size) return;
         ignoreProgUntil_.store(nowMs() + 2000);   // the host re-picks the saved program after a project load: the project's patch wins
+        kbOpen_.store(false);
+        kbDirty_.store(true);
         applyState(std::string(reinterpret_cast<const char*>(data), strnlen(reinterpret_cast<const char*>(data), size)));
     }
 
@@ -424,6 +426,8 @@ public:
         size_t b = s.find_first_not_of(" \t\r\n");
         if (b == std::string::npos || s[b] != '{') return false;
         ignoreProgUntil_.store(nowMs() + 2000);
+        kbOpen_.store(false);
+        kbDirty_.store(true);
         applyState(s);
         return true;
     }
@@ -591,6 +595,7 @@ private:
                 if (prog > 0 && now >= ignoreProgUntil_.load()) loadFav(prog - 1);
             }
         }
+        if (kbDirty_.exchange(false)) { pushValue(kKbOpen, kbOpen_.load() ? 1.0f : 0.0f); wantDisplay_ = true; }
         if (favDirty_.exchange(false)) { saveFavs(); wantDisplay_ = true; }   // new names in the PRESET list and the status text
         if (notifyUi_.exchange(false)) { t_pushing = kUiParam; notifyHostParameterChanged(kUiParam); t_pushing = -1; }
         if (resync_.exchange(false))
@@ -759,6 +764,7 @@ private:
 
     std::string localText(int i)
     {
+        if (i == kFavName) { std::lock_guard<std::mutex> g(kbMu_); return kbName_ + "_"; }
         if (i != kFavText) return "";
         int n = 0;
         { std::lock_guard<std::mutex> g(favMu_); for (const Fav& v : favs_) n += v.used ? 1 : 0; }
@@ -783,6 +789,52 @@ private:
             if (!std::strcmp(g_pspecs[i].key, "preset")) { told_[i].store(-1.0e9f); hostMoved_[i].store(true); }
     }
 
+    // ---- the naming keyboard (+FAV) ----------------------------------------------------------------------------------------------
+    void typeKey(int k)   // kbMu_ held; k = 0 .. kKbCount - 1
+    {
+        const int nchars = (int)sizeof kKbChars - 1;
+        if (k <= nchars)   // a character or space
+        {
+            if ((int)kbName_.size() >= kFavNameMax) return;
+            char c = k < nchars ? kKbChars[k] : ' ';
+            const bool cap = kbName_.empty() || kbName_.back() == ' ';
+            if (c >= 'A' && c <= 'Z')
+            {
+                if (cap == kbShift_) c = (char)(c - 'A' + 'a');   // a capital at the start and after a space; SHIFT flips the next letter
+                kbShift_ = false;
+            }
+            kbName_ += c;
+        }
+        else if (k == nchars + 1) { if (!kbName_.empty()) kbName_.pop_back(); }
+        else if (k == nchars + 2) kbShift_ = !kbShift_;
+    }
+
+    void closeKeyboard()
+    {
+        if (kbOpen_.exchange(false)) kbDirty_.store(true);
+    }
+
+    void saveTyped()
+    {
+        Fav v;
+        {
+            std::lock_guard<std::mutex> g(kbMu_);
+            v = kbPending_;
+            v.name = kbName_;
+        }
+        while (!v.name.empty() && v.name.back() == ' ') v.name.pop_back();
+        if (v.name.empty()) v.name = "Favourite";
+        closeKeyboard();
+        if (!v.used) return;
+        int slot = -1;
+        {
+            std::lock_guard<std::mutex> g(favMu_);
+            for (int i = 0; i < kFavSlots && slot < 0; ++i) if (!favs_[(size_t)i].used) slot = i;
+            if (slot >= 0) { favs_[(size_t)slot] = v; nameProgram(slot); }
+        }
+        if (slot >= 0) favDirty_.store(true);
+    }
+
     void localChanged(int index, const PSpec& s, float plain)
     {
         (void)s;
@@ -802,22 +854,39 @@ private:
             }
             return;
         }
-        if (index == kFavSave)
+        const long long now = nowMs();
+        if (index == kFavSave || (index >= kKbFirst && index < kKbFirst + kKbCount))
+        {
+            if (now - lastFire_[(size_t)index] < 250) return;   // the MPC can report one tap on a drawn key as two presses
+            lastFire_[(size_t)index] = now;
+        }
+        if (index == kFavSave)   // the naming keyboard: it takes the patch as it is now, SAVE stores it under the typed name
         {
             Fav v;
             v.state = engineState();
             if (engineGet("patch_name", b, sizeof b)) v.name = b;
             while (!v.name.empty() && v.name.back() == ' ') v.name.pop_back();
-            if (v.name.empty()) v.name = "Favourite";
             if (v.state.empty() || v.state[0] != '{') return;
+            if (v.name.size() > (size_t)kFavNameMax) v.name.resize((size_t)kFavNameMax);
             v.used = true;
-            int slot = -1;
             {
-                std::lock_guard<std::mutex> g(favMu_);
-                for (int i = 0; i < kFavSlots && slot < 0; ++i) if (!favs_[(size_t)i].used) slot = i;
-                if (slot >= 0) { favs_[(size_t)slot] = v; nameProgram(slot); }
+                std::lock_guard<std::mutex> g(kbMu_);
+                kbPending_ = v;
+                kbName_ = v.name;
+                kbShift_ = false;
             }
-            if (slot >= 0) favDirty_.store(true);
+            kbOpen_.store(true);
+            kbDirty_.store(true);
+            return;
+        }
+        if (index >= kKbFirst && index < kKbFirst + kKbCount)
+        {
+            if (!kbOpen_.load()) return;
+            const int k = index - kKbFirst, nchars = (int)sizeof kKbChars - 1;
+            if (k == nchars + 3) { closeKeyboard(); return; }   // CANCEL
+            if (k == nchars + 4) { saveTyped(); return; }       // SAVE
+            { std::lock_guard<std::mutex> g(kbMu_); typeKey(k); }
+            kbDirty_.store(true);
             return;
         }
         if (index == kFavDelete)   // the favourite that is picked now
@@ -910,6 +979,12 @@ private:
     std::vector<uint32_t> textHash_;
     std::mutex favMu_;
     std::vector<Fav> favs_;
+    std::mutex kbMu_;
+    std::string kbName_;                 // the name being typed
+    Fav kbPending_;                      // the patch taken when +FAV was pressed
+    bool kbShift_ = false;
+    std::atomic<bool> kbOpen_{false}, kbDirty_{false};
+    std::vector<long long> lastFire_ = std::vector<long long>((size_t)kNumParams, 0);
     std::mt19937 rng_{std::random_device{}()};
     std::atomic<bool> favDirty_{false};
     std::atomic<long long> ignoreProgUntil_{0};

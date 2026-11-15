@@ -73,6 +73,17 @@ for t in range(4):
 # steps through the banks, one bank a tick (nudge_pct, as PATCH), each going to its first patch as BANK -/+ do
 APPENDED.append({"key": "bank_select", "name": "BANK SELECT", "min": 0.0, "max": 63.0, "default": 0.0, "nudge_pct": 3})
 
+# 623..666: the naming keyboard for +FAV (as Vavra / Profit-5): the typed name (text), whether the keyboard is showing (UI only: the
+# skin shows its page while it is 1), and its keys (verbs); the order of the keys is kKbChars, then space, delete, shift, cancel, save
+KB_CHARS = "1234567890QWERTYUIOPASDFGHJKLZXCVBNM-"
+APPENDED.append({"key": "fav_name", "name": "FAVOURITE NAME", "min": 0.0, "max": 0.0, "default": 0.0, "display": "string", "local": True})
+APPENDED.append({"key": "kb_open", "name": "KEYBOARD", "min": 0.0, "max": 1.0, "default": 0.0, "ui": True})
+for c in KB_CHARS:
+    APPENDED.append({"key": "kb_" + ("dash" if c == "-" else c.lower()), "name": "KEY " + c, "min": 0.0, "max": 1.0, "default": 0.0,
+                     "momentary": True, "local": True})
+for k, n in (("space", "SPACE"), ("bksp", "DELETE"), ("shift", "SHIFT"), ("cancel", "CANCEL"), ("save", "SAVE")):
+    APPENDED.append({"key": "kb_" + k, "name": "KEY " + n, "min": 0.0, "max": 1.0, "default": 0.0, "momentary": True, "local": True})
+
 K = dict(kMomentary=1, kText=2, kChoice=8, kUi=16, kReadOnly=64, kStep=128, kTile=256, kNoAuto=512, kPolled=1024, kAnchor=2048, kLocal=4096)
 NOAUTO_RE = re.compile(r"^(env_view_\d|envv_.*|bank_select|browse_bank_index|patch_page_index|prev_browse_bank|next_browse_bank|patch_page_(next|prev))$")
 
@@ -113,15 +124,21 @@ for i, p in enumerate(P + APPENDED):
     if k.startswith("envv_"): fl |= K["kReadOnly"]
     if NOAUTO_RE.match(k): fl |= K["kNoAuto"]
     if p.get("anchor"): fl |= K["kUi"] | K["kNoAuto"] | K["kAnchor"]
+    if p.get("ui"): fl |= K["kUi"] | K["kNoAuto"]
     if p.get("local"): fl |= K["kLocal"] | K["kNoAuto"]
     if not (fl & (K["kMomentary"] | K["kText"] | K["kUi"] | K["kLocal"])): fl |= K["kPolled"]
     rows.append('    {%s, %s, %sf, %sf, %sf, %d, %s, %d, %d, %sf, %d},' % (
         json.dumps(k), json.dumps(p["name"]), repr(float(lo)), repr(float(hi)), repr(float(d)), fl, ch, n, st, repr(float(sd)),
         int(p.get("nudge_pct", 0))))
+ALLK = [p["key"] for p in P + APPENDED]
 cc = D["meta"]["cc_map_20_35"]
 out += ["", "static const PSpec g_pspecs[] = {"] + rows + ["};",
         "static const int kNumParams = %d;" % (len(P) + len(APPENDED)),
         "static const int kUiParam = 470;",
+        "static const int kFavName = %d, kKbOpen = %d, kKbFirst = %d, kKbCount = %d;   // the naming keyboard (see KB_CHARS in the generator)" % (
+            ALLK.index("fav_name"), ALLK.index("kb_open"), ALLK.index("kb_1"), len(KB_CHARS) + 5),
+        'static const char kKbChars[] = %s;   // the character keys from kKbFirst, then space, delete, shift, cancel, save' % json.dumps(KB_CHARS),
+        "static const int kFavNameMax = 20;",
         "// MIDI control, as the 1.x build: CC 20..35 -> these parameters (-1: none); NRPN n (CC 99/98, data CC 6/38) -> parameter n.",
         "static const int g_ccMap[16] = {%s};" % ", ".join(str(x) for x in cc),
         "static const bool kHasNrpn = %s;" % ("true" if D["meta"]["nrpn"] else "false"), ""]

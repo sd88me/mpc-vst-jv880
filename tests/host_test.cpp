@@ -113,7 +113,7 @@ int main(int argc, char** argv)
     a->dispatcher(a, effGetEffectName, 0, 0, name, 0);
     CHECK(a->uniqueID == (VstInt32)0x4a563838, "uid JV88 (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, JV_EXPECT_NAME), "name \"%s\"", name);
-    CHECK(a->numParams == 623, "623 params: 472 frozen + 151 appended (%d)", a->numParams);
+    CHECK(a->numParams == 667, "667 params: 472 frozen + 195 appended (%d)", a->numParams);
     CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 2002, "version 2002");
     {
         int bad = 0;
@@ -246,13 +246,28 @@ int main(int argc, char** argv)
         settle(a);
         const std::string nm = eng(a, "patch_name");
         const std::string ft0 = disp(a, FT);
+        const int KBO = idx("kb_open"), KZ = idx("kb_z"), KCANCEL = idx("kb_cancel"), KSAVE = idx("kb_save"), FNAME = idx("fav_name");
+        auto key = [&](int k) { a->setParameter(a, k, 1.0f); settle(a, 100); a->setParameter(a, k, 0.0f); settle(a, 100); };   // > 250 ms apart
         a->setParameter(a, SAVE, 1.0f);
-        settle(a);
-        char pn[64] = {};
-        a->dispatcher(a, effGetProgramNameIndexed, 1, 0, pn, 0);
+        settle(a, 100);
+        a->setParameter(a, SAVE, 0.0f);
+        settle(a, 100);
         std::string want = nm;
         while (!want.empty() && want.back() == ' ') want.pop_back();
-        CHECK(std::string(pn) == "1 " + want && a->getParameter(a, SAVE) == 0.f, "+FAV: program 1 = \"%s\", button back to 0", pn);
+        CHECK(a->getParameter(a, KBO) == 1.f && disp(a, FNAME) == want + "_", "+FAV opens the keyboard on \"%s\"", disp(a, FNAME).c_str());
+        key(KCANCEL);
+        char pn[64] = {};
+        a->dispatcher(a, effGetProgramNameIndexed, 1, 0, pn, 0);
+        CHECK(a->getParameter(a, KBO) == 0.f && std::string(pn) == "1 --", "CANCEL closes it, nothing saved (\"%s\")", pn);
+        a->setParameter(a, SAVE, 1.0f);
+        settle(a, 100);
+        a->setParameter(a, SAVE, 0.0f);
+        settle(a, 100);
+        key(KZ);
+        CHECK(disp(a, FNAME) == want + "z_", "a key types: \"%s\"", disp(a, FNAME).c_str());
+        key(KSAVE);
+        a->dispatcher(a, effGetProgramNameIndexed, 1, 0, pn, 0);
+        CHECK(a->getParameter(a, KBO) == 0.f && std::string(pn) == "1 " + want + "z", "SAVE: keyboard closes, program 1 = \"%s\"", pn);
         CHECK(disp(a, FT) != ft0, "status \"%s\" -> \"%s\"", ft0.c_str(), disp(a, FT).c_str());
         // another patch, then pick program 1: the patch and its edit come back
         a->setParameter(a, NEXT, 1.0f);
