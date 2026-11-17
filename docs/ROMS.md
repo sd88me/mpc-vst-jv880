@@ -21,12 +21,14 @@ All five are needed, with exactly these names. If your files have other names, r
 
 ## Where the plugin folder is
 
-| How you installed | Plugin folder |
-|---|---|
-| `-mpc-sdk.zip`, copied into `VST2 Plugins` | `VST2 Plugins/sd88me - VST - JV-880/` on that drive |
-| `-mpc-armv7.zip` or `-mpc-aarch64.zip`, with `install.sh` | `sd88me - VST - JV-880/` in the Synths folder the installer used, for example `/sdcard/Synths/` (32-bit MPCs) or `/nvme/Synths/` (64-bit MPCs) |
+The plugin folder depends on which of the two plugin formats you installed:
 
-So the files end up at, for example:
+| Plugin format | Zip | How it is installed | Plugin folder |
+|---|---|---|---|
+| **SDK format** (MPC OS 3.10.1 or later) | `JV-880-<version>-mpc-sdk.zip` | By hand: unzip it and copy the folder into `VST2 Plugins` at the root of a drive the MPC can see, then turn on VST2 Support in Preferences > Enhancements | `VST2 Plugins/sd88me - VST - JV-880/` on that drive |
+| **Older format** (MPC OS 3.x before 3.10.1; plugins listed in `MPC.settings`) | `JV-880-<version>-mpc-armv7.zip` (Force, Live, Live II, One, X, Key) or `-mpc-aarch64.zip` (Live III and other 64-bit MPCs) | With the plugin manager app, or by hand over SSH with the zip's `install.sh` (needs root access) | `sd88me - VST - JV-880/` in the Synths folder it was installed to: usually `/sdcard/Synths/` on 32-bit MPCs and `/nvme/Synths/` on 64-bit MPCs |
+
+For example, with the SDK format the first ROM file ends up at:
 
 ```
 VST2 Plugins/sd88me - VST - JV-880/jv880-roms/roms/jv880_rom1.bin
@@ -34,19 +36,22 @@ VST2 Plugins/sd88me - VST - JV-880/jv880-roms/roms/jv880_rom1.bin
 
 ## Copying the files
 
-Use either way:
+| Plugin format | How to add the ROMs |
+|---|---|
+| SDK format | By hand only. Copy the files into the plugin folder's `jv880-roms/roms/` over USB or with the MPC's file browser before you first load the plugin. |
+| Older format, installed with the plugin manager | Use its **Your ROMs and files** step, or copy them by hand. |
+| Older format, installed with `install.sh` | By hand: over SSH with `scp`, over USB, or with the MPC's file browser. |
 
-- **By hand:** copy the files over USB, with `scp`, or with the MPC's file browser before you first load the plugin.
-  This works for every install type.
-- **With the installer:** the `install.sh` zips have a **Your ROMs and files** step. It checks each file's size and
-  copies it to the right folder. It recognises the 256 KB file whatever its name and saves it as `jv880_rom2.bin`. The
-  other four must already have their exact names, because two are 32 KB and two are 2 MB, so only the name tells them
-  apart.
+About the plugin manager's **Your ROMs and files** step: it checks each file's size and copies it to the right folder.
+It recognises the 256 KB file whatever its name and saves it as `jv880_rom2.bin`. The other four must already have
+their exact names, because two are 32 KB and two are 2 MB, so only the name tells them apart.
 
 ## Upgrading
 
-Your `jv880-roms/` folder is kept when `install.sh` upgrades or uninstalls the plugin. If you update the `-sdk` zip by
-hand, copy the new folder over the old one (merge, don't delete the old folder first) so `jv880-roms/` stays.
+| Plugin format | What to do so your ROMs stay |
+|---|---|
+| SDK format | Copy the new folder over the old one: merge it, don't delete the old folder first. `jv880-roms/` and `jv880-favourites.dat` stay. |
+| Older format (plugin manager or `install.sh`) | Nothing: an upgrade or uninstall keeps `jv880-roms/` and `jv880-favourites.dat`. |
 
 ## Expansion cards (SR-JV80)
 
