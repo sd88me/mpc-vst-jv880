@@ -25,7 +25,7 @@ The plugin folder depends on which of the two plugin formats you installed:
 
 | Plugin format | Zip | How it is installed | Plugin folder |
 |---|---|---|---|
-| **SDK format** (MPC OS 3.10.1 or later) | `JV-880-<version>-mpc-sdk.zip` | By hand: unzip it and copy the folder into `VST2 Plugins` at the root of a drive the MPC can see, then turn on VST2 Support in Preferences > Enhancements | `VST2 Plugins/sd88me - VST - JV-880/` on that drive |
+| **SDK format** (MPC OS 3.10.1 or later) | `JV-880-<version>-mpc-sdk.zip` | By hand: unzip it and copy the folder into `VST2 Plugins` at the root of a drive the MPC can see, then turn on External Plugin Support in Preferences > Enhancements | `VST2 Plugins/sd88me - VST - JV-880/` on that drive |
 | **Older format** (MPC OS 3.x before 3.10.1; plugins listed in `MPC.settings`) | `JV-880-<version>-mpc-armv7.zip` (Force, Live, Live II, One, X, Key) or `-mpc-aarch64.zip` (Live III and other 64-bit MPCs) | With the plugin manager app, or by hand over SSH with the zip's `install.sh` (needs root access) | `sd88me - VST - JV-880/` in the Synths folder it was installed to: usually `/sdcard/Synths/` on 32-bit MPCs and `/nvme/Synths/` on 64-bit MPCs |
 
 For example, with the SDK format the first ROM file ends up at:
