@@ -1,77 +1,81 @@
 # ROMs and expansion cards
 
-The ROMs are not included, not bundled and not committed anywhere in this repo or its release zips: they are copyrighted
-Roland firmware. You need your own JV-880 ROM dump, and it must be **v1.0.0** specifically. A v1.0.1 dump causes CPU
-traps in the emulated H8/300 core and does not run.
+**In short:** put your five JV-880 v1.0.0 ROM files, named as below, in `jv880-roms/roms/` inside the plugin folder.
+Expansion cards (optional) go in `jv880-roms/roms/expansions/`.
 
-Without the five files below the plugin loads but makes no sound.
+The ROMs are not included anywhere in this repo or its release zips: they are copyrighted Roland firmware, so you need
+your own dump. It must be firmware **v1.0.0**. A v1.0.1 dump crashes the emulated CPU and does not run. Without the ROMs
+the plugin loads but makes no sound.
 
-## Required files
+## The five files
 
-Put these five files in the plugin folder's `jv880-roms/roms/` (see [Where to put them](#where-to-put-them)):
+| File | Size |
+|---|---|
+| `jv880_rom1.bin` | 32 KB (32,768 bytes) |
+| `jv880_rom2.bin` | 256 KB (262,144 bytes) |
+| `jv880_waverom1.bin` | 2 MB (2,097,152 bytes) |
+| `jv880_waverom2.bin` | 2 MB (2,097,152 bytes) |
+| `jv880_nvram.bin` | 32 KB (32,768 bytes) |
 
-| File | Size | Required |
-|---|---|---|
-| `jv880_rom1.bin` | 32 KB (32,768 bytes) | yes |
-| `jv880_rom2.bin` | 256 KB (262,144 bytes) | yes |
-| `jv880_waverom1.bin` | 2 MB (2,097,152 bytes) | yes |
-| `jv880_waverom2.bin` | 2 MB (2,097,152 bytes) | yes |
-| `jv880_nvram.bin` | 32 KB (32,768 bytes) | yes |
+All five are needed, with exactly these names. If your files have other names, rename them before copying them over.
 
-The names must match exactly. Dumps found online often use other names, so rename them to the names above.
+## Where the plugin folder is
 
-## Where to put them
+| How you installed | Plugin folder |
+|---|---|
+| `-mpc-sdk.zip`, copied into `VST2 Plugins` | `VST2 Plugins/sd88me - VST - JV-880/` on that drive |
+| `-mpc-armv7.zip` or `-mpc-aarch64.zip`, with `install.sh` | `sd88me - VST - JV-880/` in the Synths folder the installer used, for example `/sdcard/Synths/` (32-bit MPCs) or `/nvme/Synths/` (64-bit MPCs) |
 
-The plugin looks in a `jv880-roms` folder **inside its own plugin folder**, wherever that folder is installed:
+So the files end up at, for example:
 
 ```
-<plugin folder>/jv880-roms/roms/jv880_rom1.bin
-<plugin folder>/jv880-roms/roms/jv880_rom2.bin
-<plugin folder>/jv880-roms/roms/jv880_waverom1.bin
-<plugin folder>/jv880-roms/roms/jv880_waverom2.bin
-<plugin folder>/jv880-roms/roms/jv880_nvram.bin
+VST2 Plugins/sd88me - VST - JV-880/jv880-roms/roms/jv880_rom1.bin
 ```
 
-If `jv880_rom1.bin` is not there but is in `<plugin folder>/Content/jv880-roms/roms/`, that folder is used instead.
+## Copying the files
 
-`<plugin folder>` depends on how you installed:
+Use either way:
 
-- **`-mpc-sdk.zip`**: `VST2 Plugins/sd88me - VST - JV-880/` on the drive you copied it to.
-- **`-mpc-armv7.zip` / `-mpc-aarch64.zip`** (installed with `install.sh`): `sd88me - VST - JV-880/` inside the Synths folder
-  the installer used, for example `/sdcard/Synths/` on a 32-bit MPC or `/nvme/Synths/` on a 64-bit one.
+- **By hand:** copy the files over USB, with `scp`, or with the MPC's file browser before you first load the plugin.
+  This works for every install type.
+- **With the installer:** the `install.sh` zips have a **Your ROMs and files** step. It checks each file's size and
+  copies it to the right folder. It recognises the 256 KB file whatever its name and saves it as `jv880_rom2.bin`. The
+  other four must already have their exact names, because two are 32 KB and two are 2 MB, so only the name tells them
+  apart.
 
-How to get the files there:
+## Upgrading
 
-- **Copy them yourself** (USB, `scp`, or the MPC's file browser) before first loading the plugin. This works for every
-  install type.
-- **Or let the installer do it.** The `install.sh` zips include a **Your ROMs and files** step (rules in
-  `userfiles.json`). It checks each file before copying it into the right folder. It saves the 256 KB program ROM as
-  `jv880_rom2.bin` whatever it is called, but `jv880_rom1.bin`, `jv880_nvram.bin`, `jv880_waverom1.bin` and
-  `jv880_waverom2.bin` must keep their names (rom1 and nvram are both 32 KB, and the two wave ROMs are both 2 MB, so
-  the name is what tells them apart).
-
-The `jv880-roms/` folder is your data: upgrades and uninstalls with `install.sh` keep it. If you update the `-sdk` zip by
-hand, copy it over the old folder (merge it, don't delete the old folder first) so `jv880-roms/` stays.
+Your `jv880-roms/` folder is kept when `install.sh` upgrades or uninstalls the plugin. If you update the `-sdk` zip by
+hand, copy the new folder over the old one (merge, don't delete the old folder first) so `jv880-roms/` stays.
 
 ## Expansion cards (SR-JV80)
 
-Optional, and any number can be loaded at once. Put the card images in:
+These are optional, and you can load several at once. Put the card images in:
 
 ```
 <plugin folder>/jv880-roms/roms/expansions/
 ```
 
-A file is picked up if its name contains `SR-JV80` (upper case, exactly) and ends in `.bin` (any case), for example
-`SR-JV80-01_Pop.bin` or `SR-JV80-04_Vintage_Synth.bin`. A bank's name in the browser comes from the part after the
-number (`01 Pop`). Supported:
+The plugin loads a file only if its name contains `SR-JV80` in capitals and ends in `.bin`. Name each file
+`SR-JV80-<number>_<name>.bin`, for example `SR-JV80-04_Vintage_Synth.bin`. The BANKS page then shows it as
+`04 Vintage Synth`.
+
+Supported cards:
 
 - 8 MB cards: SR-JV80-01 to SR-JV80-19 (Pop, Orchestral, Piano, Vintage Synth, World, Dance and so on)
 - 2 MB cards: SR-JV80-97, 98 and 99 (the Experience series)
 
-Each card appears in the **BANKS** page as extra banks after the three built-in ones. The limits are 32 cards, 256 patches
-per card and 64 banks in all, counting the built-in banks.
+Cards appear on the BANKS page after the three built-in banks. You can load up to 32 cards, with up to 64 banks in all,
+counting the built-in ones.
 
-The first load unscrambles each card and writes `patch_cache.bin` next to the ROMs (in `jv880-roms/roms/`). That cache
-makes later loads quicker and is rebuilt when the files change, so you can delete it safely.
+Only one card is active at a time: the card the current patch comes from. A patch can't use waves from two cards.
 
-One card is active at a time (the one the current patch came from), so a patch cannot mix waves from two cards.
+### Patch cache
+
+On first load the plugin reads every card and writes `patch_cache.bin` in `jv880-roms/roms/`, so later loads are faster.
+The plugin rebuilds the cache when you add, remove or change a card. You can delete it safely.
+
+## Other locations
+
+If `jv880_rom1.bin` isn't in `<plugin folder>/jv880-roms/roms/` but is in `<plugin folder>/Content/jv880-roms/roms/`,
+the plugin uses that folder instead.
