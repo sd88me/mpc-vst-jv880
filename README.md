@@ -23,12 +23,14 @@ Current release: see [Releases](https://github.com/sd88me/mpc-vst-jv880/releases
   Press the TONE key again for the two LFOs.
 - **RANDOM** loads a random patch from any bank.
 - **Favourites** in MPC's own PRESET list:
-  - **+FAV** saves the current patch with your edits. Pick it from the PRESET list on the track or from a pad.
+  - **+FAV** opens an on-screen keyboard on the patch's name. Type a name (up to 20 characters) and press **SAVE** to
+    store the patch with your edits under it, or **CANCEL**. Pick it from the PRESET list on the track or from a pad.
   - **−FAV** removes the favourite that is currently picked.
   - Up to 64, shared by every project, stored in `jv880-favourites.dat` in the plugin folder.
-- **SR-JV80 expansion cards** load automatically and appear as extra banks: up to 19 cards in addition to the 3 built-in
-  banks.
-- MIDI control as in 1.x: CC 20–35 on the main controls, and NRPN for every parameter.
+- **SR-JV80 expansion cards** (01–19, and the 2 MB Experience cards 97–99) load automatically and appear as extra banks
+  after the 3 built-in ones, up to 32 cards and 64 banks in all.
+- MIDI control as in 1.x: CC 20–35 on the main controls, and NRPN for every parameter. In patch mode the plugin answers on
+  every MIDI channel.
 
 <img src="docs/skin-preview/play.png" width="640" alt="PLAY page"> <img src="docs/skin-preview/banks.png" width="640" alt="BANKS page">
 
@@ -39,11 +41,12 @@ the emulated H8/300 core. The ROMs and any SR-JV80 expansion cards are copyright
 included anywhere in this repo or its release zip.
 
 Put them in `jv880-roms/roms/` inside the plugin folder, and expansion cards in `jv880-roms/roms/expansions/`.
-[docs/ROMS.md](docs/ROMS.md) has the exact file names and sizes.
+[docs/ROMS.md](docs/ROMS.md) has the five exact file names and sizes (the names must match), where the plugin folder is for
+each install type, and the expansion card rules.
 
 ## Install
 
-Needs MPC OS 3.x. Version 2.0's screen uses skin features MPC OS 2.x doesn't have: on 2.x, stay on 1.0.9.
+Needs MPC OS 3.x (3.10.1 or later for the `-sdk` zip). Version 2.0's screen uses skin features MPC OS 2.x doesn't have: on 2.x, stay on 1.0.9.
 Download from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest):
 
 - **`JV-880-<version>-mpc-sdk.zip`**, for MPCs that load plugin folders from `VST2 Plugins`. Unzip it and copy the folder
