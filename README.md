@@ -74,6 +74,51 @@ Then add **JV-880** to a track from the plugin browser.
 **Upgrading the SDK format:** copy the new folder over the old one (merge it, don't delete the old folder first) so
 `jv880-roms/` and `jv880-favourites.dat` stay.
 
+## Backing up your favourites and sounds
+
+Your favourites and your own files are kept in the plugin folder on the MPC, not in your projects (a project keeps only the sound its
+track uses). Back them up before you update the plugin or MPC OS, reset the device, or move to another MPC. These are the files to keep,
+inside the plugin folder `sd88me - VST - JV-880`:
+
+| File or folder | What it holds |
+|---|---|
+| `jv880-favourites.dat` | your favourites (+FAV) |
+| `jv880-roms/` | your ROMs and expansion cards |
+
+Your ROMs are yours to keep with your backup, but don't share them.
+
+### Where the plugin folder is
+It is in `VST2 Plugins` on one of the MPC's drives, or in a Synths folder (`/sdcard/Synths`, or `/nvme/Synths` on a Live III),
+depending on how JV-880 was installed. Over SSH (root access), this prints its path:
+
+```bash
+ssh root@<device-ip> 'find /sdcard /nvme /media -maxdepth 3 -type d -name "sd88me - VST - JV-880" 2>/dev/null'
+```
+
+### Backing up
+- **The plugin folder is on an SD card or USB drive:** plug the drive into a computer and copy the files above to it.
+- **Over SSH**, from a computer: this copies the whole plugin folder into one file, `jv880-backup.tar`. Put the folder that holds the
+  plugin folder (the path above without its last part) in place of `<parent folder>`:
+
+  ```bash
+  ssh root@<device-ip> 'cd "<parent folder>" && tar cf - "sd88me - VST - JV-880"' > jv880-backup.tar
+  ```
+
+### Restoring
+Install JV-880 first (on the new device, or after the reset or update), then put back only the files above. Don't copy the whole
+old folder over the new one: that would put the old version of the plugin back too.
+
+- **From a drive:** copy the files back to the same places in the new plugin folder.
+- **Over SSH:** unpack the backup on your computer and send the files back. List only the ones your backup has, and put the new
+  plugin folder's path (found as above) in place of `<plugin folder>`:
+
+  ```bash
+  mkdir jv880-backup && tar xf jv880-backup.tar -C jv880-backup
+  tar cf - -C "jv880-backup/sd88me - VST - JV-880" "jv880-favourites.dat" "jv880-roms" | ssh root@<device-ip> 'cd "<plugin folder>" && tar xf -'
+  ```
+
+Then remove JV-880 from its tracks and add it again (or reopen the project), so it reads the restored files.
+
 ## Build from source
 
 Needs a checkout of Akai's MPC Plugin SDK (`mpc-plugin-builder-sdk`); set `MPC_SDK` to point at it.
