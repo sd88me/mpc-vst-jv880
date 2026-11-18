@@ -49,23 +49,30 @@ each install type, and the expansion card rules.
 Needs MPC OS 3.x (3.10.1 or later for the `-sdk` zip). Version 2.0's screen uses skin features MPC OS 2.x doesn't have: on 2.x, stay on 1.0.9.
 Download from the [latest release](https://github.com/sd88me/mpc-vst-jv880/releases/latest):
 
-- **`JV-880-<version>-mpc-sdk.zip`**, for MPCs that load plugin folders from `VST2 Plugins`. Unzip it and copy the folder
+There are two plugin formats. Use one of them, not both: they are the same plugin.
+
+- **SDK format** (MPC OS 3.10.1 or later): **`JV-880-<version>-mpc-sdk.zip`**, installed by hand. Unzip it and copy the folder
   `sd88me - VST - JV-880` into a folder named exactly `VST2 Plugins` at the root of a drive the MPC can see. Put your ROMs in
-  its `jv880-roms/roms/`. Then, in Preferences > Enhancements, turn on Enable Enhancements and VST2 Support, and restart
-  the MPC.
-- **`JV-880-<version>-mpc-armv7.zip`** (Force, MPC Live / Live II, One, X, Key) and **`-mpc-aarch64.zip`** (Live III and
-  other 64-bit MPCs), for MPCs that list plugins in `MPC.settings`. Both need root shell access:
-  ```
-  scp -r JV-880-<version> root@<device-ip>:/tmp/
-  ssh root@<device-ip> sh /tmp/JV-880-<version>/install.sh
-  ```
-  On a 64-bit unit, add `-t /nvme/Synths` to the install command. The installer stops the MPC, so save your project first.
-  A 1.x install is upgraded in place, and your ROMs (`jv880-roms/`) and favourites (`jv880-favourites.dat`) are kept.
-  The zip's `INSTALL.md` has the manual steps and the uninstall command.
+  its `jv880-roms/roms/`. Then, in Preferences > Enhancements, turn on Enable Enhancements and External Plugin Support, and
+  restart the MPC.
+- **Older format** (plugins listed in `MPC.settings`): **`JV-880-<version>-mpc-armv7.zip`** (Force, MPC Live / Live II, One, X,
+  Key) or **`-mpc-aarch64.zip`** (Live III and other 64-bit MPCs). Install it either way:
+  - **With the OpenMPC Plugin Manager:** install JV-880 from it, then add your ROMs with its **Your ROMs and files** step.
+  - **By hand over SSH** (needs root shell access):
+    ```
+    scp -r JV-880-<version> root@<device-ip>:/tmp/
+    ssh root@<device-ip> sh /tmp/JV-880-<version>/install.sh
+    ```
+    On a 64-bit unit, add `-t /nvme/Synths` to the install command. The installer stops the MPC, so save your project first.
+    The zip's `INSTALL.md` has the manual steps and the uninstall command. Then copy your ROMs into the plugin folder's
+    `jv880-roms/roms/`.
+
+  Either way, a 1.x install is upgraded in place, and your ROMs (`jv880-roms/`) and favourites (`jv880-favourites.dat`) are kept.
 
 Then add **JV-880** to a track from the plugin browser.
 
-**Upgrading by hand:** replace the plugin folder, but keep `jv880-roms/` and `jv880-favourites.dat`.
+**Upgrading the SDK format:** copy the new folder over the old one (merge it, don't delete the old folder first) so
+`jv880-roms/` and `jv880-favourites.dat` stay.
 
 ## Build from source
 
