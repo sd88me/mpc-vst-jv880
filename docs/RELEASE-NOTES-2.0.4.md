@@ -11,4 +11,4 @@
 
 Projects, automation and Q-Link assignments from 2.0.x carry over.
 
-**Checked:** offline tests (ASan/UBSan, the controls test with new Bend Down and wave-number checks, the stall test). Not yet on a device.
+**Checked:** offline tests (ASan/UBSan, the controls test with new Bend Down and wave-number checks, the stall test), and Bend Down, wave numbers above 128 and the ROM error message on an MPC Live III.
