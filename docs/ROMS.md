@@ -17,7 +17,11 @@ the plugin loads but makes no sound.
 | `jv880_waverom2.bin` | 2 MB (2,097,152 bytes) |
 | `jv880_nvram.bin` | 32 KB (32,768 bytes) |
 
-All five are needed, with exactly these names. If your files have other names, rename them before copying them over.
+All five are needed, with these names. Capitals don't matter (`JV880_ROM1.BIN` works), and files left directly in `jv880-roms/`, or in a
+`roms/` folder copied inside `roms/`, are found too. If your files have other names, rename them before copying them over.
+
+When a file is missing or the wrong size, the patch name line says which one (`No jv880_rom2.bin`, or `jv880_rom2.bin: not 256 KB`)
+and the header shows `ROM error`.
 
 ## Where the plugin folder is
 

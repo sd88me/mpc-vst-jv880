@@ -364,6 +364,44 @@ int main(int argc, char** argv)
         }
     }
 
+    {
+        std::printf("== bend down, wave numbers past 128\n");
+        const int PRESET = idx("preset"), BD = idx("nvram_patchCommon_bendrangedown"), W = idx("nvram_tone_0_wavenumber");
+        hostSetPlain(e, idx("bank_select"), 0.0f);   // out of the bank the BANKS checks left on screen
+        sleepMs(500);
+        hostSetPlain(e, PRESET, 1.0f);
+        hostSetPlain(e, PRESET, 0.0f);     // Preset A 1, A.Piano 1: bend down 2 (stored as the byte -2)
+        for (int t = 0; t < 40 && (engi(e, "preset") != 0 || eng(e, "patch_name").rfind("A.Piano 1", 0) != 0); t++) sleepMs(100);
+        sleepMs(300);
+        CHECK(engi(e, "nvram_patchCommon_bendrangedown") == 2, "%s (patch %d) reads bend down 2 (%d)", eng(e, "patch_name").c_str(), engi(e, "preset"), engi(e, "nvram_patchCommon_bendrangedown"));
+        hostSetPlain(e, BD, 12.0f);
+        sleepMs(300);
+        CHECK(engi(e, "nvram_patchCommon_bendrangedown") == 12, "bend down set to 12 reads 12 (%d)", engi(e, "nvram_patchCommon_bendrangedown"));
+        if (cards)
+        {
+            // A card patch whose tone 1 plays from a table of more than 128 waves (Vintage Synth has 255): "<card>  <page> / <pages>".
+            int found = -1;
+            const int total = engi(e, "total_patches");
+            for (int p = 192; p < total && found < 0; p += 64)
+            {
+                hostSetPlain(e, PRESET, (float)p);
+                for (int t = 0; t < 40 && engi(e, "preset") != p; t++) sleepMs(100);
+                sleepMs(300);
+                const std::string pg = eng(e, "wavepage_0");
+                const size_t sl = pg.rfind('/');
+                if (sl != std::string::npos && std::atoi(pg.c_str() + sl + 1) * 24 > 140) found = p;
+            }
+            if (found < 0) std::printf("  (no card with more than 128 waves: skipped)\n");
+            else
+            {
+                hostSetPlain(e, W, 200.0f);
+                sleepMs(400);
+                CHECK(engi(e, "nvram_tone_0_wavenumber") == 200, "patch %d: wave number set to 201 reads 201 (%d)", found,
+                      engi(e, "nvram_tone_0_wavenumber") + 1);
+            }
+        }
+    }
+
     midi({{0x80, 60, 0}});
     sleepMs(300);
     g_quit = true;

@@ -465,6 +465,7 @@ static const PatchCommonParam PATCH_COMMON_PARAMS[] = {
     {"portamentotype",      0x20,  25,  7,  1,  0,   1},
 };
 #define NUM_PATCH_COMMON_PARAMS (sizeof(PATCH_COMMON_PARAMS)/sizeof(PATCH_COMMON_PARAMS[0]))
+#define PATCH_COMMON_BEND_DOWN 0x1A   /* signed byte, -semitones; SysEx 64 - semitones (see the nvram_patchCommon_ set) */
 
 static const PatchCommonParam* find_patch_common_param(const char *name) {
     for (size_t i = 0; i < NUM_PATCH_COMMON_PARAMS; i++)
@@ -876,6 +877,29 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
 static uint64_t get_time_ms(void);
 static void v2_snap_link_tones(jv880_instance_t *inst);
 static void v2_restore_link_tones(jv880_instance_t *inst);
+
+/* Where a ROM file is: <module>/roms/<name>, matched without regard to case (JV880_ROM1.BIN from a Windows copy), else in
+ * the two places a copy most often lands instead: the module folder itself, or a roms/ folder copied into roms/. Fills `out`
+ * with the path found (or the expected one) and returns 1 when the file is there. */
+static int v2_rom_path(jv880_instance_t *inst, const char *name, char *out, size_t n) {
+    static const char *const SUB[] = {"/roms", "", "/roms/roms"};
+    for (size_t i = 0; i < sizeof(SUB) / sizeof(SUB[0]); i++) {
+        char dir[768];
+        snprintf(dir, sizeof dir, "%s%s", inst->module_dir, SUB[i]);
+        snprintf(out, n, "%s/%s", dir, name);
+        if (access(out, R_OK) == 0) return 1;
+        DIR *d = opendir(dir);
+        if (!d) continue;
+        int found = 0;
+        while (struct dirent *e = readdir(d)) {
+            if (strcasecmp(e->d_name, name) == 0) { snprintf(out, n, "%s/%s", dir, e->d_name); found = 1; break; }
+        }
+        closedir(d);
+        if (found) return 1;
+    }
+    snprintf(out, n, "%s/roms/%s", inst->module_dir, name);
+    return 0;
+}
 
 /* v2: Get file size helper */
 static uint32_t v2_get_file_size(const char *path) {
@@ -1506,13 +1530,13 @@ static void v2_save_cache(jv880_instance_t *inst) {
     hdr.version = CACHE_VERSION;
 
     char path[1024];
-    snprintf(path, sizeof(path), "%s/roms/jv880_rom1.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_rom1.bin", path, sizeof(path));
     hdr.rom1_size = v2_get_file_size(path);
-    snprintf(path, sizeof(path), "%s/roms/jv880_rom2.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_rom2.bin", path, sizeof(path));
     hdr.rom2_size = v2_get_file_size(path);
-    snprintf(path, sizeof(path), "%s/roms/jv880_waverom1.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_waverom1.bin", path, sizeof(path));
     hdr.waverom1_size = v2_get_file_size(path);
-    snprintf(path, sizeof(path), "%s/roms/jv880_waverom2.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_waverom2.bin", path, sizeof(path));
     hdr.waverom2_size = v2_get_file_size(path);
 
     hdr.expansion_count = inst->expansion_count;
@@ -1561,13 +1585,13 @@ static int v2_load_cache(jv880_instance_t *inst) {
     }
 
     char path[1024];
-    snprintf(path, sizeof(path), "%s/roms/jv880_rom1.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_rom1.bin", path, sizeof(path));
     if (v2_get_file_size(path) != hdr.rom1_size) { fclose(f); return 0; }
-    snprintf(path, sizeof(path), "%s/roms/jv880_rom2.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_rom2.bin", path, sizeof(path));
     if (v2_get_file_size(path) != hdr.rom2_size) { fclose(f); return 0; }
-    snprintf(path, sizeof(path), "%s/roms/jv880_waverom1.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_waverom1.bin", path, sizeof(path));
     if (v2_get_file_size(path) != hdr.waverom1_size) { fclose(f); return 0; }
-    snprintf(path, sizeof(path), "%s/roms/jv880_waverom2.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_waverom2.bin", path, sizeof(path));
     if (v2_get_file_size(path) != hdr.waverom2_size) { fclose(f); return 0; }
 
     int cached_exp_count;
@@ -1734,7 +1758,7 @@ static void* v2_load_thread_func(void *arg) {
 
     /* NVRAM is optional */
     char nvram_path[1024];
-    snprintf(nvram_path, sizeof(nvram_path), "%s/roms/jv880_nvram.bin", inst->module_dir);
+    v2_rom_path(inst, "jv880_nvram.bin", nvram_path, sizeof(nvram_path));
     FILE *nf = fopen(nvram_path, "rb");
     if (nf) {
         fread(nvram, 1, NVRAM_SIZE, nf);
@@ -1744,9 +1768,11 @@ static void* v2_load_thread_func(void *arg) {
 
     if (!ok) {
         fprintf(stderr, "JV880 v2: ROM loading failed\n");
-        snprintf(inst->load_error, sizeof(inst->load_error),
-                 "Mini-JV: ROM files not found. Place ROM files in roms/ folder.");
-        snprintf(inst->loading_status, sizeof(inst->loading_status), "ROMs not found");
+        /* v2_load_rom has said which file and why (loading_status, load_error). */
+        if (!inst->load_error[0])
+            snprintf(inst->load_error, sizeof(inst->load_error), "Mini-JV: ROM files not found in %s/roms", inst->module_dir);
+        if (!inst->loading_status[0] || strcmp(inst->loading_status, "Loading ROMs...") == 0)
+            snprintf(inst->loading_status, sizeof(inst->loading_status), "ROMs not found");
         free(rom1); free(rom2); free(waverom1); free(waverom2); free(nvram);
         /* mpc-vst: keep inst->mcu (destroy_instance frees it). Deleting it here raced set_param
          * on the host thread, which checks `inst->mcu` and then writes its nvram: use-after-free. */
@@ -2107,19 +2133,27 @@ static void v2_destroy_instance(void *instance) {
 /* v2: Load ROM helper */
 static int v2_load_rom(jv880_instance_t *inst, const char *filename, uint8_t *dest, size_t size) {
     char path[1024];
-    snprintf(path, sizeof(path), "%s/roms/%s", inst->module_dir, filename);
+    v2_rom_path(inst, filename, path, sizeof(path));
 
+    /* What went wrong, by file name, on the screen (the patch name line) and in full in load_error: "ROMs not found" alone
+     * left people guessing which of the five files, or which folder. */
     FILE *f = fopen(path, "rb");
     if (!f) {
         fprintf(stderr, "JV880 v2: Cannot open: %s\n", path);
+        snprintf(inst->loading_status, sizeof(inst->loading_status), "No %s", filename);
+        snprintf(inst->load_error, sizeof(inst->load_error), "Mini-JV: %s is not in %s/roms", filename, inst->module_dir);
         return 0;
     }
 
+    long have = (fseek(f, 0, SEEK_END) == 0) ? ftell(f) : -1;
+    fseek(f, 0, SEEK_SET);
     size_t got = fread(dest, 1, size, f);
     fclose(f);
 
-    if (got != size) {
-        fprintf(stderr, "JV880 v2: Size mismatch: %s (%zu vs %zu)\n", filename, got, size);
+    if (got != size || have != (long)size) {
+        fprintf(stderr, "JV880 v2: Size mismatch: %s (%ld vs %zu)\n", filename, have, size);
+        snprintf(inst->loading_status, sizeof(inst->loading_status), "%s: not %zu KB", filename, size / 1024);
+        snprintf(inst->load_error, sizeof(inst->load_error), "Mini-JV: %s is %ld bytes, needs %zu (%s)", filename, have, size, path);
         return 0;
     }
 
@@ -3118,7 +3152,9 @@ static void v2_write_one_tone_param(jv880_instance_t *inst, int toneIdx,
                 *b = (uint8_t)sysex_val;
                 v2_queue_tone_sysex(inst, toneIdx, p->sysex_idx, sysex_val, p->two_byte);
             } else {
-                v = clamp_int(atoi(val), 0, 127); *b = (uint8_t)v;
+                /* A 2-byte value is a whole byte: the wave number runs to 255 on a card (Vintage Synth's 255 waves). Capped at 127,
+                 * a pick past wave 128 jumped back to 128 (#31). */
+                v = clamp_int(atoi(val), 0, p->two_byte ? 255 : 127); *b = (uint8_t)v;
                 v2_queue_tone_sysex(inst, toneIdx, p->sysex_idx, v, p->two_byte);
             }
             return;
@@ -3719,13 +3755,21 @@ static void v2_set_param(void *instance, const char *key, const char *val) {
         const PatchCommonParam *pc = find_patch_common_param(key + 18);
         if (pc) {
             int v = clamp_int(atoi(val), pc->minv, pc->maxv);
-            int mask = ((1 << pc->width) - 1) << pc->shift;
-            /* Read-modify-write the NVRAM byte (preserves sibling bitfields)
-             * for immediate readback; send the sub-value to its own SysEx
-             * address so the emulator applies the sound change. */
             uint8_t *b = &inst->mcu->nvram[NVRAM_PATCH_OFFSET + pc->nvramOffset];
-            *b = (uint8_t)((*b & ~mask) | ((v << pc->shift) & mask));
-            v2_queue_patch_common_sysex(inst, pc->sysexIdx, v);
+            if (pc->sysexIdx == PATCH_COMMON_BEND_DOWN) {
+                /* Bend Down (0..48 semitones) is a whole signed byte holding -semitones (A.Piano 1: 0xFE, 2 down), and its SysEx
+                 * value is 64 - semitones (16..64); the firmware ignores values under 16. Sent as the plain 0..48, a turn set the
+                 * bend to 16..48 semitones down whatever the knob said. */
+                *b = (uint8_t)(int8_t)(-v);
+                v2_queue_patch_common_sysex(inst, pc->sysexIdx, 64 - v);
+            } else {
+                int mask = ((1 << pc->width) - 1) << pc->shift;
+                /* Read-modify-write the NVRAM byte (preserves sibling bitfields)
+                 * for immediate readback; send the sub-value to its own SysEx
+                 * address so the emulator applies the sound change. */
+                *b = (uint8_t)((*b & ~mask) | ((v << pc->shift) & mask));
+                v2_queue_patch_common_sysex(inst, pc->sysexIdx, v);
+            }
         }
     } else if (strncmp(key, "sram_perfCommon_", 16) == 0 && inst->mcu) {
         /* Performance common lives in SRAM, not NVRAM: it is the TEMP
@@ -4503,6 +4547,7 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
         if (pc) {
             uint8_t b = inst->mcu->nvram[NVRAM_PATCH_OFFSET + pc->nvramOffset];
             int v = (b >> pc->shift) & ((1 << pc->width) - 1);
+            if (pc->sysexIdx == PATCH_COMMON_BEND_DOWN) v = clamp_int(-(int)(int8_t)b, pc->minv, pc->maxv);   /* see set */
             return snprintf(buf, buf_len, "%d", v);
         }
     }
@@ -4784,7 +4829,8 @@ static int v2_get_param(void *instance, const char *key, char *buf, int buf_len)
     if (strcmp(key, "bank_name") == 0) {
         /* During loading, show loading status */
         if (!inst->loading_complete) {
-            return snprintf(buf, buf_len, "Loading...");
+            /* A load that failed is not still loading: the patch name line says what is missing. */
+            return snprintf(buf, buf_len, "%s", inst->load_error[0] ? "ROM error" : "Loading...");
         }
         if (inst->performance_mode) {
             /* Performance mode - return performance bank name */
